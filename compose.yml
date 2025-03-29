@@ -9,3 +9,13 @@ services:
     volumes:
       - ./pb:/pb/pb_data
     restart: no
+  bot:
+    container_name: bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: no
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src
