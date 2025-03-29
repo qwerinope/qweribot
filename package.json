@@ -3,7 +3,8 @@
   "dependencies": {
     "@twurple/api": "^7.2.1",
     "@twurple/chat": "^7.2.1",
-    "@twurple/easy-bot": "^7.2.1"
+    "@twurple/easy-bot": "^7.2.1",
+    "pocketbase": "^0.25.2"
   },
   "devDependencies": {
     "@types/bun": "^1.2.8"
