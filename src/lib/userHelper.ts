@@ -66,7 +66,7 @@ interface timeoutsGetResult {
 
 const BLASTERS = ['blaster', 'grenade', 'tnt']
 
-export async function getTimeouts(user: HelixUser): Promise<timeoutsGetResult> {
+async function getTimeouts(user: HelixUser): Promise<timeoutsGetResult> {
     await DBValidation(user)
     const userDBID = await getDBID(user)
     const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userDBID}"` })
@@ -110,7 +110,9 @@ export async function getInventory(user: HelixUser): Promise<inventory> {
 }
 
 export async function getStats(user: HelixUser) {
-
+    const { hit, shot } = await getTimeouts(user)
+    const dbuser = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
+    return { hit, shot, used: dbuser.itemuses }
 }
 
 export async function updateInventory(user: HelixUser, newinv: inventory) {
@@ -133,6 +135,7 @@ async function createUser(user: HelixUser) {
         twitchid: user.id,
         firstname: user.name,
         inventory: EMPTYINV,
+        itemuses: EMPTYINV,
         balance: 0
     }
     await pb.collection('users').create(data)

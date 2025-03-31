@@ -9,7 +9,7 @@ export default createBotCommand('inv', async (params, { userName, say }) => {
         user = await api.users.getUserByName(params[0])
     } else user = await api.users.getUserByName(userName)
     if (!user) {
-        say(`User ${params[0]} not found`)
+        await say(`User ${params[0]} not found`)
         return
     }
 
