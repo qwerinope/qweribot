@@ -12,9 +12,10 @@ async function firstAccess() {
     const CLIENT_SECRET = process.env.CLIENT_SECRET
     const OAUTH_CODE = process.env.OAUTH_CODE
 
-    if (!CLIENT_ID) {console.error("No 'CLIENT_ID' for OAuth defined in environment variables."); process.exit(1)}
-    if (!CLIENT_SECRET) {console.error("No 'CLIENT_SECRET' for OAuth defined in environment variables."); process.exit(1)}
-    if (!OAUTH_CODE) {console.error("No 'OAUTH_CODE' provided. To get the code, please visit this URL, authorize the bot and copy the 'code' from the return URL.")
+    if (!CLIENT_ID) { console.error("No 'CLIENT_ID' for OAuth defined in environment variables."); process.exit(1) }
+    if (!CLIENT_SECRET) { console.error("No 'CLIENT_SECRET' for OAuth defined in environment variables."); process.exit(1) }
+    if (!OAUTH_CODE) {
+        console.error("No 'OAUTH_CODE' provided. To get the code, please visit this URL, authorize the bot and copy the 'code' from the return URL.")
         console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=http://localhost&response_type=code&scope=chat:read+chat:edit+moderator:manage:banned_users+moderation:read`)
         process.exit(1)
     }
@@ -28,8 +29,8 @@ async function firstAccess() {
         OBTAINMENTTIMESTAMP: tokens.obtainmentTimestamp
     }
 
-    await pb.collection('ttvauth').create({auth})
-    
+    await pb.collection('ttvauth').create({ auth })
+
     return auth
 }
 
@@ -54,7 +55,7 @@ authProvider.onRefresh(async (_id, newTokenData) => {
     auth.OBTAINMENTTIMESTAMP = newTokenData.obtainmentTimestamp
 
     const ttvauthid = await pb.collection('ttvauth').getFullList()
-    await pb.collection('ttvauth').update(ttvauthid[0].id, {auth})
+    await pb.collection('ttvauth').update(ttvauthid[0].id, { auth })
 
     console.log("Refreshed OAuth tokens.")
 })

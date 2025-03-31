@@ -1,8 +1,7 @@
 import pb from './pocketbase'
-import api from './api'
 import { HelixUser } from '@twurple/api'
 
-const EMPTYINV: inventory = {
+export const EMPTYINV: inventory = {
     version: 1,
 
     blaster: 0,
@@ -31,8 +30,8 @@ type balanceGetResult = {
     user: HelixUser
 }
 
-export async function getBalance(username: string): Promise<balanceGetResult> {
-    const user = await existanceValidation(username)
+export async function getBalance(user: HelixUser): Promise<balanceGetResult> {
+    await DBValidation(user)
     const data = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
     return { balance: data.balance, user }
 }
@@ -42,8 +41,8 @@ type balanceChangeResult = {
     userBalance: balanceGetResult
 }
 
-export async function changeBalance(username: string, amount: number): Promise<balanceChangeResult> {
-    let userBalance = await getBalance(username)
+export async function changeBalance(user: HelixUser, amount: number): Promise<balanceChangeResult> {
+    let userBalance = await getBalance(user)
     if (amount < 0 && userBalance.balance - amount < 0) return { result: false, userBalance }
     const dbuser = await pb.collection('users').getFirstListItem(`twitchid="${userBalance.user.id}"`)
     let data = dbuser
@@ -56,7 +55,7 @@ export async function changeBalance(username: string, amount: number): Promise<b
 interface timeoutsGetResult {
     user: HelixUser,
     hit: {
-        blaster: number, // I'm going to combile blaster, grenade and tnt into one. Watergun is irrellevant
+        blaster: number, // I'm going to combine blaster, grenade and tnt into one. Watergun is irrellevant
         silverbullet: number,
     },
     shot: {
@@ -67,8 +66,8 @@ interface timeoutsGetResult {
 
 const BLASTERS = ['blaster', 'grenade', 'tnt']
 
-export async function getTimeouts(username: string): Promise<timeoutsGetResult> {
-    const user = await existanceValidation(username)
+export async function getTimeouts(user: HelixUser): Promise<timeoutsGetResult> {
+    await DBValidation(user)
     const userDBID = await getDBID(user)
     const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userDBID}"` })
     const shot = await pb.collection('timeouts').getFullList({ filter: `attacker="${userDBID}"` })
@@ -91,7 +90,7 @@ export async function getTimeouts(username: string): Promise<timeoutsGetResult> 
     }
 }
 
-interface inventory {
+export interface inventory {
     version: number,
 
     blaster: number,
@@ -104,33 +103,35 @@ interface inventory {
     lootbox: number
 }
 
-export async function getInventory(username: string): Promise<inventory> {
-    const user = await existanceValidation(username)
-    const data = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
+export async function getInventory(user: HelixUser): Promise<inventory> {
+    await DBValidation(user)
+    const data = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
     return data.inventory
 }
 
-export async function updateInventory(username: string, newinv: inventory) {
-    const user = await existanceValidation(username)
-    const data = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
+export async function getStats(user: HelixUser) {
+
+}
+
+export async function updateInventory(user: HelixUser, newinv: inventory) {
+    await DBValidation(user)
+    const data = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
     const recordid = data.id
     await pb.collection('users').update(recordid, { inventory: newinv })
 }
 
-async function existanceValidation(username: string): Promise<HelixUser> {
-    const user = await api.users.getUserByName(username)
+async function DBValidation(user: HelixUser) {
     try {
-        await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
+        await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
     } catch (error) {
         await createUser(user!)
     }
-    return user!
 }
 
 async function createUser(user: HelixUser) {
     const data = {
-        twitchid: user?.id,
-        firstname: user?.name,
+        twitchid: user.id,
+        firstname: user.name,
         inventory: EMPTYINV,
         balance: 0
     }

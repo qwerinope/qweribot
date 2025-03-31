@@ -1,20 +1,50 @@
 import { createBotCommand } from "@twurple/easy-bot";
 import { getInventory } from "../lib/userHelper";
 import api from "../lib/api";
+import { HelixUser } from "@twurple/api";
 
 export default createBotCommand('inv', async (params, { userName, say }) => {
-    if (params.length !== 0 && !await api.users.getUserByName(params[0])) { say(`User ${params[0]} not found`); return }
+    let user: HelixUser | null
+    if (params.length !== 0) {
+        user = await api.users.getUserByName(params[0])
+    } else user = await api.users.getUserByName(userName)
+    if (!user) {
+        say(`User ${params[0]} not found`)
+        return
+    }
 
-    const data = params.length === 0 ? { me: true, inv: await getInventory(userName) } : { me: false, inv: await getInventory(params[0]) }
+    const data = params.length === 0 ? { me: true, inv: await getInventory(user!) } : { me: false, inv: await getInventory(user!) }
 
-    await say(
-        `inventory of ${data.me ? userName : params[0]}: 
-        ${data.inv.blaster > 0 ? `blaster${data.inv.blaster === 1 ? '' : 's'}: ${data.inv.blaster}, ` : ''}
-        ${data.inv.grenade > 0 ? `grenade${data.inv.grenade === 1 ? '' : 's'}: ${data.inv.grenade}, ` : ''}
-        ${data.inv.tnt > 0 ? `tnt: ${data.inv.tnt}, ` : ''}
-        ${data.inv.watergun > 0 ? `watergun${data.inv.watergun === 1 ? '' : 's'}: ${data.inv.watergun}, ` : ''}
-        ${data.inv.silverbullet > 0 ? `silverbullet${data.inv.silverbullet === 1 ? '' : 's'}: ${data.inv.silverbullet}, ` : ''}
-        ${data.inv.clipboard > 0 ? `clipboard${data.inv.clipboard === 1 ? '' : 's'}: ${data.inv.clipboard}, `:''}
-        ${data.inv.lootbox > 0 ? `lootbox${data.inv.lootbox === 1 ? '' : 'es'}: ${data.inv.lootbox}`: ''}`
-    )
+    interface parsedData {
+        amount: number,
+        name: string,
+        plural: string
+    }
+
+    let dataparsed: parsedData[] = []
+    for (const key of Object.entries(data.inv)) {
+        if (key[1] === 0) continue
+        switch (key[0]) {
+            case 'lootbox':
+                dataparsed.push({ amount: key[1], name: key[0], plural: 'es' })
+                break
+            case 'version':
+                break
+            default:
+                dataparsed.push({ amount: key[1], name: key[0], plural: 's' })
+                break
+        }
+    }
+
+    if (!dataparsed) { await say(`${data.me ? userName : params[0]} has no items!`); return }
+
+    let messagedata: string[] = []
+    for (const item of dataparsed) {
+        messagedata.push(`${item.name + (item.amount === 1 ? '' : item.plural)}: ${item.amount}`)
+    }
+
+    await say(`
+        inventory of ${data.me ? userName : params[0]}: 
+        ${messagedata.join(', ')}
+    `)
 }, { aliases: ['inventory'] })
