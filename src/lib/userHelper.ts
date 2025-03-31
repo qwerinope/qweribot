@@ -44,18 +44,56 @@ type balanceChangeResult = {
 
 export async function changeBalance(username: string, amount: number): Promise<balanceChangeResult> {
     let userBalance = await getBalance(username)
-    if (amount < 0 && userBalance.balance - amount < 0) return {result: false , userBalance}
+    if (amount < 0 && userBalance.balance - amount < 0) return { result: false, userBalance }
     const dbuser = await pb.collection('users').getFirstListItem(`twitchid="${userBalance.user.id}"`)
     let data = dbuser
     data.balance += amount
     userBalance.balance += amount
     await pb.collection('users').update(dbuser.id, data)
-    return {result: true, userBalance}
+    return { result: true, userBalance }
+}
+
+interface timeoutsGetResult {
+    user: HelixUser,
+    hit: {
+        blaster: number, // I'm going to combile blaster, grenade and tnt into one. Watergun is irrellevant
+        silverbullet: number,
+    },
+    shot: {
+        blaster: number,
+        silverbullet: number
+    }
+}
+
+const BLASTERS = ['blaster', 'grenade', 'tnt']
+
+export async function getTimeouts(username: string): Promise<timeoutsGetResult> {
+    const user = await existanceValidation(username)
+    const userDBID = await getDBID(user)
+    const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userDBID}"` })
+    const shot = await pb.collection('timeouts').getFullList({ filter: `attacker="${userDBID}"` })
+
+    const blasterhit = hit.filter((item) => BLASTERS.includes(item.source)).length
+    const silverbullethit = hit.length - blasterhit
+    const blastershot = shot.filter((item) => BLASTERS.includes(item.source)).length
+    const silverbulletshot = shot.length - blastershot
+
+    return {
+        user,
+        hit: {
+            blaster: blasterhit,
+            silverbullet: silverbullethit
+        },
+        shot: {
+            blaster: blastershot,
+            silverbullet: silverbulletshot
+        }
+    }
 }
 
 interface inventory {
     version: number,
-    
+
     blaster: number,
     grenade: number,
     silverbullet: number,
