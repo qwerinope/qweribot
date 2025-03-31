@@ -20,7 +20,7 @@ jobs:
       - name: Docker Build and push
         uses: docker/build-push-action@v6
         with:
-          file: Dockerfile.dogbot
+          file: Dockerfile.pocketbase
           context: .
           push: true
-          tags: git.qwerinope.com/qwerinope/dogbot:latest
+          tags: git.qwerinope.com/qwerinope/dogbot-pocketbase:latest
