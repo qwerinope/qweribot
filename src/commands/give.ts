@@ -1,6 +1,7 @@
 import { createBotCommand } from "@twurple/easy-bot";
 import api from "../lib/api";
 import { changeItemCount } from "../lib/items";
+import { changeBalance } from "../lib/userHelper";
 
 export default createBotCommand('give', async (params, { say, broadcasterId, userId }) => {
     if (userId !== broadcasterId) return
@@ -10,7 +11,7 @@ export default createBotCommand('give', async (params, { say, broadcasterId, use
 
     if (isNaN(parseInt(params[2]))) { await say(`Specify the amount`); return }
 
-    const data = await changeItemCount(target, params[1].toLowerCase(), parseInt(params[2]))
+    const data = params[1].toLowerCase() === 'mbucks' ? await changeBalance(target, parseInt(params[2])) : await changeItemCount(target, params[1].toLowerCase(), parseInt(params[2]))
 
     if (data.reason === 'negative') { await say(`${target.name} only has ${data.count}. Cannot yoink ${-parseInt(params[2])} ${params[1]}`); return }
     else if (data.reason === 'noexist') { await say(`Can't find item ${params[1]}`); return }

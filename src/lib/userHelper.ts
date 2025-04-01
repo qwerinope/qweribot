@@ -27,29 +27,27 @@ export async function getDBID(user: HelixUser) {
 
 type balanceGetResult = {
     balance: number,
-    user: HelixUser
+    data: any // TODO: propet type for data returned from database
 }
 
 export async function getBalance(user: HelixUser): Promise<balanceGetResult> {
     await DBValidation(user)
     const data = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
-    return { balance: data.balance, user }
+    return { balance: data.balance, data }
 }
 
 type balanceChangeResult = {
     result: boolean,
-    userBalance: balanceGetResult
+    reason: string,
+    count: number
 }
 
 export async function changeBalance(user: HelixUser, amount: number): Promise<balanceChangeResult> {
-    let userBalance = await getBalance(user)
-    if (amount < 0 && userBalance.balance - amount < 0) return { result: false, userBalance }
-    const dbuser = await pb.collection('users').getFirstListItem(`twitchid="${userBalance.user.id}"`)
-    let data = dbuser
-    data.balance += amount
-    userBalance.balance += amount
-    await pb.collection('users').update(dbuser.id, data)
-    return { result: true, userBalance }
+    let { balance, data } = await getBalance(user)
+    if (amount < 0 && balance - amount < 0) return { result: false, reason: 'negative', count: balance }
+    data.balance = balance + amount
+    await pb.collection('users').update(data.id, data)
+    return { result: true, reason: '', count: data.balance }
 }
 
 interface timeoutsGetResult {
