@@ -109,10 +109,14 @@ export async function getInventory(user: HelixUser): Promise<inventory> {
     return data.inventory
 }
 
-export async function getStats(user: HelixUser) {
+interface statsGetResult extends timeoutsGetResult {
+    used: inventory
+}
+
+export async function getStats(user: HelixUser): Promise<statsGetResult> {
     const { hit, shot } = await getTimeouts(user)
     const dbuser = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
-    return { hit, shot, used: dbuser.itemuses }
+    return { user, hit, shot, used: dbuser.itemuses }
 }
 
 export async function updateInventory(user: HelixUser, newinv: inventory) {
