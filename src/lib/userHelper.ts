@@ -138,6 +138,7 @@ async function createUser(user: HelixUser) {
         firstname: user.name,
         inventory: EMPTYINV,
         itemuses: EMPTYINV,
+        lastlootbox: "1970-01-01 12:00:00.000Z",
         balance: 0
     }
     await pb.collection('users').create(data)

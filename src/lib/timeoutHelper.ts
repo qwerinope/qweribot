@@ -25,13 +25,13 @@ export async function timeout(broadcasterid: string, target: HelixUser, duration
 
 export async function addTimeoutToDB(attacker: HelixUser, target: HelixUser, source: shooter) {
     // This has passed the existance check so there's no need to check if the users exist (twitch)
-    const attackerDB = getDBID(attacker)
-    const targetDB = getDBID(target)
+    const attackerDB = await getDBID(attacker)
+    const targetDB = await getDBID(target)
 
     const timeoutobj = {
         source,
-        attacker: await attackerDB,
-        target: await targetDB,
+        attacker: attackerDB,
+        target: targetDB,
         attackername: attacker.name,
         targetname: target.name
     }

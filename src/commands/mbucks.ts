@@ -6,7 +6,7 @@ import { getBalance } from "../lib/userHelper";
 export default createBotCommand('mbucks', async (params, { userName, say }) => {
     let user: HelixUser | null
     if (params.length !== 0) {
-        user = await api.users.getUserByName(params[0])
+        user = await api.users.getUserByName(params[0].replace(/[^a-zA-Z0-9]/g, ''))
     } else user = await api.users.getUserByName(userName)
     if (!user) {
         await say(`User ${params[0]} not found`)
