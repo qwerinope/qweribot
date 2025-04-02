@@ -5,6 +5,9 @@ migrate(app => {
 
   let record = new Record(superusers)
 
+  const email = process.env.EMAIL ?? 'text@example.com'
+  const password = process.env.PASSWORD ?? '1234567890'
+
   // This should be communicated to the user, or be set by the user.
   record.set("email", "test@example.com")
   record.set("password", "1234567890")

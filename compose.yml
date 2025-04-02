@@ -9,6 +9,11 @@ services:
     volumes:
       - ./pb/data:/pb/pb_data
     restart: no
+    environment:
+      # These are only needed at first start. These are the values used to login to the admin panel.
+      # If left empty the email will be set to test@example.com and the password to 1234567890
+      #- EMAIL=
+      #- PASSWORD=
   bot:
     depends_on:
       pocketbase:
