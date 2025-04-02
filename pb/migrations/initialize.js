@@ -166,6 +166,15 @@ migrate(app => {
           "required": true,
           "system": false,
           "type": "json"
+        },
+        {
+          "hidden": false,
+          "id": "bool3207122276",
+          "name": "main",
+          "presentable": false,
+          "required": false,
+          "system": false,
+          "type": "bool"
         }
       ],
       "indexes": [],

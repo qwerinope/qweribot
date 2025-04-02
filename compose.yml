@@ -12,8 +12,8 @@ services:
     environment:
       # These are only needed at first start. These are the values used to login to the admin panel.
       # If left empty the email will be set to test@example.com and the password to 1234567890
-      #- EMAIL=
-      #- PASSWORD=
+      - EMAIL=
+      - PASSWORD=
   bot:
     depends_on:
       pocketbase:
@@ -28,6 +28,11 @@ services:
         - action: rebuild
           path: ./src
     environment:
+      # These env variables can be removed once the bot has sucessfully run once
       - CLIENT_ID=$CLIENT_ID
       - CLIENT_SECRET=$CLIENT_SECRET
       - OAUTH_CODE=$OAUTH_CODE
+      # If the broadcaster is different from the bot user,
+      # the broadcaster will need to authorize the bot to perform certain actions
+      - DIFFERENT_BROADCASTER=$DIFFERENT_BROADCASTER
+      - BROADCASTER_OAUTH_CODE=$BROADCASTER_OAUTH_CODE

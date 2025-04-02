@@ -10,6 +10,8 @@ const bot = new Bot({
 })
 
 bot.onConnect(async ()=> {
-    console.log("Ready to accept commands!")
-    await authProvider.refreshAccessTokenForUser(238377856)
+    // await authProvider.refreshAccessTokenForUser(238377856)
+    setTimeout(() => {
+        console.log('Bot is ready to accept commands!')
+    }, 1000 * 3)
 })
