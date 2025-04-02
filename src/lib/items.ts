@@ -28,11 +28,41 @@ export async function changeItemCount(user: HelixUser, item: string, amount = -1
 export async function useBlaster(broadcasterId: string, attacker: HelixUser, targetname: string, say: (arg0: string) => Promise<void>) {
     const target = await api.users.getUserByName(targetname)
 
+    const itemResult = await changeItemCount(attacker, 'blaster')
+
+    if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no blasters mandoooYikes'); return }
+
     const result = await timeout(broadcasterId, target!, 60, `You got blasted by ${attacker.name}`)
     if (result.status) {
-        const itemResult = await changeItemCount(attacker, 'blaster')
         await say(`${targetname} got mandoooGun by ${attacker.name}! mandoooGOTTEM ${attacker.name} has ${itemResult.count} blaster${itemResult.count === 1 ? '' : 's'} remaining`)
         await addTimeoutToDB(attacker, target!, 'blaster')
+    } else {
+        switch (result.reason) {
+            case 'noexist':
+                await say(`${targetname} doesn't exist!`)
+                break
+            case 'banned':
+                await say(`${targetname} is already dead!`)
+                break
+            case 'unknown':
+                await say(`NO!`)
+                await timeout(broadcasterId, attacker, 60, "NO!")
+                break
+        }
+    }
+}
+
+export async function useSilverBullet(broadcasterId: string, attacker: HelixUser, targetname: string, say: (arg0: string) => Promise<void>) {
+    const target = await api.users.getUserByName(targetname)
+
+    const itemResult = await changeItemCount(attacker, 'silverbullet')
+
+    if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no silver bullets mandoooYikes'); return }
+
+    const result = await timeout(broadcasterId, target!, 60 * 60 * 24, `You got hit by a silver bullet fired by ${attacker.name}`)
+    if (result.status) {
+        await say(`${target?.name} mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute mandoooSalute `)
+        await addTimeoutToDB(attacker, target!, 'silverbullet')
     } else {
         switch (result.reason) {
             case 'noexist':
