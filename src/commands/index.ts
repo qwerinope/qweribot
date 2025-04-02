@@ -6,5 +6,6 @@ import stats from "./stats";
 import mbucks from "./mbucks";
 import getloot from "./getloot";
 import modme from "./modme";
+import use from "./use";
 
-export default [timeout, thank, give, inventory, stats, mbucks, getloot, modme]
+export default [timeout, thank, give, inventory, stats, mbucks, getloot, modme, use]

@@ -15,7 +15,7 @@ function getTimeDifference(date1: number , date2: number) {
 
 export default createBotCommand('getloot', async (_params, { reply, userId/*, broadcasterId*/ }) => {
     const user = await api.users.getUserById(userId)
-    // if (!user?.isSubscribedTo(broadcasterId)) {await reply('Subscribe to receive loot mandoooSmile'); return}
+    // if (!user?.isSubscribedTo(broadcasterId)) {await reply('Subscribe to get loot mandoooSmile'); return}
     const data = await lootboxReady(user)
     if (!data.result) {
         const { days, hours, minutes, seconds } = getTimeDifference(data.lastlootbox, Date.now() - 1000 * 60 * 60 * 24 * 30)
