@@ -29,10 +29,11 @@ services:
           path: ./src
     environment:
       - CHANNEL=$CHANNEL
-      # These env variables can be removed once the bot has sucessfully run once
+      # The following env variables can be removed once the bot has sucessfully run once
       - CLIENT_ID=$CLIENT_ID
       - CLIENT_SECRET=$CLIENT_SECRET
       - OAUTH_CODE=$OAUTH_CODE
+      - REDIRECT_URI=$REDIRECT_URI # This should be exactly the same as you put in the twitch dev console
       # If the broadcaster is different from the bot user,
       # the broadcaster will need to authorize the bot to perform certain actions
       - DIFFERENT_BROADCASTER=$DIFFERENT_BROADCASTER

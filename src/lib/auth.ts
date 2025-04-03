@@ -28,20 +28,21 @@ async function firstAccess(main = true) {
     const CLIENT_SECRET = process.env.CLIENT_SECRET
     const OAUTH_CODE = process.env.OAUTH_CODE
     const BROADCASTER_OAUTH_CODE = process.env.BROADCASTER_OAUTH_CODE
+    const REDIRECT_URI = process.env.REDIRECT_URI ?? 'https://qweri0p.github.io/url-params/'
 
     if (!CLIENT_ID) { console.error("No 'CLIENT_ID' for OAuth defined in environment variables."); process.exit(1) }
     if (!CLIENT_SECRET) { console.error("No 'CLIENT_SECRET' for OAuth defined in environment variables."); process.exit(1) }
     if ((main && !OAUTH_CODE) || (!main && !BROADCASTER_OAUTH_CODE)) {
         if (main) {
             console.error("No 'OAUTH_CODE' provided. To get the code, please visit this URL, authorize the bot and copy the 'code' from the return URL.")
-            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=http://localhost&response_type=code&scope=chat:read+chat:edit+moderator:manage:banned_users+moderation:read`)
+            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=chat:read+chat:edit+moderator:manage:banned_users+moderation:read`)
         } else {
             console.error("No 'BROADCASTER_OAUTH_CODE' provided. To get the code, please make the broadcaster visit the following URL, and get them to return the 'code' from the return URL.")
-            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=http://localhost&response_type=code&scope=moderator:manage:banned_users+moderation:read+channel:manage:moderators`)
+            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=moderator:manage:banned_users+moderation:read+channel:manage:moderators`)
         }
         process.exit(1)
     }
-    const tokens = await exchangeCode(CLIENT_ID, CLIENT_SECRET, main ? OAUTH_CODE! : BROADCASTER_OAUTH_CODE!, "http://localhost")
+    const tokens = await exchangeCode(CLIENT_ID, CLIENT_SECRET, main ? OAUTH_CODE! : BROADCASTER_OAUTH_CODE!, REDIRECT_URI)
     const auth = {
         CLIENT_ID,
         CLIENT_SECRET,
