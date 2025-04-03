@@ -10,12 +10,12 @@ export default createBotCommand('use', async (params, { say, broadcasterId, user
     switch (params[0].toLowerCase()) {
         case 'blaster':
             if (params[1] === undefined) return
-            await useBlaster(broadcasterId, user!, params[1], say)
+            await useBlaster(broadcasterId, user!, params[1].replace(/[@]/g, ''), say)
             break
         case 'silver':
         case 'silverbullet':
             if (params[1] === undefined) return
-            await useSilverBullet(broadcasterId, user!, params[1], say)
+            await useSilverBullet(broadcasterId, user!, params[1].replace(/[@]/g, ''), say)
             break
         case 'grenade':
             await useGrenade(broadcasterId, user!, say)

@@ -7,7 +7,7 @@ import { vulnerableUsers } from "../lib/timeoutHelper";
 const give = createBotCommand('give', async (params, { say, broadcasterId, userId }) => {
     if (userId !== broadcasterId) return
 
-    const target = await api.users.getUserByName(params[0])
+    const target = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
     if (!target) { await say(`'${params[0]}' does not exist`); return }
 
     if (isNaN(parseInt(params[2]))) { await say(`Specify the amount`); return }

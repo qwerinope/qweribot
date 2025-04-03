@@ -56,7 +56,6 @@ export async function useSilverBullet(broadcasterId: string, attacker: HelixUser
     const target = await api.users.getUserByName(targetname)
 
     const itemResult = await changeItemCount(attacker, 'silverbullet')
-
     if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no silver bullets mandoooYikes'); return }
 
     const result = await timeout(broadcasterId, target!, 60 * 60 * 24, `You got hit by a silver bullet fired by ${attacker.name}`)
@@ -105,18 +104,19 @@ export async function useTNT(broadcasterId: string, attacker: HelixUser, say: (a
     const min = vulnerableUsers.length < 3 ? vulnerableUsers.length : 3 //if less than 3 chatters, use that else 3
     const max = vulnerableUsers.length > 10 ? 10 : vulnerableUsers.length //if more than 10 chatters do 10 else 10
     const blastedusers = Math.floor(Math.random() * (max - min + 1)) + min
-    for (let i = 0; blastedusers > i; i++) {
-        const target = await api.users.getUserById(vulnerableUsers[Math.floor(Math.random() * vulnerableUsers.length)])
+    const soontobedeadusers = shuffle(vulnerableUsers).slice(vulnerableUsers.length - blastedusers)
+    const targets = await api.users.getUsersByIds(soontobedeadusers)
+    for (const target of targets) {
         const result = await timeout(broadcasterId, target!, 60, `You got hit by ${attacker.name}'s TNT`)
         if (result.status) {
-            await say(`${target?.name} got blown up by TNT! mandoooTnt`)
+            await say(`${target?.name} got blown up by TNT! mandoooTNT`)
             await addTimeoutToDB(attacker, target!, 'tnt')
         } else {
             await say(`something went wrong mandoooYikes`)
             console.error(result.reason)
         }
     }
-    await say(`${attacker.name} blew up ${blastedusers} with their TNT mandoooGOTTEM ${attacker.name} has ${itemResult.count} tnt${itemResult.count === 1 ? '' : 's'} remaining`)
+    await say(`${attacker.name} blew up ${blastedusers} chatters with their TNT mandoooGOTTEM ${attacker.name} has ${itemResult.count} tnt${itemResult.count === 1 ? '' : 's'} remaining`)
 }
 
 function getRandom(): number {
@@ -131,9 +131,21 @@ export async function useLootbox(user: HelixUser, say: (arg0: string) => Promise
     let newitems: string[] = []
     await changeBalance(user, 25)
     newitems.push('25 mbucks')
-    if (getRandom() <= 50) { newitems.push('1 grenade'); await changeItemCount(user, 'grenade', 1) }
-    if (getRandom() <= 25) { newitems.push('1 blaster'); await changeItemCount(user, 'blaster', 1) }
-    if (getRandom() <= 10) { newitems.push('1 tnt'); await changeItemCount(user, 'tnt', 1) }
+    if (getRandom() <= 50) { newitems.push('1 grenade'); inventory.grenade += 1 }
+    if (getRandom() <= 25) { newitems.push('1 blaster'); inventory.blaster += 1 }
+    if (getRandom() <= 10) { newitems.push('1 tnt'); inventory.tnt += 1 }
+    await updateInventory(user, inventory)
 
     await say(`${user.name} got: ${newitems.join(' and ')}`)
+}
+
+function shuffle(arrayold: any[]) {
+    let array = arrayold
+    let currentIndex = array.length;
+    while (currentIndex != 0) {
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array
 }
