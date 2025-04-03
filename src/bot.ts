@@ -4,7 +4,10 @@ import authProvider from './lib/auth';
 import commands from './commands'
 import api, { broadcasterAuthProvider } from './lib/api';
 
+import { removeVulnChatter, vulnerableUsers } from './lib/timeoutHelper';
+
 const channel = process.env.CHANNEL ?? ''
+const user = process.env.BOT_NAME ?? ''
 
 const bot = new Bot({
     authProvider,
@@ -13,7 +16,7 @@ const bot = new Bot({
 })
 
 bot.onConnect(async () => {
-    const name = await api.users.getUserByName(process.env.BOT_NAME!)
+    const name = await api.users.getUserByName(user)
     await authProvider.refreshAccessTokenForUser(name?.id!)
     if (broadcasterAuthProvider) {
         const broadcastername = await api.users.getUserByName(channel)
@@ -23,4 +26,20 @@ bot.onConnect(async () => {
     setTimeout(() => {
         console.log('Bot is ready to accept commands!')
     }, 1000 * 5)
+})
+
+const ILLEGALBANS = [user, channel]
+
+bot.onMessage((msg) => {
+    if (vulnerableUsers.includes(msg.userId)) return
+    if (ILLEGALBANS.includes(msg.userName)) return
+    vulnerableUsers.push(msg.userId)
+})
+
+bot.onBan((ban) => {
+    removeVulnChatter(ban.userId)
+})
+
+bot.onTimeout(timeout => {
+    removeVulnChatter(timeout.userId)
 })

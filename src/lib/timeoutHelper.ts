@@ -49,3 +49,9 @@ function remodMod(broadcasterid: string, target: HelixUser, duration: number, ap
         await api.moderation.addModerator(broadcasterid, target)
     }, (duration + 3) * 1000)
 }
+
+export let vulnerableUsers: string[] = []
+
+export function removeVulnChatter(chatterid: string) {
+    vulnerableUsers = vulnerableUsers.filter(chatter => chatter !== chatterid)
+}

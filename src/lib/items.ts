@@ -1,6 +1,6 @@
 import { HelixUser } from "@twurple/api"
-import { getInventory, updateInventory, changeBalance } from "../lib/userHelper"
-import { timeout, addTimeoutToDB } from "./timeoutHelper"
+import { getInventory, updateInventory } from "../lib/userHelper"
+import { timeout, addTimeoutToDB, vulnerableUsers } from "./timeoutHelper"
 import api from "./api"
 
 export const ITEMS = ['blaster', 'silverbullet', 'grenade', 'tnt', 'watergun', 'clipboard', 'lootbox']
@@ -76,5 +76,22 @@ export async function useSilverBullet(broadcasterId: string, attacker: HelixUser
                 await timeout(broadcasterId, attacker, 60, "NO!")
                 break
         }
+    }
+}
+
+export async function useGrenade(broadcasterId: string, attacker: HelixUser, say: (arg0: string) => Promise<void>) {
+    if (vulnerableUsers.length === 0) { await say('No chatters to blow up!'); return }
+    const itemResult = await changeItemCount(attacker, 'grenade')
+
+    if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no grenades mandoooYikes'); return }
+    const target = await api.users.getUserById(vulnerableUsers[Math.floor(Math.random() * vulnerableUsers.length)])
+    const result = await timeout(broadcasterId, target!, 60, `You got hit by ${attacker.name}'s grenade`)
+    if (result.status) {
+        await say(`${target?.name} got blown up by ${attacker.name}'s grenade! mandoooGOTTEM`)
+        await addTimeoutToDB(attacker, target!, 'grenade')
+    } else {
+        // Banned is not an option, and neither is noexist
+        await say(`something went wrong mandoooYikes`)
+        console.error(result.reason)
     }
 }

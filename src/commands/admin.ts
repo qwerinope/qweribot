@@ -2,8 +2,9 @@ import { createBotCommand } from "@twurple/easy-bot";
 import api from "../lib/api";
 import { changeItemCount } from "../lib/items";
 import { changeBalance } from "../lib/userHelper";
+import { vulnerableUsers } from "../lib/timeoutHelper";
 
-export default createBotCommand('give', async (params, { say, broadcasterId, userId }) => {
+const give = createBotCommand('give', async (params, { say, broadcasterId, userId }) => {
     if (userId !== broadcasterId) return
 
     const target = await api.users.getUserByName(params[0])
@@ -18,3 +19,11 @@ export default createBotCommand('give', async (params, { say, broadcasterId, use
 
     await say(`${target.name} now has ${data.count} ${params[1]}`)
 })
+
+const vulnChatters = createBotCommand('vulnchatters', async (_params, { say, userId, broadcasterId }) => {
+    if (userId !== broadcasterId) return
+
+    await say(`There are ${vulnerableUsers.length} vulnerable chatters`)
+})
+
+export default [give, vulnChatters]
