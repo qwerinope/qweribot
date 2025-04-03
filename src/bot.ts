@@ -13,7 +13,6 @@ const bot = new Bot({
 })
 
 bot.onConnect(async () => {
-    // await authProvider.refreshAccessTokenForUser(238377856)
     const name = await api.users.getUserByName(process.env.BOT_NAME!)
     await authProvider.refreshAccessTokenForUser(name?.id!)
     if (broadcasterAuthProvider) {
