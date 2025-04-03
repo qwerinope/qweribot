@@ -1,5 +1,5 @@
 import { HelixUser } from "@twurple/api"
-import { getInventory, updateInventory } from "../lib/userHelper"
+import { changeBalance, getInventory, updateInventory } from "../lib/userHelper"
 import { timeout, addTimeoutToDB, vulnerableUsers } from "./timeoutHelper"
 import api from "./api"
 
@@ -94,4 +94,46 @@ export async function useGrenade(broadcasterId: string, attacker: HelixUser, say
         await say(`something went wrong mandoooYikes`)
         console.error(result.reason)
     }
+}
+
+
+export async function useTNT(broadcasterId: string, attacker: HelixUser, say: (args0: string) => Promise<void>) {
+    if (vulnerableUsers.length === 0) { await say('No chatters to blow up!'); return }
+    const itemResult = await changeItemCount(attacker, 'tnt')
+
+    if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no TNT mandoooYikes'); return }
+    const min = vulnerableUsers.length < 3 ? vulnerableUsers.length : 3 //if less than 3 chatters, use that else 3
+    const max = vulnerableUsers.length > 10 ? 10 : vulnerableUsers.length //if more than 10 chatters do 10 else 10
+    const blastedusers = Math.floor(Math.random() * (max - min + 1)) + min
+    for (let i = 0; blastedusers > i; i++) {
+        const target = await api.users.getUserById(vulnerableUsers[Math.floor(Math.random() * vulnerableUsers.length)])
+        const result = await timeout(broadcasterId, target!, 60, `You got hit by ${attacker.name}'s TNT`)
+        if (result.status) {
+            await say(`${target?.name} got blown up by TNT! mandoooTnt`)
+            await addTimeoutToDB(attacker, target!, 'tnt')
+        } else {
+            await say(`something went wrong mandoooYikes`)
+            console.error(result.reason)
+        }
+    }
+    await say(`${attacker.name} blew up ${blastedusers} with their TNT mandoooGOTTEM ${attacker.name} has ${itemResult.count} tnt${itemResult.count === 1 ? '' : 's'} remaining`)
+}
+
+function getRandom(): number {
+    return Math.floor(Math.random() * 100)
+}
+
+export async function useLootbox(user: HelixUser, say: (arg0: string) => Promise<void>) {
+    const itemResult = await changeItemCount(user, 'lootbox')
+    if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no lootboxes mandoooYikes'); return }
+    // Lootbox logic will for now just be get 25 mbucks, with 50% chance to get a grenade 25% chance to get a blaster and 10% chance to get TNT
+    let inventory = await getInventory(user)
+    let newitems: string[] = []
+    await changeBalance(user, 25)
+    newitems.push('25 mbucks')
+    if (getRandom() <= 50) { newitems.push('1 grenade'); await changeItemCount(user, 'grenade', 1) }
+    if (getRandom() <= 25) { newitems.push('1 blaster'); await changeItemCount(user, 'blaster', 1) }
+    if (getRandom() <= 10) { newitems.push('1 tnt'); await changeItemCount(user, 'tnt', 1) }
+
+    await say(`${user.name} got: ${newitems.join(' and ')}`)
 }

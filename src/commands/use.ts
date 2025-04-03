@@ -1,5 +1,5 @@
 import { createBotCommand } from "@twurple/easy-bot";
-import { useBlaster, useGrenade, useSilverBullet } from "../lib/items";
+import { useBlaster, useGrenade, useLootbox, useSilverBullet, useTNT } from "../lib/items";
 import api from "../lib/api";
 
 export default createBotCommand('use', async (params, { say, broadcasterId, userId }) => {
@@ -19,6 +19,13 @@ export default createBotCommand('use', async (params, { say, broadcasterId, user
             break
         case 'grenade':
             await useGrenade(broadcasterId, user!, say)
+            break
+        case 'tnt':
+            await useTNT(broadcasterId, user!, say)
+            break
+        case 'lootbox':
+        case 'loot':
+            await useLootbox(user!, say)
             break
         default:
             await say(`${params[0]} does not exist mandoooYikes`)

@@ -1,5 +1,5 @@
 import { createBotCommand } from "@twurple/easy-bot";
-import { lootboxReady, resetLootboxTimer } from "../lib/lootboxes";
+import { COOLDOWN, lootboxReady, resetLootboxTimer } from "../lib/lootboxes";
 import { changeItemCount } from "../lib/items"
 import api from "../lib/api"
 
@@ -18,7 +18,7 @@ export default createBotCommand('getloot', async (_params, { reply, userId/*, br
     // if (!user?.isSubscribedTo(broadcasterId)) {await reply('Subscribe to get loot mandoooSmile'); return}
     const data = await lootboxReady(user)
     if (!data.result) {
-        const { days, hours, minutes, seconds } = getTimeDifference(data.lastlootbox, Date.now() - 1000 * 60 * 60 * 24 * 30)
+        const { days, hours, minutes, seconds } = getTimeDifference(data.lastlootbox, Date.now() - COOLDOWN)
         await reply(`lootbox ready in: 
             ${days === 0 ? '' : `${days} day${days === 1 ? '' : 's'}, `}
             ${hours === 0 ? '' : `${hours} hour${hours === 1 ? '' : 's'}, `}
