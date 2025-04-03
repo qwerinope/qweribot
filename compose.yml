@@ -28,6 +28,7 @@ services:
         - action: rebuild
           path: ./src
     environment:
+      - BOT_NAME=$BOT_NAME
       - CHANNEL=$CHANNEL
       # The following env variables can be removed once the bot has sucessfully run once
       - CLIENT_ID=$CLIENT_ID

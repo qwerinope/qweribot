@@ -80,7 +80,7 @@ authProvider.onRefresh(async (_id, newTokenData) => {
     const ttvauthid = await pb.collection('ttvauth').getFirstListItem('main=true')
     await pb.collection('ttvauth').update(ttvauthid.id, { auth })
 
-    console.log("Refreshed OAuth tokens.")
+    console.log("Refreshed Bot OAuth tokens.")
 })
 
 export default authProvider
