@@ -3,7 +3,7 @@ import api, { broadcasterApi } from "./api";
 import pb from "./pocketbase";
 import { getDBID } from "./userHelper";
 
-type shooter = 'blaster' | 'grenade' | 'silverbullet' | 'watergun' | 'tnt'
+type shooter = 'blaster' | 'grenade' | 'silverbullet' | 'tnt'
 
 interface statusmessage {
     status: boolean,

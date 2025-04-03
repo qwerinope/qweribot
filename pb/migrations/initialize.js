@@ -51,8 +51,7 @@ migrate(app => {
             "silverbullet",
             "grenade",
             "blaster",
-            "tnt",
-            "watergun"
+            "tnt"
           ]
         },
         {

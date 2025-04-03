@@ -3,7 +3,7 @@ import { getInventory, updateInventory } from "../lib/userHelper"
 import { timeout, addTimeoutToDB, vulnerableUsers } from "./timeoutHelper"
 import api from "./api"
 
-export const ITEMS = ['blaster', 'silverbullet', 'grenade', 'tnt', 'watergun', 'clipboard', 'lootbox']
+export const ITEMS = ['blaster', 'silverbullet', 'grenade', 'tnt', 'clipboard', 'lootbox']
 
 interface itemChangeResult {
     result: boolean,

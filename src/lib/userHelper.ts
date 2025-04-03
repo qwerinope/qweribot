@@ -8,7 +8,6 @@ export const EMPTYINV: inventory = {
     grenade: 0,
     silverbullet: 0,
     tnt: 0,
-    watergun: 0,
 
     clipboard: 0,
     lootbox: 0
@@ -53,7 +52,7 @@ export async function changeBalance(user: HelixUser, amount: number): Promise<ba
 interface timeoutsGetResult {
     user: HelixUser,
     hit: {
-        blaster: number, // I'm going to combine blaster, grenade and tnt into one. Watergun is irrellevant
+        blaster: number, // I'm going to combine blaster, grenade and tnt into one.
         silverbullet: number,
     },
     shot: {
@@ -95,7 +94,6 @@ export interface inventory {
     grenade: number,
     silverbullet: number,
     tnt: number,
-    watergun: number,
 
     clipboard: number,
     lootbox: number
