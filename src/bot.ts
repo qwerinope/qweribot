@@ -15,5 +15,5 @@ bot.onConnect(async () => {
     // await authProvider.refreshAccessTokenForUser(238377856)
     setTimeout(() => {
         console.log('Bot is ready to accept commands!')
-    }, 1000 * 3)
+    }, 1000 * 5)
 })

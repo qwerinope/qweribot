@@ -20,8 +20,8 @@ export async function timeout(broadcasterid: string, target: HelixUser, duration
         if (await tmpapi.moderation.checkUserMod(broadcasterid, target)) {
             await tmpapi.moderation.removeModerator(broadcasterid, target)
             remodMod(broadcasterid, target, duration, tmpapi)
-            await tmpapi.moderation.banUser(broadcasterid, { duration, reason, user: target })
         }
+        await tmpapi.moderation.banUser(broadcasterid, { duration, reason, user: target })
         return { status: true, reason: '' }
     } catch (err) {
         console.error(err)
