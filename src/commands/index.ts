@@ -8,4 +8,6 @@ import getloot from "./getloot";
 import modme from "./modme";
 import use from "./use";
 
-export default [timeout, thank, give, inventory, stats, mbucks, getloot, modme, use]
+import aliases from './itemAliases'
+
+export default [timeout, thank, give, inventory, stats, mbucks, getloot, modme, use, ...aliases]

@@ -1,4 +1,4 @@
-import { HelixUser } from "@twurple/api";
+import { ApiClient, HelixUser } from "@twurple/api";
 import api, { broadcasterApi } from "./api";
 import pb from "./pocketbase";
 import { getDBID } from "./userHelper";
@@ -12,22 +12,15 @@ interface statusmessage {
 
 export async function timeout(broadcasterid: string, target: HelixUser, duration: number, reason: string): Promise<statusmessage> {
     if (!target) return { status: false, reason: 'noexist' }
+    const tmpapi = broadcasterApi ?? api
     // if (target.name === 'qwerinope') return { status: false, reason: 'unknown' }
-    if (broadcasterApi) {
-        if (await broadcasterApi.moderation.checkUserBan(broadcasterid, target)) return { status: false, reason: 'banned' }
-    } else {
-        if (await api.moderation.checkUserBan(broadcasterid, target)) return { status: false, reason: 'banned' }
-    }
+    if (await tmpapi.moderation.checkUserBan(broadcasterid, target)) return { status: false, reason: 'banned' }
 
     try {
-        if (broadcasterApi) {
-            if (await broadcasterApi.moderation.checkUserMod(broadcasterid, target)) {
-                await broadcasterApi.moderation.removeModerator(broadcasterid, target)
-                remodMod(broadcasterid, target, duration)
-            }
-            await broadcasterApi.moderation.banUser(broadcasterid, { duration, reason, user: target })
-        } else {
-            await api.moderation.banUser(broadcasterid, { duration, reason, user: target })
+        if (await tmpapi.moderation.checkUserMod(broadcasterid, target)) {
+            await tmpapi.moderation.removeModerator(broadcasterid, target)
+            remodMod(broadcasterid, target, duration, tmpapi)
+            await tmpapi.moderation.banUser(broadcasterid, { duration, reason, user: target })
         }
         return { status: true, reason: '' }
     } catch (err) {
@@ -51,8 +44,8 @@ export async function addTimeoutToDB(attacker: HelixUser, target: HelixUser, sou
     await pb.collection('timeouts').create(timeoutobj)
 }
 
-function remodMod(broadcasterid: string, target: HelixUser, duration: number) {
+function remodMod(broadcasterid: string, target: HelixUser, duration: number, api: ApiClient) {
     setTimeout(async () => {
-        await broadcasterApi?.moderation.addModerator(broadcasterid, target)
+        await api.moderation.addModerator(broadcasterid, target)
     }, (duration + 3) * 1000)
 }
