@@ -1,5 +1,5 @@
 import { HelixUser } from "@twurple/api"
-import pb from "./pocketbase"
+import pb, { User } from "./pocketbase"
 
 // const COOLDOWN = 1000 * 60 * 60 * 24 * 30 // 1000 milliseconds * 60 seconds * 60 minutes * 24 hours * 30 days
 export const COOLDOWN = 1000 * 60 * 15
@@ -7,7 +7,7 @@ export const COOLDOWN = 1000 * 60 * 15
 interface lootboxReadyResult {
     result: boolean,
     lastlootbox: number,
-    DBuser: any // TODO: proper types for db user (again). check RecordModel
+    DBuser: User
 }
 
 export async function lootboxReady(user: HelixUser | null): Promise<lootboxReadyResult> {

@@ -1,4 +1,4 @@
-import pb from './pocketbase'
+import pb, { User } from './pocketbase'
 import { HelixUser } from '@twurple/api'
 
 export const EMPTYINV: inventory = {
@@ -26,7 +26,7 @@ export async function getDBID(user: HelixUser) {
 
 type balanceGetResult = {
     balance: number,
-    data: any // TODO: propet type for data returned from database
+    data: User
 }
 
 export async function getBalance(user: HelixUser): Promise<balanceGetResult> {

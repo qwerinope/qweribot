@@ -9,8 +9,8 @@ migrate(app => {
   const password = process.env.PASSWORD ?? '1234567890'
 
   // This should be communicated to the user, or be set by the user.
-  record.set("email", "test@example.com")
-  record.set("password", "1234567890")
+  record.set("email", email)
+  record.set("password", password)
 
   app.save(record)
   const data = [
