@@ -1,7 +1,7 @@
 import { HelixUser } from "@twurple/api"
 import { changeBalance, getInventory, updateInventory } from "../lib/userHelper"
 import { timeout, addTimeoutToDB, vulnerableUsers } from "./timeoutHelper"
-import api from "./api"
+import api, { broadcasterApi } from "./api"
 
 export const ITEMS = ['blaster', 'silverbullet', 'grenade', 'tnt', 'clipboard', 'lootbox']
 
@@ -148,4 +148,14 @@ function shuffle(arrayold: any[]) {
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array
+}
+
+export async function useClipboard(broadcasterId: string, user: HelixUser, question: string, say: (arg0: string) => Promise<void>) {
+    const tempapi = broadcasterApi ?? api
+    const polldata = await tempapi.polls.getPolls(broadcasterId)
+    if (polldata.data.length > 0) {await say('Can\'t have two polls active at once.'); return}
+    const itemResult = await changeItemCount(user, 'clipboard')
+    if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no clipboards mandoooYikes'); return }
+    await tempapi.polls.createPoll(broadcasterId, { choices: ['Yes', 'No'], duration: 120, title: question })
+    await say(`${user.name} used a clipboard! They have ${itemResult.count} clipboard${itemResult.count === 1 ? '' : 's'} remaining`)
 }

@@ -1,5 +1,5 @@
 import { createBotCommand } from "@twurple/easy-bot";
-import { useBlaster, useGrenade, useLootbox, useSilverBullet, useTNT } from "../lib/items";
+import { useBlaster, useClipboard, useGrenade, useLootbox, useSilverBullet, useTNT } from "../lib/items";
 import api from "../lib/api";
 
 export default createBotCommand('use', async (params, { say, broadcasterId, userId }) => {
@@ -26,6 +26,10 @@ export default createBotCommand('use', async (params, { say, broadcasterId, user
         case 'lootbox':
         case 'loot':
             await useLootbox(user!, say)
+            break
+        case 'clipboard':
+            if (params[1] === undefined) return
+            await useClipboard(broadcasterId, user!, params.slice(1).join(' '), say)
             break
         default:
             await say(`${params[0]} does not exist mandoooYikes`)

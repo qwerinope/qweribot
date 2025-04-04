@@ -1,6 +1,6 @@
 import { createBotCommand } from "@twurple/easy-bot";
 
-import { useBlaster, useGrenade, useLootbox, useSilverBullet, useTNT } from "../lib/items";
+import { useBlaster, useClipboard, useGrenade, useLootbox, useSilverBullet, useTNT } from "../lib/items";
 import api from "../lib/api";
 
 const blaster = createBotCommand('blaster', async (params, { say, broadcasterId, userId }) => {
@@ -30,4 +30,10 @@ const lootbox = createBotCommand('lootbox', async (_params, { say, userId }) => 
     await useLootbox(user!, say)
 })
 
-export default [blaster, silverbullet, grenade, tnt, lootbox]
+const clipboard = createBotCommand('clipboard', async (params, { say, broadcasterId, userId }) => {
+    const user = await api.users.getUserById(userId)
+    if (params[0] === undefined) return
+    await useClipboard(broadcasterId, user!, params.join(' '), say)
+})
+
+export default [blaster, silverbullet, grenade, tnt, lootbox, clipboard]
