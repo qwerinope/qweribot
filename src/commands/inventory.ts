@@ -43,7 +43,7 @@ export default createBotCommand('inv', async (params, { userName, say }) => {
         messagedata.push(`${item.name + (item.amount === 1 ? '' : item.plural)}: ${item.amount}`)
     }
 
-    if (messagedata.length === 0) {await say(`${data.me ? userName : params[0]} has no items mandoooYikes`); return}
+    if (messagedata.length === 0) {await say(`${data.me ? userName : params[0]} has no items!`); return}
 
     await say(`
         inventory of ${data.me ? userName : params[0]}: 

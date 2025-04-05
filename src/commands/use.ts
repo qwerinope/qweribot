@@ -32,6 +32,6 @@ export default createBotCommand('use', async (params, { say, broadcasterId, user
             await useClipboard(broadcasterId, user!, params.slice(1).join(' '), say)
             break
         default:
-            await say(`${params[0]} does not exist mandoooYikes`)
+            await say(`${params[0]} does not exist!`)
     }
 })

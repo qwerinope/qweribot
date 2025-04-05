@@ -21,7 +21,7 @@ export default createBotCommand('stats', async (params, { say, userName }) => {
         `
         Stats of ${data.me ? userName : params[0]}: 
         Users blasted: ${data.stats.shot.blaster},
-        Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD} K/D).
+        Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(3)} K/D).
         Grenades lobbed: ${data.stats.used.grenade}
         TNTs lit: ${data.stats.used.tnt},
         Silver bullets fired: ${data.stats.shot.silverbullet},

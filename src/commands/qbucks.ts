@@ -14,6 +14,6 @@ export default createBotCommand('balance', async (params, { userName, say }) => 
     }
 
     const data = await getBalance(user)
-    await say(`${user.name} has ${data.balance} qbucks ${data.balance === 0 ? 'mandoooYikes' : 'mandoooSmile'}`)
+    await say(`${user.name} has ${data.balance} qbucks`)
 
 }, { aliases: ['qbucks', 'qweribucks', 'bal'] })

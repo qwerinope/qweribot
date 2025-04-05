@@ -13,7 +13,7 @@ interface statusmessage {
 export async function timeout(broadcasterid: string, target: HelixUser, duration: number, reason: string): Promise<statusmessage> {
     if (!target) return { status: false, reason: 'noexist' }
     const tmpapi = broadcasterApi ?? api
-    // if (target.name === 'qwerinope') return { status: false, reason: 'unknown' }
+    if (target.name === process.env.BOT_NAME) return { status: false, reason: 'unknown' }
     if (await tmpapi.moderation.checkUserBan(broadcasterid, target)) return { status: false, reason: 'banned' }
 
     try {

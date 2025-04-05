@@ -11,7 +11,7 @@ export default createBotCommand('timeout', async (params, { say, broadcasterId, 
     const target = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
     const status = await timeout(broadcasterId, target!, 60, `You got blasted by ${userName}`)
     if (status.status) {
-        await say(`${params[0]} got blasted by ${userName}! mandoooGOTTEM ${userName} now has ${userbal.balance - 100} qbucks remaining`)
+        await say(`${params[0]} got blasted by ${userName}! ${userName} now has ${userbal.balance - 100} qbucks remaining`)
         await changeBalance(attacker!, -100)
         await addTimeoutToDB(attacker!, target!, 'blaster')
     }

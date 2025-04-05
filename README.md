@@ -12,7 +12,7 @@ COMMAND|FUNCTION|USER|ALIASES
 -|-|-|-
 `!balance [target]`|List write the amount of money the user or the target user has.|anyone|`!bal, !qbucks, !qweribucks`
 `!inventory [target]`|Show inventory contents of user or the target user.|anyone|`!inv`
-`!getloot`|Give user a lootbox. This command has a cooldown that can be changed in `lootbox.ts`. You can optionally require the user to subscribe.|anyone|`None`
+`!getloot`|Give user a lootbox. This command has a cooldown that can be changed in `lootbox.ts`.|anyone|`None`
 `!stats [target]`|Show the stats of user or target user including users shot, TNT used and grenades lobbed.|anyone|`None`
 `!timeout {target}`|Give the target user a timeout of 60 seconds. This requires 100 qbucks.|anyone|`None`
 `!use {item}`|Use a specific item. The user needs the specific item in their inventory. For items please look at the table below|anyone|`None`
