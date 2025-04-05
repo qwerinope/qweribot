@@ -1,5 +1,5 @@
 import { HelixUser } from "@twurple/api"
-import { changeBalance, getInventory, updateInventory } from "../lib/userHelper"
+import { addUsedItem, changeBalance, getInventory, updateInventory } from "../lib/userHelper"
 import { timeout, addTimeoutToDB, vulnerableUsers } from "./timeoutHelper"
 import api, { broadcasterApi } from "./api"
 
@@ -22,6 +22,7 @@ export async function changeItemCount(user: HelixUser, item: string, amount = -1
         value: newcount,
     })
     await updateInventory(user, inv)
+    await addUsedItem(user, item)
     return { result: true, reason: '', count: inv[item] }
 }
 

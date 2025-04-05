@@ -23,11 +23,17 @@ export interface Timeout extends BaseModel {
     targetname: string
 }
 
+export interface UsedItem extends BaseModel {
+    name: string,
+    user: string
+}
+
 interface TypedPocketBase extends PocketBase {
     collection(idOrName: string): RecordService,
     collection(idOrName: 'users'): RecordService<User>,
     collection(idOrName: 'ttvauth'): RecordService<TTVAuth>
     collection(idOrName: 'timeouts'): RecordService<Timeout>
+    collection(idOrName: 'itemuses'): RecordService<UsedItem>
 }
 
 

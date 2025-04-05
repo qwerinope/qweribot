@@ -50,7 +50,6 @@ export async function changeBalance(user: HelixUser, amount: number): Promise<ba
 }
 
 interface timeoutsGetResult {
-    user: HelixUser,
     hit: {
         blaster: number, // I'm going to combine blaster, grenade and tnt into one.
         silverbullet: number,
@@ -63,9 +62,7 @@ interface timeoutsGetResult {
 
 const BLASTERS = ['blaster', 'grenade', 'tnt']
 
-async function getTimeouts(user: HelixUser): Promise<timeoutsGetResult> {
-    await DBValidation(user)
-    const userDBID = await getDBID(user)
+async function getTimeouts(userDBID: string): Promise<timeoutsGetResult> {
     const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userDBID}"` })
     const shot = await pb.collection('timeouts').getFullList({ filter: `attacker="${userDBID}"` })
 
@@ -75,7 +72,6 @@ async function getTimeouts(user: HelixUser): Promise<timeoutsGetResult> {
     const silverbulletshot = shot.length - blastershot
 
     return {
-        user,
         hit: {
             blaster: blasterhit,
             silverbullet: silverbullethit
@@ -84,6 +80,19 @@ async function getTimeouts(user: HelixUser): Promise<timeoutsGetResult> {
             blaster: blastershot,
             silverbullet: silverbulletshot
         }
+    }
+}
+
+async function getItemUses(userDBID: string): Promise<inventory> {
+    const items = await pb.collection('itemuses').getFullList({ filter: `user="${userDBID}"` })
+    return {
+        version: 1,
+        blaster: items.filter((item) => item.name === 'blaster').length,
+        grenade: items.filter((item) => item.name === 'grenade').length,
+        silverbullet: items.filter((item) => item.name === 'silverbullet').length,
+        tnt: items.filter((item) => item.name === 'tnt').length,
+        clipboard: items.filter((item) => item.name === 'clipboard').length,
+        lootbox: items.filter((item) => item.name === 'lootbox').length
     }
 }
 
@@ -110,9 +119,11 @@ interface statsGetResult extends timeoutsGetResult {
 }
 
 export async function getStats(user: HelixUser): Promise<statsGetResult> {
-    const { hit, shot } = await getTimeouts(user)
-    const dbuser = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
-    return { user, hit, shot, used: dbuser.itemuses }
+    await DBValidation(user)
+    const userDBID = await getDBID(user)
+    const { hit, shot } = await getTimeouts(userDBID)
+    const uses = await getItemUses(userDBID)
+    return { hit, shot, used: uses }
 }
 
 export async function updateInventory(user: HelixUser, newinv: inventory) {
@@ -120,6 +131,12 @@ export async function updateInventory(user: HelixUser, newinv: inventory) {
     const data = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
     const recordid = data.id
     await pb.collection('users').update(recordid, { inventory: newinv })
+}
+
+export async function addUsedItem(user: HelixUser, item: string) {
+    await DBValidation(user)
+    const userDBID = await getDBID(user)
+    await pb.collection('itemuses').create({ user: userDBID, name: item })
 }
 
 async function DBValidation(user: HelixUser) {
