@@ -3,7 +3,7 @@ import { COOLDOWN, lootboxReady, resetLootboxTimer } from "../lib/lootboxes";
 import { changeItemCount } from "../lib/items"
 import api from "../lib/api"
 
-function getTimeDifference(date1: number , date2: number) {
+function getTimeDifference(date1: number, date2: number) {
     const diff = Math.abs(date1 - date2);
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -13,9 +13,10 @@ function getTimeDifference(date1: number , date2: number) {
     return { days, hours, minutes, seconds };
 }
 
-export default createBotCommand('getloot', async (_params, { reply, userId/*, broadcasterId*/ }) => {
+export default createBotCommand('getloot', async (_params, { reply, userId, broadcasterId }) => {
     const user = await api.users.getUserById(userId)
-    // if (!user?.isSubscribedTo(broadcasterId)) {await reply('Subscribe to get loot mandoooSmile'); return}
+    // Remove the comment on the following line to only give lootboxes to subscribed users
+    //if (!user?.isSubscribedTo(broadcasterId)) { await reply('Subscribe to get loot :)'); return }
     const data = await lootboxReady(user)
     if (!data.result) {
         const { days, hours, minutes, seconds } = getTimeDifference(data.lastlootbox, Date.now() - COOLDOWN)
@@ -27,7 +28,7 @@ export default createBotCommand('getloot', async (_params, { reply, userId/*, br
         `)
         return
     }
-    await reply(`You got a lootbox mandoooSmile`)
+    await reply(`You got a lootbox :)`)
     await changeItemCount(user!, 'lootbox', 1)
     await resetLootboxTimer(data.DBuser)
 })

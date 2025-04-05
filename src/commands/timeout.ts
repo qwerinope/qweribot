@@ -6,12 +6,12 @@ import api from "../lib/api";
 export default createBotCommand('timeout', async (params, { say, broadcasterId, userName }) => {
     const attacker = await api.users.getUserByName(userName)
     const userbal = await getBalance(attacker!)
-    if (userbal.balance < 100) { await say('not enough mandoobucks'); return }
+    if (userbal.balance < 100) { await say('not enough qbucks'); return }
     if (params.length === 0) { await say("nice miss bro"); return }
-    const target = await api.users.getUserByName(params[0].replace(/[^a-zA-Z0-9]/g, ''))
+    const target = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
     const status = await timeout(broadcasterId, target!, 60, `You got blasted by ${userName}`)
     if (status.status) {
-        await say(`${params[0]} got mandoooGun by ${userName}! mandoooGOTTEM ${userName} now has ${userbal.balance - 100} mandoobucks remaining`)
+        await say(`${params[0]} got blasted by ${userName}! mandoooGOTTEM ${userName} now has ${userbal.balance - 100} qbucks remaining`)
         await changeBalance(attacker!, -100)
         await addTimeoutToDB(attacker!, target!, 'blaster')
     }

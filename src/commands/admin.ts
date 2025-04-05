@@ -4,7 +4,7 @@ import { changeItemCount } from "../lib/items";
 import { changeBalance } from "../lib/userHelper";
 import { vulnerableUsers } from "../lib/timeoutHelper";
 
-const give = createBotCommand('give', async (params, { say, broadcasterId, userId }) => {
+const give = createBotCommand('give', async (params, { say, broadcasterId, userId, userName }) => {
     if (userId !== broadcasterId) return
 
     const target = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
@@ -12,7 +12,7 @@ const give = createBotCommand('give', async (params, { say, broadcasterId, userI
 
     if (isNaN(parseInt(params[2]))) { await say(`Specify the amount`); return }
 
-    const data = params[1].toLowerCase() === 'mbucks' ? await changeBalance(target, parseInt(params[2])) : await changeItemCount(target, params[1].toLowerCase(), parseInt(params[2]))
+    const data = params[1].toLowerCase() === 'qbucks' ? await changeBalance(target, parseInt(params[2])) : await changeItemCount(target, params[1].toLowerCase(), parseInt(params[2]))
 
     if (data.reason === 'negative') { await say(`${target.name} only has ${data.count}. Cannot yoink ${-parseInt(params[2])} ${params[1]}`); return }
     else if (data.reason === 'noexist') { await say(`Can't find item ${params[1]}`); return }
@@ -20,7 +20,7 @@ const give = createBotCommand('give', async (params, { say, broadcasterId, userI
     await say(`${target.name} now has ${data.count} ${params[1]}`)
 })
 
-const vulnChatters = createBotCommand('vulnchatters', async (_params, { say, userId, broadcasterId }) => {
+const vulnChatters = createBotCommand('vulnchatters', async (_params, { say, userId, broadcasterId, userName }) => {
     if (userId !== broadcasterId) return
 
     await say(`There are ${vulnerableUsers.length} vulnerable chatters`)

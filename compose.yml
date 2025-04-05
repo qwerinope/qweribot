@@ -18,10 +18,10 @@ services:
     depends_on:
       pocketbase:
         condition: service_started
-    container_name: dogbot
+    container_name: qweribot
     build:
       context: .
-      dockerfile: Dockerfile.dogbot
+      dockerfile: Dockerfile.qweribot
     restart: no
     develop:
       watch:

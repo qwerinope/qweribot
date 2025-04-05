@@ -1,4 +1,4 @@
-name: Build and Publish pocketbase docker image
+name: Build and Publish qweribot-pocketbase docker image
 
 on:
   push:
@@ -23,5 +23,5 @@ jobs:
           file: Dockerfile.pocketbase
           context: .
           push: true
-          tags: ghcr.io/qweri0p/dogbot-pocketbase:latest
+          tags: ghcr.io/qwerinope/qweribot-pocketbase:latest
           secrets: "github_token=${{ secrets.GITHUB_TOKEN }}"

@@ -34,7 +34,7 @@ export async function useBlaster(broadcasterId: string, attacker: HelixUser, tar
 
     const result = await timeout(broadcasterId, target!, 60, `You got blasted by ${attacker.name}`)
     if (result.status) {
-        await say(`${targetname} got mandoooGun by ${attacker.name}! mandoooGOTTEM ${attacker.name} has ${itemResult.count} blaster${itemResult.count === 1 ? '' : 's'} remaining`)
+        await say(`${targetname} got blasted by ${attacker.name}! mandoooGOTTEM ${attacker.name} has ${itemResult.count} blaster${itemResult.count === 1 ? '' : 's'} remaining`)
         await addTimeoutToDB(attacker, target!, 'blaster')
     } else {
         switch (result.reason) {
@@ -126,11 +126,11 @@ function getRandom(): number {
 export async function useLootbox(user: HelixUser, say: (arg0: string) => Promise<void>) {
     const itemResult = await changeItemCount(user, 'lootbox')
     if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no lootboxes mandoooYikes'); return }
-    // Lootbox logic will for now just be get 25 mbucks, with 50% chance to get a grenade 25% chance to get a blaster and 10% chance to get TNT
+    // Lootbox logic will for now just be get 25 qbucks, with 50% chance to get a grenade 25% chance to get a blaster and 10% chance to get TNT
     let inventory = await getInventory(user)
     let newitems: string[] = []
     await changeBalance(user, 25)
-    newitems.push('25 mbucks')
+    newitems.push('25 qbucks')
     if (getRandom() <= 50) { newitems.push('1 grenade'); inventory.grenade += 1 }
     if (getRandom() <= 25) { newitems.push('1 blaster'); inventory.blaster += 1 }
     if (getRandom() <= 10) { newitems.push('1 tnt'); inventory.tnt += 1 }
