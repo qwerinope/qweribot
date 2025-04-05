@@ -16,7 +16,7 @@ export async function lootboxReady(user: HelixUser | null): Promise<lootboxReady
     return { result: true, lastlootbox: 0, DBuser }
 }
 
-export async function resetLootboxTimer(user: any) {
+export async function resetLootboxTimer(user: User) {
     const data = { lastlootbox: new Date(Date.now()).toISOString() }
     await pb.collection('users').update(user.id, data)
 }
