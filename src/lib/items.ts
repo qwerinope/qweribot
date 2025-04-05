@@ -119,13 +119,14 @@ export async function useTNT(broadcasterId: string, attacker: HelixUser, say: (a
         if (result.status) {
             await say(`${target?.name} got blown up by TNT!`)
             await addTimeoutToDB(attacker, target!, 'tnt')
-            await addUsedItem(attacker, 'tnt')
             await updateInventory(attacker, itemResult.inv!)
         } else {
             await say(`something went wrong`)
             console.error(result.reason)
         }
     }
+
+    await addUsedItem(attacker, 'tnt')
     await say(`${attacker.name} blew up ${blastedusers} chatters with their TNT! ${attacker.name} has ${itemResult.count} tnt${itemResult.count === 1 ? '' : 's'} remaining`)
 }
 
