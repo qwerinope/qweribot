@@ -1,6 +1,6 @@
 # qweribot
 
-A copy of twitch bot 'MandooBot' in [eddie's stream](twitch.tv/eddie).
+A copy of twitch bot 'MandooBot' in [eddie's stream](https://twitch.tv/eddie).
 
 ## Usage
 
@@ -46,7 +46,7 @@ The `compose.yaml` file in the repository is for development.
 services:
     qweribot:
         container_name: qweribot
-        image: ghcr.io/qwerinope/qweribot:latest
+        image: ghcr.io/qwerinope/qweribot-bot:latest
         environment: # The README.md has more detail on these config options
             # Use the supplied .example.env for setting environment variables
             - BOT_NAME=$BOT_NAME
@@ -67,7 +67,7 @@ services:
     
     pocketbase:
         container_name: pocketbase
-        image: ghcr.io/qwerinope/pocketbase-qweribot:latest
+        image: ghcr.io/qwerinope/qweribot-pocketbase:latest
         # If environment variables are left empty, the default user & password will be: test@example.com and 1234567890
         # This will only impact the login on http://localhost:8090
         #environment:
@@ -83,7 +83,7 @@ services:
 
 ### Native (not recommended)
 
-If you wish to run the bot not using docker, you will need to set up a [pocketbase](pocketbase.io) instance, and point the `PBURL` environment variable to the correct address.
+If you wish to run the bot not using docker, you will need to set up a [pocketbase](https://pocketbase.io) instance, and point the `PBURL` environment variable to the correct address.
 Also make sure the migration from `pb/migrations` is passed into the pocketbase instance.
 
 Install dependencies with `bun install`.
