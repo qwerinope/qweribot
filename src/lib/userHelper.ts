@@ -62,9 +62,11 @@ interface timeoutsGetResult {
 
 const BLASTERS = ['blaster', 'grenade', 'tnt']
 
-async function getTimeouts(userDBID: string): Promise<timeoutsGetResult> {
-    const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userDBID}"` })
-    const shot = await pb.collection('timeouts').getFullList({ filter: `attacker="${userDBID}"` })
+async function getTimeouts(userDBID: string, monthdata?: string): Promise<timeoutsGetResult> {
+    let monthquery = ''
+    if (monthdata) monthquery = ` && created~"${monthdata}"`
+    const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userDBID}"${monthquery}` })
+    const shot = await pb.collection('timeouts').getFullList({ filter: `attacker="${userDBID}"${monthquery}` })
 
     const blasterhit = hit.filter((item) => BLASTERS.includes(item.source)).length
     const silverbullethit = hit.length - blasterhit
@@ -83,8 +85,10 @@ async function getTimeouts(userDBID: string): Promise<timeoutsGetResult> {
     }
 }
 
-async function getItemUses(userDBID: string): Promise<inventory> {
-    const items = await pb.collection('itemuses').getFullList({ filter: `user="${userDBID}"` })
+async function getItemUses(userDBID: string, monthdata?: string): Promise<inventory> {
+    let monthquery = ''
+    if (monthdata) monthquery = ` && created~"${monthdata}"`
+    const items = await pb.collection('itemuses').getFullList({ filter: `user="${userDBID}"${monthquery}` })
     return {
         version: 1,
         blaster: items.filter((item) => item.name === 'blaster').length,
@@ -118,11 +122,11 @@ interface statsGetResult extends timeoutsGetResult {
     used: inventory
 }
 
-export async function getStats(user: HelixUser): Promise<statsGetResult> {
+export async function getStats(user: HelixUser, monthdata?: string): Promise<statsGetResult> {
     await DBValidation(user)
     const userDBID = await getDBID(user)
-    const { hit, shot } = await getTimeouts(userDBID)
-    const uses = await getItemUses(userDBID)
+    const { hit, shot } = await getTimeouts(userDBID, monthdata)
+    const uses = await getItemUses(userDBID, monthdata)
     return { hit, shot, used: uses }
 }
 
