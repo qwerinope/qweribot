@@ -25,7 +25,7 @@ bot.onConnect(async () => {
         await broadcasterAuthProvider.refreshAccessTokenForUser(broadcastername?.id!)
     }
 
-    setTimeout(() => {
+    setTimeout(async () => {
         console.log('Bot is ready to accept commands!')
     }, 1000 * 5)
 })

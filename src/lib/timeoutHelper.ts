@@ -1,7 +1,7 @@
 import { ApiClient, HelixUser } from "@twurple/api";
 import api, { broadcasterApi } from "./api";
 import pb from "./pocketbase";
-import { getDBID } from "./userHelper";
+import { DBValidation } from "./userHelper";
 
 type shooter = 'blaster' | 'grenade' | 'silverbullet' | 'tnt'
 
@@ -22,6 +22,7 @@ export async function timeout(broadcasterid: string, target: HelixUser, duration
             remodMod(broadcasterid, target, duration, tmpapi)
         }
         await tmpapi.moderation.banUser(broadcasterid, { duration, reason, user: target })
+        await DBValidation(target)
         return { status: true, reason: '' }
     } catch (err) {
         console.error(err)
@@ -31,13 +32,11 @@ export async function timeout(broadcasterid: string, target: HelixUser, duration
 
 export async function addTimeoutToDB(attacker: HelixUser, target: HelixUser, source: shooter) {
     // This has passed the existance check so there's no need to check if the users exist (twitch)
-    const attackerDB = await getDBID(attacker)
-    const targetDB = await getDBID(target)
 
     const timeoutobj = {
         source,
-        attacker: attackerDB,
-        target: targetDB,
+        attacker: attacker.id,
+        target: target.id,
         attackername: attacker.name,
         targetname: target.name
     }

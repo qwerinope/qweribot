@@ -13,17 +13,6 @@ export const EMPTYINV: inventory = {
     lootbox: 0
 }
 
-export async function getDBID(user: HelixUser) {
-    try {
-        const DBuser = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
-        return DBuser.id
-    } catch (error) {
-        await createUser(user!)
-        const DBuser = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
-        return DBuser.id
-    }
-}
-
 type balanceGetResult = {
     balance: number,
     data: User
@@ -31,7 +20,7 @@ type balanceGetResult = {
 
 export async function getBalance(user: HelixUser): Promise<balanceGetResult> {
     await DBValidation(user)
-    const data = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
+    const data = await pb.collection('users').getFirstListItem(`id="${user!.id}"`)
     return { balance: data.balance, data }
 }
 
@@ -62,11 +51,11 @@ interface timeoutsGetResult {
 
 const BLASTERS = ['blaster', 'grenade', 'tnt']
 
-async function getTimeouts(userDBID: string, monthdata?: string): Promise<timeoutsGetResult> {
+async function getTimeouts(userId: string, monthdata?: string): Promise<timeoutsGetResult> {
     let monthquery = ''
     if (monthdata) monthquery = ` && created~"${monthdata}"`
-    const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userDBID}"${monthquery}` })
-    const shot = await pb.collection('timeouts').getFullList({ filter: `attacker="${userDBID}"${monthquery}` })
+    const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userId}"${monthquery}` })
+    const shot = await pb.collection('timeouts').getFullList({ filter: `attacker="${userId}"${monthquery}` })
 
     const blasterhit = hit.filter((item) => BLASTERS.includes(item.source)).length
     const silverbullethit = hit.length - blasterhit
@@ -85,10 +74,10 @@ async function getTimeouts(userDBID: string, monthdata?: string): Promise<timeou
     }
 }
 
-async function getItemUses(userDBID: string, monthdata?: string): Promise<inventory> {
+async function getItemUses(userId: string, monthdata?: string): Promise<inventory> {
     let monthquery = ''
     if (monthdata) monthquery = ` && created~"${monthdata}"`
-    const items = await pb.collection('itemuses').getFullList({ filter: `user="${userDBID}"${monthquery}` })
+    const items = await pb.collection('itemuses').getFullList({ filter: `user="${userId}"${monthquery}` })
     return {
         version: 1,
         blaster: items.filter((item) => item.name === 'blaster').length,
@@ -114,7 +103,7 @@ export interface inventory {
 
 export async function getInventory(user: HelixUser): Promise<inventory> {
     await DBValidation(user)
-    const data = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
+    const data = await pb.collection('users').getFirstListItem(`id="${user.id}"`)
     return data.inventory
 }
 
@@ -124,28 +113,26 @@ interface statsGetResult extends timeoutsGetResult {
 
 export async function getStats(user: HelixUser, monthdata?: string): Promise<statsGetResult> {
     await DBValidation(user)
-    const userDBID = await getDBID(user)
-    const { hit, shot } = await getTimeouts(userDBID, monthdata)
-    const uses = await getItemUses(userDBID, monthdata)
+    const { hit, shot } = await getTimeouts(user.id, monthdata)
+    const uses = await getItemUses(user.id, monthdata)
     return { hit, shot, used: uses }
 }
 
 export async function updateInventory(user: HelixUser, newinv: inventory) {
     await DBValidation(user)
-    const data = await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
+    const data = await pb.collection('users').getFirstListItem(`id="${user.id}"`)
     const recordid = data.id
     await pb.collection('users').update(recordid, { inventory: newinv })
 }
 
 export async function addUsedItem(user: HelixUser, item: string) {
     await DBValidation(user)
-    const userDBID = await getDBID(user)
-    await pb.collection('itemuses').create({ user: userDBID, name: item })
+    await pb.collection('itemuses').create({ user: user.id, name: item })
 }
 
-async function DBValidation(user: HelixUser) {
+export async function DBValidation(user: HelixUser) {
     try {
-        await pb.collection('users').getFirstListItem(`twitchid="${user.id}"`)
+        await pb.collection('users').getFirstListItem(`id="${user.id}"`)
     } catch (error) {
         await createUser(user!)
     }
@@ -153,7 +140,7 @@ async function DBValidation(user: HelixUser) {
 
 async function createUser(user: HelixUser) {
     const data = {
-        twitchid: user.id,
+        id: user.id,
         firstname: user.name,
         inventory: EMPTYINV,
         itemuses: EMPTYINV,

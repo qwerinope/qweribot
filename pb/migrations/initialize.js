@@ -16,9 +16,9 @@ migrate(app => {
   const data = [
     {
       "id": "pbc_279239694",
-      "listRule": null,
-      "viewRule": null,
-      "createRule": null,
+      "listRule": "",
+      "viewRule": "",
+      "createRule": "",
       "updateRule": null,
       "deleteRule": null,
       "name": "itemuses",
@@ -28,8 +28,8 @@ migrate(app => {
           "autogeneratePattern": "[a-z0-9]{15}",
           "hidden": false,
           "id": "text3208210256",
-          "max": 15,
-          "min": 15,
+          "max": 0,
+          "min": 0,
           "name": "id",
           "pattern": "^[a-z0-9]+$",
           "presentable": false,
@@ -59,7 +59,7 @@ migrate(app => {
           "id": "relation1542800728",
           "maxSelect": 1,
           "minSelect": 0,
-          "name": "field",
+          "name": "user",
           "presentable": false,
           "required": false,
           "system": false,
@@ -103,8 +103,8 @@ migrate(app => {
           "autogeneratePattern": "[a-z0-9]{15}",
           "hidden": false,
           "id": "text3208210256",
-          "max": 15,
-          "min": 15,
+          "max": 0,
+          "min": 0,
           "name": "id",
           "pattern": "^[a-z0-9]+$",
           "presentable": false,
@@ -268,28 +268,14 @@ migrate(app => {
           "autogeneratePattern": "[a-z0-9]{15}",
           "hidden": false,
           "id": "text3208210256",
-          "max": 15,
-          "min": 15,
+          "max": 0,
+          "min": 0,
           "name": "id",
           "pattern": "^[a-z0-9]+$",
           "presentable": false,
           "primaryKey": true,
           "required": true,
           "system": true,
-          "type": "text"
-        },
-        {
-          "autogeneratePattern": "",
-          "hidden": false,
-          "id": "text3605594593",
-          "max": 0,
-          "min": 0,
-          "name": "twitchid",
-          "pattern": "",
-          "presentable": false,
-          "primaryKey": false,
-          "required": true,
-          "system": false,
           "type": "text"
         },
         {
@@ -302,7 +288,7 @@ migrate(app => {
           "pattern": "",
           "presentable": false,
           "primaryKey": false,
-          "required": true,
+          "required": false,
           "system": false,
           "type": "text"
         },
@@ -360,9 +346,7 @@ migrate(app => {
           "type": "autodate"
         }
       ],
-      "indexes": [
-        "CREATE UNIQUE INDEX `idx_MR0pV8SUAF` ON `users` (`twitchid`)"
-      ],
+      "indexes": [],
       "system": false
     }
   ]

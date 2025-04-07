@@ -2,7 +2,7 @@ import { HelixUser } from "@twurple/api"
 import pb, { User } from "./pocketbase"
 
 
-export const COOLDOWN = !process.env.COOLDOWN ? 60 * 60 * 24 : Number(process.env.COOLDOWN)
+export const COOLDOWN = (!process.env.COOLDOWN ? 60 * 60 * 24 : Number(process.env.COOLDOWN)) * 1000
 
 interface lootboxReadyResult {
     result: boolean,
@@ -11,7 +11,7 @@ interface lootboxReadyResult {
 }
 
 export async function lootboxReady(user: HelixUser | null): Promise<lootboxReadyResult> {
-    const DBuser = await pb.collection('users').getFirstListItem(`twitchid="${user!.id}"`)
+    const DBuser = await pb.collection('users').getFirstListItem(`id="${user!.id}"`)
     if ((Date.parse(DBuser.lastlootbox) + COOLDOWN) > Date.now()) return { result: false, lastlootbox: Date.parse(DBuser.lastlootbox), DBuser }
     return { result: true, lastlootbox: 0, DBuser }
 }

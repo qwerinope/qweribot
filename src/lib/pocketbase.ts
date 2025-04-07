@@ -2,7 +2,6 @@ import PocketBase, { BaseModel, RecordService } from 'pocketbase'
 import { inventory } from "./userHelper"
 
 export interface User extends BaseModel {
-    twitchid: string,
     firstname: string,
     inventory: inventory,
     itemuses: inventory,
