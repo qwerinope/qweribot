@@ -6,8 +6,10 @@ import api, { broadcasterAuthProvider } from './lib/api';
 
 import { removeVulnChatter, vulnerableUsers } from './lib/timeoutHelper';
 
-const channel = process.env.CHANNEL ?? ''
-const user = process.env.BOT_NAME ?? ''
+const user = process.env.BOT_NAME
+if (!user) { console.error("Please set the BOT_NAME environment variable."); process.exit(1) }
+const channel = process.env.CHANNEL
+if (!channel) { console.error("Please set the CHANNEL environment variable."); process.exit(1) }
 
 const bot = new Bot({
     authProvider,

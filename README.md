@@ -10,17 +10,17 @@ Here is the list of commands.
 
 COMMAND|FUNCTION|USER|ALIASES
 -|-|-|-
-`!balance [target]`|List write the amount of money the user or the target user has.|anyone|`!bal, !qbucks, !qweribucks`
-`!inventory [target]`|Show inventory contents of user or the target user.|anyone|`!inv`
-`!getloot`|Give user a lootbox. This command has a cooldown that can be changed in `lootbox.ts`.|anyone|`None`
-`!stats [target]`|Show the stats of user or target user including users shot, TNT used and grenades lobbed of the current month.|anyone|`None`
-`!alltime [target]`|Show the stats of user or target user including users shot, TNT used and grenades lobbed of all time.|anyone|`None`
-`!timeout {target}`|Give the target user a timeout of 60 seconds. This requires 100 qbucks.|anyone|`None`
+`!balance [target]`|List write the amount of money the user or the target user has|anyone|`!bal, !qbucks, !qweribucks`
+`!inventory [target]`|Show inventory contents of user or the target user|anyone|`!inv`
+`!getloot`|Give user a lootbox. This command has a cooldown that can be changed with the `COOLDOWN` environment variable|anyone|`None`
+`!stats [target]`|Show the stats of user or target user including users shot, TNT used and grenades lobbed of the current month|anyone|`None`
+`!alltime [target]`|Show the stats of user or target user including users shot, TNT used and grenades lobbed of all time|anyone|`None`
+`!timeout {target}`|Give the target user a timeout of 60 seconds. This requires 100 qbucks|anyone|`None`
 `!use {item}`|Use a specific item. The user needs the specific item in their inventory. For items please look at the table below|anyone|`None`
 `!iteminfo {item}`|Gives a description of the requested item. Identical to [the item descriptions in this document](#items)|anyone|`!item`
-`!modme`|Gives the user moderator status. Only gives users moderator status if their name is in `modme.ts`|anyone|`None`
+`!modme`|Gives the user moderator status. Only gives users moderator status if their name is in the `MODS` environment variable|anyone|`None`
 `!give {target} {item} {count}`|Give a specific user a specific amount of an item. Negative amounts can be used to remove items|streamer|`None`
-`!vulnchatters`|Print how many users are vulnerable to TNT and grenade explosions.|streamer|`None`
+`!vulnchatters`|Print how many users are vulnerable to TNT and grenade explosions|streamer|`None`
 
 ### Items
 
@@ -98,7 +98,9 @@ Options with :bangbang: in the Required column need to be present for setup, and
 VARIABLE|DEFAULT|FUNCTION|REQUIRED
 -|-|-|-
 `BOT_NAME`|None|Set the name of the bot user for Authentification|:white_check_mark:
-`CHANNEL`|None| Set the name of the twitch channel to join|:white_check_mark:
+`CHANNEL`|None|Set the name of the twitch channel to join|:white_check_mark:
+`MODS`|None|List of users that can use `!modme` to give themselves moderator status|:white_check_mark:
+`COOLDOWN`|24 Hours|Cooldown between letting users get a lootbox with `!getloot` in seconds|:x:
 `CLIENT_ID`|None|Set the CLIENT_ID to authenticate the bot|:bangbang:
 `CLIENT_SECRET`|None|Set the CLIENT_SECRET to authenticate the bot|:bangbang:
 `REDIRECT_URI`|`https://qweri0p.github.io/url-params/`|The REDIRECT_URI set in the twitch dev console|:bangbang:

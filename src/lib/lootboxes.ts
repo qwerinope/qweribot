@@ -1,8 +1,8 @@
 import { HelixUser } from "@twurple/api"
 import pb, { User } from "./pocketbase"
 
-// const COOLDOWN = 1000 * 60 * 60 * 24 * 30 // 1000 milliseconds * 60 seconds * 60 minutes * 24 hours * 30 days
-export const COOLDOWN = 1000 * 60 * 15
+
+export const COOLDOWN = !process.env.COOLDOWN ? 60 * 60 * 24 : Number(process.env.COOLDOWN)
 
 interface lootboxReadyResult {
     result: boolean,
