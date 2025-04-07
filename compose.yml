@@ -30,6 +30,8 @@ services:
     environment:
       - BOT_NAME=$BOT_NAME
       - CHANNEL=$CHANNEL
+      - MODS=$MODS
+      - COOLDOWN=$COOLDOWN
       # The following env variables can be removed once the bot has sucessfully run once
       - CLIENT_ID=$CLIENT_ID
       - CLIENT_SECRET=$CLIENT_SECRET

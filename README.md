@@ -50,16 +50,18 @@ services:
         image: ghcr.io/qwerinope/qweribot-bot:latest
         environment: # The README.md has more detail on these config options
             # Use the supplied .example.env for setting environment variables
-            - BOT_NAME=$BOT_NAME
-            - CHANNEL=$CHANNEL
+            - BOT_NAME=
+            - CHANNEL= 
+            - MODS= # Separate the names of moderators with commas. Example: qwerinope,eponirewq,eddie
+            - COOLDOWN= # Optional
             # The following environment variables can be removed after first setup
-            - CLIENT_ID=$CLIENT_ID
-            - CLIENT_SECRET=$CLIENT_SECRET
-            - REDIRECT_URI=$REDIRECT_URI
-            - OAUTH_CODE=$OAUTH_CODE # If this variable is left empty on starting, the bot will direct the user to a URL where the OAuth code can be obtained
+            - CLIENT_ID=
+            - CLIENT_SECRET=
+            - REDIRECT_URI=
+            - OAUTH_CODE= # If this variable is left empty on starting, the bot will direct the user to a URL where the OAuth code can be obtained
             # The following environment variables need to only be set if the bot user and the streamer are not using the same account
-            - DIFFERENT_BROADCASTER=$DIFFERENT_BROADCASTER # Set to either true or false
-            - BROADCASTER_OAUTH_CODE=$BROADCASTER_OAUTH_CODE # As with OAUTH_CODE, leave empty for instructions
+            - DIFFERENT_BROADCASTER=false # Set to either true or false
+            - BROADCASTER_OAUTH_CODE= # As with OAUTH_CODE, leave empty for instructions
             # Make sure that CLIENT_ID, CLIENT_SECRET and REDIRECT_URI are still set when enabling DIFFERENT_BROADCASTER after first setup
         restart: no
         depends_on:
