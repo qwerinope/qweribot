@@ -12,7 +12,7 @@ const give = createBotCommand('give', async (params, { say, broadcasterId, userI
 
     if (isNaN(parseInt(params[2]))) { await say(`Specify the amount`); return }
 
-    const data = params[1].toLowerCase() === 'qbucks' ? await changeBalance(target, parseInt(params[2])) : await changeItemCount(target, params[1].toLowerCase(), parseInt(params[2]))
+    const data = params[1].toLowerCase() === 'qbucks' ? await changeBalance(target, parseInt(params[2])) : await changeItemCount(target, params[1].toLowerCase(), parseInt(params[2]), true)
 
     if (data.reason === 'negative') { await say(`${target.name} only has ${data.count}. Cannot yoink ${-parseInt(params[2])} ${params[1]}`); return }
     else if (data.reason === 'noexist') { await say(`Can't find item ${params[1]}`); return }

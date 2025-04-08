@@ -12,7 +12,7 @@ interface itemChangeResult {
     inv?: inventory
 }
 
-export async function changeItemCount(user: HelixUser, item: string, amount = -1): Promise<itemChangeResult> {
+export async function changeItemCount(user: HelixUser, item: string, amount = -1, preconfirmed=false): Promise<itemChangeResult> {
     if (!ITEMS.includes(item)) return { result: false, reason: 'noexist', count: 0 }
     let inv = await getInventory(user)
 
@@ -23,7 +23,7 @@ export async function changeItemCount(user: HelixUser, item: string, amount = -1
         value: newcount,
     })
     
-    if (amount > 0) await updateInventory(user, inv)
+    if (amount > 0 || preconfirmed === true) await updateInventory(user, inv)
 
     return { result: true, reason: '', count: inv[item], inv }
 }

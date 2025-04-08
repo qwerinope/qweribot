@@ -19,7 +19,7 @@ export async function timeout(broadcasterid: string, target: HelixUser, duration
     try {
         if (await tmpapi.moderation.checkUserMod(broadcasterid, target)) {
             await tmpapi.moderation.removeModerator(broadcasterid, target)
-            remodMod(broadcasterid, target, duration, tmpapi)
+            remodMod(broadcasterid, target, duration * 1000, tmpapi)
         }
         await tmpapi.moderation.banUser(broadcasterid, { duration, reason, user: target })
         await DBValidation(target)
@@ -45,8 +45,16 @@ export async function addTimeoutToDB(attacker: HelixUser, target: HelixUser, sou
 
 function remodMod(broadcasterid: string, target: HelixUser, duration: number, api: ApiClient) {
     setTimeout(async () => {
-        await api.moderation.addModerator(broadcasterid, target)
-    }, (duration + 3) * 1000)
+        const bandata = await api.moderation.getBannedUsers(broadcasterid, { userId: target.id })
+        if (bandata.data.length !== 0) {
+            const timeoutleft = -Date.now() + Date.parse(bandata.data[0].expiryDate?.toString()! + 3000) // date when timeout expires - current date + 3 seconds constant
+            remodMod(broadcasterid, target, timeoutleft, api) // Call the current function with new time (recursion)
+        } else { // If user is still timed out it doesn't try to remod the target
+            try {
+                await api.moderation.addModerator(broadcasterid, target)
+            } catch (err) { console.log(err) } // This triggers when the timeout got shortened. try/catch so no runtime error
+        }
+    }, duration + 3000) // callback gets called after duration of timeout + 3 seconds
 }
 
 export let vulnerableUsers: string[] = []
