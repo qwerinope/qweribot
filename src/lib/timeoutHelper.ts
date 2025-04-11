@@ -32,7 +32,6 @@ export async function timeout(broadcasterid: string, target: HelixUser, duration
 
 export async function addTimeoutToDB(attacker: HelixUser, target: HelixUser, source: shooter) {
     // This has passed the existance check so there's no need to check if the users exist (twitch)
-
     const timeoutobj = {
         source,
         attacker: attacker.id,
@@ -47,7 +46,7 @@ function remodMod(broadcasterid: string, target: HelixUser, duration: number, ap
     setTimeout(async () => {
         const bandata = await api.moderation.getBannedUsers(broadcasterid, { userId: target.id })
         if (bandata.data.length !== 0) {
-            const timeoutleft = -Date.now() + Date.parse(bandata.data[0].expiryDate?.toString()! + 3000) // date when timeout expires - current date + 3 seconds constant
+            const timeoutleft = Date.parse(bandata.data[0].expiryDate?.toString()!) - Date.now() + 3000 // date when timeout expires - current date + 3 seconds constant
             remodMod(broadcasterid, target, timeoutleft, api) // Call the current function with new time (recursion)
         } else { // If user is still timed out it doesn't try to remod the target
             try {

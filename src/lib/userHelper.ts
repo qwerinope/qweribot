@@ -1,16 +1,14 @@
 import pb, { User } from './pocketbase'
 import { HelixUser } from '@twurple/api'
+import itemData from '../items'
 
-export const EMPTYINV: inventory = {
-    version: 1,
+const EMPTYINV = itemData.reduce((acc, item) => {
+  acc[item.name] = 0
+  return acc
+}, {} as Record<string, number>)
 
-    blaster: 0,
-    grenade: 0,
-    silverbullet: 0,
-    tnt: 0,
-
-    clipboard: 0,
-    lootbox: 0
+export type inventory = {
+    [K in (keyof typeof EMPTYINV)]: number
 }
 
 type balanceGetResult = {
@@ -79,26 +77,14 @@ async function getItemUses(userId: string, monthdata?: string): Promise<inventor
     if (monthdata) monthquery = ` && created~"${monthdata}"`
     const items = await pb.collection('itemuses').getFullList({ filter: `user="${userId}"${monthquery}` })
     return {
-        version: 1,
         blaster: items.filter((item) => item.name === 'blaster').length,
         grenade: items.filter((item) => item.name === 'grenade').length,
         silverbullet: items.filter((item) => item.name === 'silverbullet').length,
         tnt: items.filter((item) => item.name === 'tnt').length,
+
         clipboard: items.filter((item) => item.name === 'clipboard').length,
         lootbox: items.filter((item) => item.name === 'lootbox').length
     }
-}
-
-export interface inventory {
-    version: number,
-
-    blaster: number,
-    grenade: number,
-    silverbullet: number,
-    tnt: number,
-
-    clipboard: number,
-    lootbox: number
 }
 
 export async function getInventory(user: HelixUser): Promise<inventory> {

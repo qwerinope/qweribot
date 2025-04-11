@@ -1,39 +1,30 @@
-import { createBotCommand } from "@twurple/easy-bot";
+import { BotCommand, createBotCommand } from "@twurple/easy-bot";
 
-import { useBlaster, useClipboard, useGrenade, useLootbox, useSilverBullet, useTNT } from "../lib/items";
 import api from "../lib/api";
+import items from "../items";
 
-const blaster = createBotCommand('blaster', async (params, { say, broadcasterId, userId }) => {
-    const user = await api.users.getUserById(userId)
-    if (params[0] === undefined) return
-    await useBlaster(broadcasterId, user!, params[0].replace(/[@]/g, ''), say)
-}, { aliases: ['blast'] })
+const aliascommands: BotCommand[] = []
 
-const silverbullet = createBotCommand('execute', async (params, { say, broadcasterId, userId }) => {
-    const user = await api.users.getUserById(userId)
-    if (params[0] === undefined) return
-    await useSilverBullet(broadcasterId, user!, params[0].replace(/[@]/g, ''), say)
-}, { aliases: ['silverbullet'] })
+for (const item of items) {
+    aliascommands.push(createBotCommand(item.name, async (params, { say, broadcasterId, userId }) => {
+        const user = await api.users.getUserById(userId)
+        switch (item.name) {
+            case 'blaster':
+            case 'silverbullet':
+                if (params[0] === undefined) return
+                await item.execute(user!, say, broadcasterId, params[0].replace(/[@]/g, ''))
+                break
+            case 'grenade':
+            case 'tnt':
+            case 'lootbox':
+                await item.execute(user!, say)
+                break
+            case 'clipboard':
+                if (params[0] === undefined) return
+                await item.execute(user!, say, broadcasterId, params.join(' '))
+                break
+        }
+    }, { aliases: item.aliases }))
+}
 
-const grenade = createBotCommand('grenade', async (_params, { say, broadcasterId, userId }) => {
-    const user = await api.users.getUserById(userId)
-    await useGrenade(broadcasterId, user!, say)
-})
-
-const tnt = createBotCommand('tnt', async (_params, { say, broadcasterId, userId }) => {
-    const user = await api.users.getUserById(userId)
-    await useTNT(broadcasterId, user!, say)
-})
-
-const lootbox = createBotCommand('lootbox', async (_params, { say, userId }) => {
-    const user = await api.users.getUserById(userId)
-    await useLootbox(user!, say)
-})
-
-const clipboard = createBotCommand('clipboard', async (params, { say, broadcasterId, userId }) => {
-    const user = await api.users.getUserById(userId)
-    if (params[0] === undefined) return
-    await useClipboard(broadcasterId, user!, params.join(' '), say)
-})
-
-export default [blaster, silverbullet, grenade, tnt, lootbox, clipboard]
+export default aliascommands

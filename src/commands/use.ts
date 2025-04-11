@@ -1,37 +1,31 @@
 import { createBotCommand } from "@twurple/easy-bot";
-import { useBlaster, useClipboard, useGrenade, useLootbox, useSilverBullet, useTNT } from "../lib/items";
 import api from "../lib/api";
+import items from "../items";
 
 export default createBotCommand('use', async (params, { say, broadcasterId, userId }) => {
     const user = await api.users.getUserById(userId)
 
     if (params[0] === undefined) return
+    const selection = items.find(item => item.aliases.includes(params[0].toLowerCase()))
 
-    switch (params[0].toLowerCase()) {
+    if (!selection) { say(`${params[0]} does not exist!`); return }
+
+    switch (selection.name) {
         case 'blaster':
-            if (params[1] === undefined) return
-            await useBlaster(broadcasterId, user!, params[1].replace(/[@]/g, ''), say)
-            break
-        case 'silver':
         case 'silverbullet':
             if (params[1] === undefined) return
-            await useSilverBullet(broadcasterId, user!, params[1].replace(/[@]/g, ''), say)
+            await selection.execute(user!, say, broadcasterId, params[1].replace(/[@]/g, ''))
             break
         case 'grenade':
-            await useGrenade(broadcasterId, user!, say)
-            break
         case 'tnt':
-            await useTNT(broadcasterId, user!, say)
+            await selection.execute(user!, say, broadcasterId)
             break
         case 'lootbox':
-        case 'loot':
-            await useLootbox(user!, say)
+            await selection.execute(user!, say)
             break
         case 'clipboard':
             if (params[1] === undefined) return
-            await useClipboard(broadcasterId, user!, params.slice(1).join(' '), say)
+            await selection.execute(user!, say, broadcasterId, params.slice(1).join(' '))
             break
-        default:
-            await say(`${params[0]} does not exist!`)
     }
 })
