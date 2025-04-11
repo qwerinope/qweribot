@@ -1,5 +1,6 @@
 import { createBotCommand } from "@twurple/easy-bot";
 import api from "../lib/api";
+import items from "../items"
 import { changeItemCount } from "../lib/items";
 import { changeBalance } from "../lib/userHelper";
 import { vulnerableUsers } from "../lib/timeoutHelper";
@@ -17,7 +18,8 @@ const give = createBotCommand('give', async (params, { say, broadcasterId, userI
     if (data.reason === 'negative') { await say(`${target.name} only has ${data.count}. Cannot yoink ${-parseInt(params[2])} ${params[1]}`); return }
     else if (data.reason === 'noexist') { await say(`Can't find item ${params[1]}`); return }
 
-    await say(`${target.name} now has ${data.count} ${params[1]}`)
+    const selection = items.find(item => item.name === params[1].toLowerCase())
+    await say(`${target.name} now has ${data.count} ${params[1]}${data.count === 1 ? '' : selection?.plural}`)
 })
 
 const vulnChatters = createBotCommand('vulnchatters', async (_params, { say, userId, broadcasterId, userName }) => {

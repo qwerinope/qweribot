@@ -77,13 +77,8 @@ async function getItemUses(userId: string, monthdata?: string): Promise<inventor
     if (monthdata) monthquery = ` && created~"${monthdata}"`
     const items = await pb.collection('itemuses').getFullList({ filter: `user="${userId}"${monthquery}` })
     return {
-        blaster: items.filter((item) => item.name === 'blaster').length,
         grenade: items.filter((item) => item.name === 'grenade').length,
-        silverbullet: items.filter((item) => item.name === 'silverbullet').length,
         tnt: items.filter((item) => item.name === 'tnt').length,
-
-        clipboard: items.filter((item) => item.name === 'clipboard').length,
-        lootbox: items.filter((item) => item.name === 'lootbox').length
     }
 }
 
@@ -100,8 +95,8 @@ interface statsGetResult extends timeoutsGetResult {
 export async function getStats(user: HelixUser, monthdata?: string): Promise<statsGetResult> {
     await DBValidation(user)
     const { hit, shot } = await getTimeouts(user.id, monthdata)
-    const uses = await getItemUses(user.id, monthdata)
-    return { hit, shot, used: uses }
+    const used = await getItemUses(user.id, monthdata)
+    return { hit, shot, used }
 }
 
 export async function updateInventory(user: HelixUser, newinv: inventory) {

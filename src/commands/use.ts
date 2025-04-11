@@ -13,7 +13,7 @@ export default createBotCommand('use', async (params, { say, broadcasterId, user
     switch (selection.name) {
         case 'blaster':
         case 'silverbullet':
-            if (params[1] === undefined) return
+            if (params[1] === undefined) { await say('nice miss bro'); return }
             await selection.execute(user!, say, broadcasterId, params[1].replace(/[@]/g, ''))
             break
         case 'grenade':
@@ -24,7 +24,7 @@ export default createBotCommand('use', async (params, { say, broadcasterId, user
             await selection.execute(user!, say)
             break
         case 'clipboard':
-            if (params[1] === undefined) return
+            if (params[1] === undefined) { await say("Please specify what the clipboard asks")}
             await selection.execute(user!, say, broadcasterId, params.slice(1).join(' '))
             break
     }

@@ -11,7 +11,7 @@ for (const item of items) {
         switch (item.name) {
             case 'blaster':
             case 'silverbullet':
-                if (params[0] === undefined) return
+                if (params[0] === undefined) { await say('nice miss bro'); return }
                 await item.execute(user!, say, broadcasterId, params[0].replace(/[@]/g, ''))
                 break
             case 'grenade':
@@ -20,7 +20,7 @@ for (const item of items) {
                 await item.execute(user!, say)
                 break
             case 'clipboard':
-                if (params[0] === undefined) return
+                if (params[0] === undefined) { await say("Please specify what the clipboard asks") }
                 await item.execute(user!, say, broadcasterId, params.join(' '))
                 break
         }
