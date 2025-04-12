@@ -1,10 +1,10 @@
 import pb, { User } from './pocketbase'
 import { HelixUser } from '@twurple/api'
-import itemData from '../items'
+import itemData, { ITEMS } from '../items'
 
 const EMPTYINV = itemData.reduce((acc, item) => {
-  acc[item.name] = 0
-  return acc
+    acc[item.name] = 0
+    return acc
 }, {} as Record<string, number>)
 
 export type inventory = {
@@ -113,7 +113,12 @@ export async function addUsedItem(user: HelixUser, item: string) {
 
 export async function DBValidation(user: HelixUser) {
     try {
-        await pb.collection('users').getFirstListItem(`id="${user.id}"`)
+        let { inventory } = await pb.collection('users').getFirstListItem(`id="${user.id}"`)
+        if (Object.keys(inventory).sort().toString() === ITEMS.sort().toString()) return
+        ITEMS.forEach(key => {
+            if (!(key in inventory)) inventory[key] = 0
+        })
+        await pb.collection('users').update(user.id, { inventory })
     } catch (error) {
         await createUser(user!)
     }
