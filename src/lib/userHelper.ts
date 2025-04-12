@@ -16,6 +16,8 @@ type balanceGetResult = {
     data: User
 }
 
+/** Ensures that the user exists in the database
+ * Returns an object with balance as well as the entire user entry from the database */
 export async function getBalance(user: HelixUser): Promise<balanceGetResult> {
     await DBValidation(user)
     const data = await pb.collection('users').getFirstListItem(`id="${user!.id}"`)
@@ -28,6 +30,7 @@ type balanceChangeResult = {
     count: number
 }
 
+/** Changes the balance of the current user by the requested amount */
 export async function changeBalance(user: HelixUser, amount: number): Promise<balanceChangeResult> {
     let { balance, data } = await getBalance(user)
     if (amount < 0 && balance - amount < 0) return { result: false, reason: 'negative', count: balance }
@@ -49,6 +52,8 @@ interface timeoutsGetResult {
 
 const BLASTERS = ['blaster', 'grenade', 'tnt']
 
+/** Get the amount of times the user has (been) shot (by) another user
+ * The 'blaster' data is all timeouts excluding silver bullets */
 async function getTimeouts(userId: string, monthdata?: string): Promise<timeoutsGetResult> {
     let monthquery = ''
     if (monthdata) monthquery = ` && created~"${monthdata}"`
@@ -72,6 +77,8 @@ async function getTimeouts(userId: string, monthdata?: string): Promise<timeouts
     }
 }
 
+/** Get the amount of grenades and tnt used by specified user
+ * The monthdata should be something like "2025-01" if specified */
 async function getItemUses(userId: string, monthdata?: string): Promise<inventory> {
     let monthquery = ''
     if (monthdata) monthquery = ` && created~"${monthdata}"`
@@ -82,6 +89,7 @@ async function getItemUses(userId: string, monthdata?: string): Promise<inventor
     }
 }
 
+/** Get the inventory of specific user */
 export async function getInventory(user: HelixUser): Promise<inventory> {
     await DBValidation(user)
     const data = await pb.collection('users').getFirstListItem(`id="${user.id}"`)
@@ -92,6 +100,8 @@ interface statsGetResult extends timeoutsGetResult {
     used: inventory
 }
 
+/** Get the hits, shoot and used item stats from specific user
+ * The monthdata should be something like "2025-01" if specified */
 export async function getStats(user: HelixUser, monthdata?: string): Promise<statsGetResult> {
     await DBValidation(user)
     const { hit, shot } = await getTimeouts(user.id, monthdata)
@@ -99,18 +109,21 @@ export async function getStats(user: HelixUser, monthdata?: string): Promise<sta
     return { hit, shot, used }
 }
 
+/** Update the inventory of the target user with new inventory data */
 export async function updateInventory(user: HelixUser, newinv: inventory) {
     await DBValidation(user)
     const data = await pb.collection('users').getFirstListItem(`id="${user.id}"`)
     const recordid = data.id
     await pb.collection('users').update(recordid, { inventory: newinv })
 }
-
+/** Creates a new entry in the useditems table */
 export async function addUsedItem(user: HelixUser, item: string) {
     await DBValidation(user)
     await pb.collection('itemuses').create({ user: user.id, name: item })
 }
 
+/** Validate if the HelixUser has an entry in the database
+ * Add missing inventory items*/
 export async function DBValidation(user: HelixUser) {
     try {
         let { inventory } = await pb.collection('users').getFirstListItem(`id="${user.id}"`)
@@ -123,13 +136,12 @@ export async function DBValidation(user: HelixUser) {
         await createUser(user!)
     }
 }
-
+/** Create the user in the database */
 async function createUser(user: HelixUser) {
     const data = {
         id: user.id,
         firstname: user.name,
         inventory: EMPTYINV,
-        itemuses: EMPTYINV,
         lastlootbox: "1970-01-01 12:00:00.000Z",
         balance: 0
     }

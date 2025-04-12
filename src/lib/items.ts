@@ -8,7 +8,9 @@ interface itemChangeResult {
     count: number,
     inv?: inventory
 }
-
+/** Check if the target user can use/lose item(s) and return the new inventory
+ * @param [amount=-1] If not specified, reduce count by one
+ * @param [preconfirmed=false] If it is confirmed that the change is allowed, update the inventory immediately */
 export async function changeItemCount(user: HelixUser, item: string, amount = -1, preconfirmed = false): Promise<itemChangeResult> {
     if (!ITEMS.includes(item)) return { result: false, reason: 'noexist', count: 0 }
     let inv = await getInventory(user)

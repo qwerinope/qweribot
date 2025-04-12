@@ -10,6 +10,9 @@ interface statusmessage {
     reason: string
 }
 
+/** Ban a specific user out by another user for specified amout of time, with specific reason
+ * If the user does not exist or is already banned return status: false
+ * If the user is a moderator, make sure they get their status back after timeout has elapsed */
 export async function timeout(broadcasterid: string, target: HelixUser, duration: number, reason: string): Promise<statusmessage> {
     if (!target) return { status: false, reason: 'noexist' }
     const tmpapi = broadcasterApi ?? api
@@ -30,6 +33,7 @@ export async function timeout(broadcasterid: string, target: HelixUser, duration
     }
 }
 
+/** Add an entry to the timeouts table */
 export async function addTimeoutToDB(attacker: HelixUser, target: HelixUser, source: shooter) {
     // This has passed the existance check so there's no need to check if the users exist (twitch)
     const timeoutobj = {
@@ -42,6 +46,7 @@ export async function addTimeoutToDB(attacker: HelixUser, target: HelixUser, sou
     await pb.collection('timeouts').create(timeoutobj)
 }
 
+/** Give the target mod status back after timeout */
 function remodMod(broadcasterid: string, target: HelixUser, duration: number, api: ApiClient) {
     setTimeout(async () => {
         const bandata = await api.moderation.getBannedUsers(broadcasterid, { userId: target.id })
