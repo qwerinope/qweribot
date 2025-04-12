@@ -11,6 +11,8 @@ for (const item of items) {
         switch (item.name) {
             case 'blaster':
             case 'silverbullet':
+            case 'revive':
+            case 'superrevive':
                 if (params[0] === undefined) { await say('nice miss bro'); return }
                 await item.execute(user!, say, broadcasterId, params[0].replace(/[@]/g, ''))
                 break
