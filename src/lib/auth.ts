@@ -2,6 +2,8 @@ import { RefreshingAuthProvider, exchangeCode } from '@twurple/auth'
 import pb from './pocketbase'
 import { RecordModel } from 'pocketbase'
 
+const INTENTS = ['channel:manage:moderators', 'moderation:read', 'moderator:manage:banned_users', 'channel:manage:polls', 'channel:read:polls']
+
 let ttvauth: RecordModel | undefined
 try {
     ttvauth = await pb.collection('ttvauth').getFirstListItem('main=true')
@@ -35,10 +37,10 @@ async function firstAccess(main = true) {
     if ((main && !OAUTH_CODE) || (!main && !BROADCASTER_OAUTH_CODE)) {
         if (main) {
             console.error("No 'OAUTH_CODE' provided. To get the code, please visit this URL, authorize the bot and copy the 'code' from the return URL.")
-            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=chat:read+chat:edit+moderator:manage:banned_users+moderation:read+channel:manage:polls+channel:read:polls`)
+            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=chat:read+chat:edit+${INTENTS.join('+')}`)
         } else {
             console.error("No 'BROADCASTER_OAUTH_CODE' provided. To get the code, please make the broadcaster visit the following URL, and get them to return the 'code' from the return URL.")
-            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=moderator:manage:banned_users+moderation:read+channel:manage:moderators+channel:manage:polls+channel:read:polls`)
+            console.error(`https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${INTENTS.join('+')}`)
         }
         process.exit(1)
     }
@@ -69,7 +71,7 @@ await authProvider.addUserForToken({
     refreshToken: auth.REFRESH_TOKEN,
     expiresIn: auth.EXPIRESIN,
     obtainmentTimestamp: auth.OBTAINMENTTIMESTAMP
-}, ['chat', 'moderator:manage:banned_users', 'channel:manage:polls', 'channel:read:polls', 'channel:manage:moderators'])
+}, ['chat', ...INTENTS])
 
 authProvider.onRefresh(async (_id, newTokenData) => {
     auth.ACCESS_TOKEN = newTokenData.accessToken
@@ -95,7 +97,7 @@ const broadcasterAuthProvider = broadcasterAuthData === undefined ? undefined : 
         refreshToken: broadcasterAuthData.REFRESH_TOKEN,
         expiresIn: broadcasterAuthData.EXPIRESIN,
         obtainmentTimestamp: broadcasterAuthData.OBTAINMENTTIMESTAMP
-    }, ['moderator:manage:banned_users', 'moderation:read', 'channel:manage:moderators', 'channel:manage:polls', 'channel:read:polls'])
+    }, INTENTS)
 
     broadcasterAuthProvider.onRefresh(async (_id, newTokenData) => {
         broadcasterAuthData.ACCESS_TOKEN = newTokenData.accessToken

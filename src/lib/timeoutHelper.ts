@@ -83,7 +83,7 @@ function remodMod(broadcasterid: string, target: HelixUser, duration: number, ap
         } else { // If user is still timed out it doesn't try to remod the target
             try {
                 await api.moderation.addModerator(broadcasterid, target)
-            } catch (err) { console.log(err) } // This triggers when the timeout got shortened. try/catch so no runtime error
+            } catch (err) {} // This triggers when the timeout got shortened. try/catch so no runtime error
         }
     }, duration + 3000) // callback gets called after duration of timeout + 3 seconds
 }
