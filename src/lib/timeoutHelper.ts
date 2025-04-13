@@ -43,7 +43,7 @@ export async function reviveTarget(broadcasterId: string, target: HelixUser|null
     const tmpapi = broadcasterApi ?? api
     const bandata = await tmpapi.moderation.getBannedUsers(broadcasterId, { userId: target.id })
     if (!bandata.data[0]) return { status: false, reason: 'notbanned' }
-    const newduration = (Date.parse(bandata.data[0].expiryDate?.toString()!) - Date.now()) / 1000 - duration // (timestamp to freedom - current timestamp) / 1000 (to seconds) - duration
+    const newduration = Math.floor((Date.parse(bandata.data[0].expiryDate?.toString()!) - Date.now()) / 1000 - duration) // (timestamp to freedom - current timestamp) / 1000 (to seconds) - duration
     try {
         if (newduration < 3) { // If the target is going to be unbanned in duration + 3 seconds, unban them anyway
             await tmpapi.moderation.unbanUser(broadcasterId, target)

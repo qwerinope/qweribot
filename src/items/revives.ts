@@ -9,7 +9,7 @@ export const revive = {
     prettyname: 'Revive',
     aliases: ['revive', 'heal'],
     plural: 's',
-    description: "",
+    description: "Use: revive {target}, Function: Reduce timeout timer of target by 30 seconds. Aliases: !revive, !heal",
     execute: async (user: HelixUser, say: (arg0: string) => Promise<void>, broadcasterId: string, targetname: string) => {
         const target = await api.users.getUserByName(targetname)
 
@@ -43,7 +43,7 @@ export const superrevive = {
     prettyname: 'Super Revive',
     aliases: ['superrevive', 'superheal'],
     plural: 's',
-    description: "",
+    description: "Use: superrevive {target}, Function: Reduce timeout timer of target by 12 hours. Aliases: !superrevive, !superheal",
     execute: async (user: HelixUser, say: (arg0: string) => Promise<void>, broadcasterId: string, targetname: string) => {
         const target = await api.users.getUserByName(targetname)
 
