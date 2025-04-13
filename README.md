@@ -31,6 +31,8 @@ ITEM|FUNCTION|ALIASES
 -|-|-
 `blaster {target}`|Times the target user out for 60 seconds|`!blast, !blaster`
 `silverbullet {target}`|Times the target user out for 24 hours|`!execute, !silverbullet`
+`revive {target}`|Reduce timeout timer of target by 30 seconds|`!revive, !heal`
+`superrevive {target}`|Reduce timeout timer of target by 12|`!superrevive, !superheal`
 `grenade`|Times a random chatter out for 60 seconds|`!grenade`
 `tnt`|Times out 1 to 10 chatters for 60 seconds|`!tnt`
 `lootbox`|Gives the user some qbucks, and possibly some items|`!lootbox`
