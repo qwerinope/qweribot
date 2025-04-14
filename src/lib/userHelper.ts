@@ -54,7 +54,7 @@ const BLASTERS = ['blaster', 'grenade', 'tnt']
 
 /** Get the amount of times the user has (been) shot (by) another user
  * The 'blaster' data is all timeouts excluding silver bullets */
-async function getTimeouts(userId: string, monthdata?: string): Promise<timeoutsGetResult> {
+export async function getTimeouts(userId: string, monthdata?: string): Promise<timeoutsGetResult> {
     let monthquery = ''
     if (monthdata) monthquery = ` && created~"${monthdata}"`
     const hit = await pb.collection('timeouts').getFullList({ filter: `target="${userId}"${monthquery}` })

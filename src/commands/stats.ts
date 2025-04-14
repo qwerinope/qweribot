@@ -23,7 +23,7 @@ const stats = createBotCommand('stats', async (params, { say, userName }) => {
         `
         THIS MONTH: Stats of ${data.me ? userName : params[0]}: 
         Users blasted: ${data.stats.shot.blaster},
-        Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(3)} K/D).
+        Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(2)} K/D).
         Grenades lobbed: ${data.stats.used.grenade}
         TNTs lit: ${data.stats.used.tnt},
         Silver bullets fired: ${data.stats.shot.silverbullet},
@@ -50,7 +50,7 @@ const alltime = createBotCommand('alltime', async (params, { say, userName }) =>
         `
         ALLTIME: Stats of ${data.me ? userName : params[0]}: 
         Users blasted: ${data.stats.shot.blaster},
-        Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(3)} K/D).
+        Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(2)} K/D).
         Grenades lobbed: ${data.stats.used.grenade}
         TNTs lit: ${data.stats.used.tnt},
         Silver bullets fired: ${data.stats.shot.silverbullet},
