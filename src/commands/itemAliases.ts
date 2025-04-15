@@ -18,6 +18,8 @@ for (const item of items) {
                 break
             case 'grenade':
             case 'tnt':
+                await item.execute(user!, say, broadcasterId)
+                break
             case 'lootbox':
                 await item.execute(user!, say)
                 break
