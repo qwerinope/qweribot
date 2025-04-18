@@ -26,3 +26,9 @@ export async function changeItemCount(user: HelixUser, item: string, amount = -1
 
     return { result: true, reason: '', count: inv[item], inv }
 }
+
+export let ITEMBUSY = false
+
+export function toggleBusy() {
+    ITEMBUSY = !ITEMBUSY
+}
