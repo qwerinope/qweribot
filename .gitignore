@@ -139,4 +139,4 @@ dist
 pb/data
 
 # config files
-auth.json
+.env.*
