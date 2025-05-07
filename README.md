@@ -107,7 +107,7 @@ VARIABLE|DEFAULT|FUNCTION|REQUIRED
 `COOLDOWN`|24 Hours|Cooldown between letting users get a lootbox with `!getloot` in seconds|:x:
 `CLIENT_ID`|None|Set the CLIENT_ID to authenticate the bot|:bangbang:
 `CLIENT_SECRET`|None|Set the CLIENT_SECRET to authenticate the bot|:bangbang:
-`REDIRECT_URI`|`https://qweri0p.github.io/url-params/`|The REDIRECT_URI set in the twitch dev console|:bangbang:
+`REDIRECT_URI`|`https://qwerinope.github.io/url-params/`|The REDIRECT_URI set in the twitch dev console|:bangbang:
 `OAUTH_CODE`|None|Authorization code for OAuth|:bangbang:
 `DIFFERENT_BROADCASTER`|`false`|Set this to true when `BOT_NAME` and `CHANNEL` are different.|:white_check_mark:
 `BROADCASER_OAUTH_CODE`|None|OAuth authorization code for the broadcaster (ignored if `DIFFERENT_BROADCASTER` is false)|:bangbang:

@@ -30,7 +30,7 @@ async function firstAccess(main = true) {
     const CLIENT_SECRET = process.env.CLIENT_SECRET
     const OAUTH_CODE = process.env.OAUTH_CODE
     const BROADCASTER_OAUTH_CODE = process.env.BROADCASTER_OAUTH_CODE
-    const REDIRECT_URI = process.env.REDIRECT_URI ?? 'https://qweri0p.github.io/url-params/'
+    const REDIRECT_URI = process.env.REDIRECT_URI ?? 'https://qwerinope.github.io/url-params/'
 
     if (!CLIENT_ID) { console.error("No 'CLIENT_ID' for OAuth defined in environment variables."); process.exit(1) }
     if (!CLIENT_SECRET) { console.error("No 'CLIENT_SECRET' for OAuth defined in environment variables."); process.exit(1) }
