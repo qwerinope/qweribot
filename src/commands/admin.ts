@@ -5,7 +5,7 @@ import { changeItemCount } from "../lib/items";
 import { changeBalance } from "../lib/userHelper";
 import { vulnerableUsers } from "../lib/timeoutHelper";
 
-const give = createBotCommand('give', async (params, { say, broadcasterId, userId, userName }) => {
+const give = createBotCommand('give', async (params, { say, broadcasterId, userId }) => {
     if (userId !== broadcasterId) return
 
     const target = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
@@ -19,10 +19,10 @@ const give = createBotCommand('give', async (params, { say, broadcasterId, userI
     else if (data.reason === 'noexist') { await say(`Can't find item ${params[1]}`); return }
 
     const selection = items.find(item => item.name === params[1].toLowerCase())
-    await say(`${target.name} now has ${data.count} ${params[1]}${data.count === 1 ? '' : selection?.plural}`)
+    await say(`${target.displayName} now has ${data.count} ${params[1]}${data.count === 1 ? '' : selection?.plural}`)
 })
 
-const vulnChatters = createBotCommand('vulnchatters', async (_params, { say, userId, broadcasterId, userName }) => {
+const vulnChatters = createBotCommand('vulnchatters', async (_params, { say, userId, broadcasterId }) => {
     if (userId !== broadcasterId) return
 
     await say(`There are ${vulnerableUsers.length} vulnerable chatters`)

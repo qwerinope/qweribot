@@ -27,6 +27,6 @@ export const lootbox = {
         await updateInventory(user, inventory)
         await addUsedItem(user, 'lootbox')
 
-        await say(`${user.name} got: ${newitems.join(' and ')}`)
+        await say(`${user.displayName} got: ${newitems.join(' and ')}`)
     }
 }

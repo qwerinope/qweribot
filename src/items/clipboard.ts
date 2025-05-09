@@ -23,6 +23,6 @@ export const clipboard = {
         if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no clipboards!'); return }
 
         await tempapi.polls.createPoll(broadcasterId, { choices: ['Yes', 'No'], duration: 120, title: question })
-        await say(`${user.name} used a clipboard! They have ${itemResult.count} clipboard${itemResult.count === 1 ? '' : 's'} remaining`)
+        await say(`${user.displayName} used a clipboard! They have ${itemResult.count} clipboard${itemResult.count === 1 ? '' : 's'} remaining`)
     }
 }

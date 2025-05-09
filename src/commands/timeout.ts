@@ -3,7 +3,7 @@ import { addTimeoutToDB, timeout } from "../lib/timeoutHelper";
 import { changeBalance, getBalance } from "../lib/userHelper";
 import api from "../lib/api";
 
-export default createBotCommand('timeout', async (params, { say, broadcasterId, userName }) => {
+export default createBotCommand('timeout', async (params, { say, broadcasterId, userName, userDisplayName }) => {
     const attacker = await api.users.getUserByName(userName)
     const userbal = await getBalance(attacker!)
     if (userbal.balance < 100) { await say('not enough qbucks'); return }
@@ -11,7 +11,7 @@ export default createBotCommand('timeout', async (params, { say, broadcasterId, 
     const target = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
     const status = await timeout(broadcasterId, target!, 60, `You got blasted by ${userName}`)
     if (status.status) {
-        await say(`${params[0]} got blasted by ${userName}! ${userName} now has ${userbal.balance - 100} qbucks remaining`)
+        await say(`${target?.displayName} got blasted by ${userDisplayName}! ${userDisplayName} now has ${userbal.balance - 100} qbucks remaining`)
         await changeBalance(attacker!, -100)
         await addTimeoutToDB(attacker!, target!, 'blaster')
     }

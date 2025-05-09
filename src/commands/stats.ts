@@ -3,7 +3,7 @@ import api from "../lib/api";
 import { getStats } from "../lib/userHelper";
 import { HelixUser } from "@twurple/api";
 
-const stats = createBotCommand('stats', async (params, { say, userName }) => {
+const stats = createBotCommand('stats', async (params, { say, userName, userDisplayName }) => {
     let user: HelixUser | null
     if (params.length !== 0) {
         user = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
@@ -21,7 +21,7 @@ const stats = createBotCommand('stats', async (params, { say, userName }) => {
 
     await say(
         `
-        THIS MONTH: Stats of ${data.me ? userName : params[0]}: 
+        THIS MONTH: Stats of ${data.me ? userDisplayName : params[0]}: 
         Users blasted: ${data.stats.shot.blaster},
         Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(2)} K/D).
         Grenades lobbed: ${data.stats.used.grenade}
@@ -32,7 +32,7 @@ const stats = createBotCommand('stats', async (params, { say, userName }) => {
     )
 })
 
-const alltime = createBotCommand('alltime', async (params, { say, userName }) => {
+const alltime = createBotCommand('alltime', async (params, { say, userName, userDisplayName }) => {
     let user: HelixUser | null
     if (params.length !== 0) {
         user = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
@@ -48,7 +48,7 @@ const alltime = createBotCommand('alltime', async (params, { say, userName }) =>
 
     await say(
         `
-        ALLTIME: Stats of ${data.me ? userName : params[0]}: 
+        ALLTIME: Stats of ${data.me ? userDisplayName : params[0]}: 
         Users blasted: ${data.stats.shot.blaster},
         Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(2)} K/D).
         Grenades lobbed: ${data.stats.used.grenade}

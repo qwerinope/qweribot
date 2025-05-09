@@ -28,9 +28,9 @@ export const grenade = {
 
         if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no grenades!'); return }
         const target = await api.users.getUserById(vulnerableUsers[Math.floor(Math.random() * vulnerableUsers.length)])
-        const result = await timeout(broadcasterId, target!, 60, `You got hit by ${user.name}'s grenade`)
+        const result = await timeout(broadcasterId, target!, 60, `You got hit by ${user.displayName}'s grenade`)
         if (result.status) {
-            await say(`${target?.name} got blown up by ${user.name}'s grenade!`)
+            await say(`${target?.displayName} got blown up by ${user.displayName}'s grenade!`)
             await addTimeoutToDB(user, target!, 'grenade')
             await addUsedItem(user, 'grenade')
             await updateInventory(user, itemResult.inv!)
@@ -59,9 +59,9 @@ export const tnt = {
         const soontobedeadusers = shuffle(vulnerableUsers).slice(vulnerableUsers.length - blastedusers)
         const targets = await api.users.getUsersByIds(soontobedeadusers)
         for (const target of targets) {
-            const result = await timeout(broadcasterId, target!, 60, `You got hit by ${user.name}'s TNT`)
+            const result = await timeout(broadcasterId, target!, 60, `You got hit by ${user.displayName}'s TNT`)
             if (result.status) {
-                await say(`${target?.name} got blown up by TNT!`)
+                await say(`${target?.displayName} got blown up by TNT!`)
                 await addTimeoutToDB(user, target!, 'tnt')
                 await updateInventory(user, itemResult.inv!)
             } else {
@@ -71,6 +71,6 @@ export const tnt = {
         }
 
         await addUsedItem(user, 'tnt')
-        await say(`${user.name} blew up ${blastedusers} chatters with their TNT! ${user.name} has ${itemResult.count} tnt${itemResult.count === 1 ? '' : 's'} remaining`)
+        await say(`${user.displayName} blew up ${blastedusers} chatters with their TNT! ${user.displayName} has ${itemResult.count} tnt${itemResult.count === 1 ? '' : 's'} remaining`)
     }
 }

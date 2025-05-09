@@ -17,9 +17,9 @@ export const blaster = {
 
         if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no blasters!'); return }
 
-        const result = await timeout(broadcasterId, target, 60, `You got blasted by ${user.name}`)
+        const result = await timeout(broadcasterId, target, 60, `You got blasted by ${user.displayName}`)
         if (result.status) {
-            await say(`${targetname} got blasted by ${user.name}! ${user.name} has ${itemResult.count} blaster${itemResult.count === 1 ? '' : 's'} remaining`)
+            await say(`${target?.displayName} got blasted by ${user.displayName}! ${user.displayName} has ${itemResult.count} blaster${itemResult.count === 1 ? '' : 's'} remaining`)
             await addTimeoutToDB(user, target!, 'blaster')
             await addUsedItem(user, 'blaster')
             await updateInventory(user, itemResult.inv!)
@@ -29,7 +29,7 @@ export const blaster = {
                     await say(`${targetname} doesn't exist!`)
                     break
                 case 'banned':
-                    await say(`${targetname} is already dead!`)
+                    await say(`${target?.displayName} is already dead!`)
                     break
                 case 'unknown':
                     await say(`NO!`)
@@ -52,7 +52,7 @@ export const silverbullet = {
         const itemResult = await changeItemCount(user, 'silverbullet')
         if (!itemResult.result && itemResult.reason === 'negative') { await say('You have no silver bullets!'); return }
 
-        const result = await timeout(broadcasterId, target, 60 * 60 * 24, `You got hit by a silver bullet fired by ${user.name}`)
+        const result = await timeout(broadcasterId, target, 60 * 60 * 24, `You got hit by a silver bullet fired by ${user.displayName}`)
         if (result.status) {
             await say(`${target?.name} got deleted.`)
             await addTimeoutToDB(user, target!, 'silverbullet')
@@ -64,7 +64,7 @@ export const silverbullet = {
                     await say(`${targetname} doesn't exist!`)
                     break
                 case 'banned':
-                    await say(`${targetname} is already dead!`)
+                    await say(`${target?.displayName} is already dead!`)
                     break
                 case 'unknown':
                     await say(`NO!`)

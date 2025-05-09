@@ -4,7 +4,7 @@ import api from "../lib/api";
 import items from "../items";
 import { HelixUser } from "@twurple/api";
 
-export default createBotCommand('inv', async (params, { userName, say }) => {
+export default createBotCommand('inv', async (params, { userName, say, userDisplayName }) => {
     let user: HelixUser | null
     if (params.length !== 0) {
         user = await api.users.getUserByName(params[0].replace(/[@]/g, ''))
@@ -24,10 +24,10 @@ export default createBotCommand('inv', async (params, { userName, say }) => {
         messagedata.push(`${itemselection?.prettyname}${amount === 1 ? '' : itemselection?.plural}: ${amount}`)
     }
 
-    if (messagedata.length === 0) { await say(`${data.me ? userName : params[0]} has no items!`); return }
+    if (messagedata.length === 0) { await say(`${data.me ? userDisplayName : params[0]} has no items!`); return }
 
     await say(`
-        inventory of ${data.me ? userName : params[0]}: 
+        inventory of ${data.me ? userDisplayName : params[0]}: 
         ${messagedata.join(', ')}
     `)
 }, { aliases: ['inventory'] })

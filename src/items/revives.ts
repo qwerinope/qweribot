@@ -23,16 +23,16 @@ export const revive = {
                 await say(`${targetname} does not exist`)
                 break
             case 'notbanned':
-                await say(`${targetname} doesn't need revives`)
+                await say(`${target?.displayName} doesn't need revives`)
                 break
             case 'unknown':
                 await say("Something went wrong!")
                 break
             case 'healed':
-                await say(`${targetname} got healed for 30 seconds by ${user.name}`)
+                await say(`${target?.displayName} got healed for 30 seconds by ${user.displayName}`)
                 break
             case 'revived':
-                await say(`${targetname} got revived by ${user.name}`)
+                await say(`${target?.displayName} got revived by ${user.displayName}`)
                 break
         }
     }
@@ -57,16 +57,16 @@ export const superrevive = {
                 await say(`${targetname} does not exist`)
                 break
             case 'notbanned':
-                await say(`${targetname} doesn't need revives`)
+                await say(`${target?.displayName} doesn't need revives`)
                 break
             case 'unknown':
                 await say("Something went wrong!")
                 break
             case 'healed':
-                await say(`${targetname} got healed for 12 hours by ${user.name}`)
+                await say(`${target?.displayName} got healed for 12 hours by ${user.displayName}`)
                 break
             case 'revived':
-                await say(`${targetname} got revived by ${user.name}`)
+                await say(`${target?.displayName} got revived by ${user.displayName}`)
                 break
         }
     }
