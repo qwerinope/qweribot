@@ -27,7 +27,7 @@ export default createBotCommand('inv', async (params, { userName, say, userDispl
     if (messagedata.length === 0) { await say(`${data.me ? userDisplayName : params[0]} has no items!`); return }
 
     await say(`
-        inventory of ${data.me ? userDisplayName : params[0]}: 
+        inventory of ${data.me ? userDisplayName : user.displayName}: 
         ${messagedata.join(', ')}
     `)
 }, { aliases: ['inventory'] })

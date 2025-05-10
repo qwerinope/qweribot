@@ -21,7 +21,7 @@ const stats = createBotCommand('stats', async (params, { say, userName, userDisp
 
     await say(
         `
-        THIS MONTH: Stats of ${data.me ? userDisplayName : params[0]}: 
+        THIS MONTH: Stats of ${data.me ? userDisplayName : user.displayName}: 
         Users blasted: ${data.stats.shot.blaster},
         Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(2)} K/D).
         Grenades lobbed: ${data.stats.used.grenade}
@@ -48,7 +48,7 @@ const alltime = createBotCommand('alltime', async (params, { say, userName, user
 
     await say(
         `
-        ALLTIME: Stats of ${data.me ? userDisplayName : params[0]}: 
+        ALLTIME: Stats of ${data.me ? userDisplayName : user.displayName}: 
         Users blasted: ${data.stats.shot.blaster},
         Blasted by others: ${data.stats.hit.blaster} (${isNaN(KD) ? 0 : KD.toFixed(2)} K/D).
         Grenades lobbed: ${data.stats.used.grenade}

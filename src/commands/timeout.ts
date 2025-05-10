@@ -21,7 +21,7 @@ export default createBotCommand('timeout', async (params, { say, broadcasterId, 
                 await say(`${params[0]} doesn't exist!`)
                 break
             case 'banned':
-                await say(`${params[0]} is already dead!`)
+                await say(`${target?.displayName} is already dead!`)
                 break
             case 'unknown':
                 await say(`NO!`)
