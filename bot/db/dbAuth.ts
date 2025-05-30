@@ -68,7 +68,6 @@ export async function deleteAuthRecord(userId: string): Promise<void> {
   try {
     const data = await db.query<getAuthRecordQuery[][]>("SELECT * FROM auth WHERE user=$userId;", { userId });
     if (!data[0] || !data[0][0]) return undefined;
-    console.log(data)
     for (const obj of data[0]) {
       db.delete(obj.id);
     };
