@@ -1,0 +1,27 @@
+import { redis } from "bun";
+import { chatterId, streamerId, eventSub, commandPrefix } from "..";
+import { User } from "../user";
+import commands, { sendMessage } from "../commands";
+
+console.info(`Loaded the ${commands.keys().toArray().join(', ')} commands`);
+
+eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
+  // Get user from cache or place user in cache
+  const user = await User.init(msg.chatterName);
+
+  // Manage vulnerable chatters
+  if (![chatterId, streamerId].includes(msg.chatterId)) {// Don't add the chatter or streamer to the vulnerable chatters
+    if (!await redis.sismember("vulnchatters", msg.chatterId)) {
+      await redis.sadd('vulnchatters', msg.chatterId);
+      console.debug(`${msg.chatterDisplayName} is now vulnerable to explosives.`);
+    };
+  };
+
+  // Parse commands:
+  if (msg.messageText.startsWith(commandPrefix)) {
+    const commandSelection = msg.messageText.slice(commandPrefix.length).split(' ')[0]!;
+    const selected = commands.get(commandSelection.toLowerCase());
+    if (!selected) { await sendMessage(`${commandSelection} command does not exist`, { replyParentMessageId: msg.messageId }); return; };
+    await selected.execute(msg, user!);
+  };
+});
