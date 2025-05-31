@@ -1,5 +1,9 @@
 import { eventSub } from "..";
 
+eventSub.onRevoke(event => {
+  console.info(`Successfully revoked EventSub subscription: ${event.id}`);
+});
+
 eventSub.onSubscriptionCreateSuccess(event => {
   console.info(`Successfully created EventSub subscription: ${event.id}`);
 });

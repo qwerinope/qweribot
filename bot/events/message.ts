@@ -1,13 +1,16 @@
 import { redis } from "bun";
-import { chatterId, streamerId, eventSub, commandPrefix } from "..";
+import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode } from "..";
 import { User } from "../user";
 import commands, { sendMessage } from "../commands";
 
-console.info(`Loaded the ${commands.keys().toArray().join(', ')} commands`);
+console.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
 eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
+  // return if double user mode is on and the chatter says something, we don't need them
+  if (!singleUserMode && msg.chatterId === chatterId) return
+
   // Get user from cache or place user in cache
-  const user = await User.init(msg.chatterName);
+  const user = await User.initUserId(msg.chatterId);
 
   // Manage vulnerable chatters
   if (![chatterId, streamerId].includes(msg.chatterId)) {// Don't add the chatter or streamer to the vulnerable chatters
