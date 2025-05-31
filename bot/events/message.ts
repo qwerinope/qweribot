@@ -10,7 +10,7 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
   if (!singleUserMode && msg.chatterId === chatterId) return
 
   // Get user from cache or place user in cache
-  const user = await User.initUserId(msg.chatterId);
+  const user = await User.initUsername(msg.chatterName);
 
   // Manage vulnerable chatters
   if (![chatterId, streamerId].includes(msg.chatterId)) {// Don't add the chatter or streamer to the vulnerable chatters
