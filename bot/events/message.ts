@@ -12,14 +12,6 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
   // Get user from cache or place user in cache
   const user = await User.initUsername(msg.chatterName);
 
-  // Manage vulnerable chatters
-  if (![chatterId, streamerId].includes(msg.chatterId)) {// Don't add the chatter or streamer to the vulnerable chatters
-    if (!await redis.sismember("vulnchatters", msg.chatterId)) {
-      await redis.sadd('vulnchatters', msg.chatterId);
-      console.debug(`${msg.chatterDisplayName} is now vulnerable to explosives.`);
-    };
-  };
-
   // Parse commands:
   if (msg.messageText.startsWith(commandPrefix)) {
     const commandSelection = msg.messageText.slice(commandPrefix.length).split(' ')[0]!;

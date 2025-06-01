@@ -2,7 +2,7 @@ import { redis } from "bun";
 import { chatterApi } from ".";
 import { HelixUser } from "@twurple/api"
 
-const EXPIRETIME = 60 * 15 // 15 minutes
+const EXPIRETIME = 60 * 30 // 30 minutes
 
 export class User {
   public username: string | undefined;
