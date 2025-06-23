@@ -37,6 +37,6 @@ export { intents };
 import { singleUserMode, chatterApi, chatterId, streamerId } from "..";
 
 /** Helper function to send a message to the stream */
-export const sendMessage = async (message: string, options?: HelixSendChatMessageParams) => {
-  singleUserMode ? await chatterApi.chat.sendChatMessage(streamerId, message, options) : chatterApi.asUser(chatterId, async newapi => newapi.chat.sendChatMessage(streamerId, message, options));
+export const sendMessage = async (message: string, replyParentMessageId?: string) => {
+  singleUserMode ? await chatterApi.chat.sendChatMessage(streamerId, message, { replyParentMessageId }) : chatterApi.asUser(chatterId, async newapi => newapi.chat.sendChatMessage(streamerId, message, { replyParentMessageId }));
 };

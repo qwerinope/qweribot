@@ -1,4 +1,3 @@
-import { redis } from "bun";
 import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode } from "..";
 import { User } from "../user";
 import commands, { sendMessage } from "../commands";

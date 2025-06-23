@@ -1,4 +1,7 @@
-import { eventSub } from "..";
+import { eventSub, streamerApi } from "..";
+
+await streamerApi.eventSub.deleteAllSubscriptions();
+console.info('Succesfully deleted all unused EventSub subscriptions');
 
 eventSub.onRevoke(event => {
   console.info(`Successfully revoked EventSub subscription: ${event.id}`);
@@ -9,9 +12,9 @@ eventSub.onSubscriptionCreateSuccess(event => {
 });
 
 eventSub.onSubscriptionCreateFailure(event => {
-  eventSub.stop()
   console.error(`Failed to create EventSub subscription: ${event.id}`);
-  eventSub.start()
+  event.stop()
+  event.start()
 });
 
 eventSub.onSubscriptionDeleteSuccess(event => {
@@ -29,3 +32,5 @@ for (const file of files) {
   if (file === import.meta.file) continue;
   await import(import.meta.dir + '/' + file.slice(0, -3));
 };
+
+eventSub.start();

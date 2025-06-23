@@ -5,6 +5,6 @@ export default new Command('ping',
   ['ping'],
   [],
   async msg => {
-    await sendMessage('pong!', { replyParentMessageId: msg.messageId });
+    await sendMessage('pong!', msg.messageId);
   }
 );
