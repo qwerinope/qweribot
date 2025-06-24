@@ -2,7 +2,17 @@ import { redis } from "bun";
 import { chatterApi } from ".";
 import { HelixUser } from "@twurple/api"
 
-const EXPIRETIME = 60 * 30 // 30 minutes
+const EXPIRETIME = 60 * 60 // 60 minutes
+
+// The objective of this class is to:
+// store displayname, username and id to reduce api calls
+// keep track of temporary user specific flags (vulnerable to explosives, locked from using items)
+//
+// The userlookup key is used to find id's based on the username.
+//
+// The vulnchatters and userlookup look similar, but they're not the same
+// userlookup expiration gets set when user chats or is targeted by another user
+// vulnchatters only gets set when user chats
 
 export class User {
   public username!: string;
@@ -78,5 +88,14 @@ export class User {
 
   public async clearLock(): Promise<void> {
     await redis.set(`user:${this.id}:itemlock`, '0');
+  };
+
+  public async makeVulnerable(): Promise<void> {
+    await redis.set(`vulnchatters:${this.id}`, this.displayName);
+    await redis.expire(`vulnchatters:${this.id}`, Math.floor(EXPIRETIME / 2)); // Vulnerable chatter gets removed from the pool after 30 minutes
+  };
+
+  public async makeInvulnerable(): Promise<void> {
+    await redis.del(`vulnchatters:${this.id}`);
   };
 };

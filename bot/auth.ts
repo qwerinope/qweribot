@@ -38,12 +38,12 @@ async function initAuth(userId: string, clientId: string, clientSecret: string, 
   await deleteAuthRecord(userId);
 
   const code = await codepromise;
-  await server.stop(false);
+  await server.stop(true);
   console.info(`Authentication code received.`);
   const tokenData = await exchangeCode(clientId, clientSecret, code, redirectURL);
   console.info(`Successfully authenticated code.`);
   await createAuthRecord(tokenData, userId);
-  console.info(`Successfully saved auth data in the database.`)
+  console.info(`Successfully saved auth data in the database.`);
   return tokenData;
 };
 

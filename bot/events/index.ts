@@ -13,8 +13,6 @@ eventSub.onSubscriptionCreateSuccess(event => {
 
 eventSub.onSubscriptionCreateFailure(event => {
   console.error(`Failed to create EventSub subscription: ${event.id}`);
-  event.stop()
-  event.start()
 });
 
 eventSub.onSubscriptionDeleteSuccess(event => {

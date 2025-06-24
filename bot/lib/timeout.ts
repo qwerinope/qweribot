@@ -21,7 +21,7 @@ export const timeout = async (target: string | User, reason: string, duration?: 
   if (banStatus[0]) return { status: false, reason: 'banned' };
 
   if (await streamerApi.moderation.checkUserMod(streamerId, user.id!)) {
-    if (!duration) duration = 60;
+    if (!duration) duration = 60; // make sure that mods don't get perma-banned
     remodMod(user, duration);
     await streamerApi.moderation.removeModerator(streamerId, user.id!);
   };
