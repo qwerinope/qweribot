@@ -5,9 +5,9 @@ import { HelixUser } from "@twurple/api"
 const EXPIRETIME = 60 * 30 // 30 minutes
 
 export class User {
-  public username: string | undefined;
-  public id: string | undefined;
-  public displayName: string | undefined;
+  public username!: string;
+  public id!: string;
+  public displayName!: string;
 
   static async initUsername(username: string): Promise<User | null> {
     const userObj = new User();

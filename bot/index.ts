@@ -4,7 +4,7 @@ import { EventSubHttpListener, ReverseProxyAdapter } from "@twurple/eventsub-htt
 import { intents } from "./commands";
 
 const CHATTERBASEINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
-const STREAMERBASEINTENTS = ["user:read:chat", "channel:bot", "moderation:read"];
+const STREAMERBASEINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators"];
 
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
 export const chatterId = process.env.CHATTER_ID ?? "";
@@ -37,5 +37,7 @@ export const eventSub = new EventSubHttpListener({
 });
 
 export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
+
+export const unbannableUsers = [chatterId, streamerId]
 
 await import("./events");
