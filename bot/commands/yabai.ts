@@ -6,7 +6,7 @@ export default new Command('yabai',
   ['yabai', 'goon'],
   ['moderator:manage:banned_users'],
   async (msg, user) => {
-    const rand = Math.floor(Math.random() * 100) + 1;
+    const rand = Math.floor(Math.random() * 101);
     if (rand < 25) sendMessage(`${rand}% yabai! GIGACHAD`, msg.messageId);
     else if (rand < 50) sendMessage(`${rand}% yabai POGGERS`, msg.messageId);
     else if (rand === 50) sendMessage(`${rand}% yabai ok`, msg.messageId);
