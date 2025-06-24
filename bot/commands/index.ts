@@ -1,5 +1,4 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
-import { type HelixSendChatMessageParams } from "@twurple/api";
 import { User } from "../user";
 
 /** The Command class represents a command */
@@ -34,9 +33,16 @@ for (const file of files) {
 export default commands;
 export { intents };
 
-import { singleUserMode, chatterApi, chatterId, streamerId } from "..";
+import { singleUserMode, chatterApi, chatterId, streamerId, streamerApi } from "..";
 
 /** Helper function to send a message to the stream */
 export const sendMessage = async (message: string, replyParentMessageId?: string) => {
   singleUserMode ? await chatterApi.chat.sendChatMessage(streamerId, message, { replyParentMessageId }) : chatterApi.asUser(chatterId, async newapi => newapi.chat.sendChatMessage(streamerId, message, { replyParentMessageId }));
+};
+
+/** Helper function to timeout a specific user */
+export const doTimeout = async (userid: string, reason: string, duration = 60) => {
+  // TODO: make sure mods lose their sword, THEN get timed out, and get the sword back after timeout expires (check v1 code for implementation)
+  if ([chatterId, streamerId].includes(userid)) return; // make sure unbannable users don't get banned
+  await streamerApi.moderation.banUser(streamerId, { user: userid, reason, duration });
 };
