@@ -12,8 +12,9 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
   // Given the fact that this is the user that chats, this user object always exists and cannot be null
   //
   // One of the flaws with the user object is solved by creating the object with the name.
-  // This way, if a user changes their name, the original name stays in the cache for at least 1 hour (extendable by using that name to timeout)
+  // This way, if a user changes their name, the original name stays in the cache for at least 1 hour (extendable by using that name as target for item)
   // and both are usable to target the same user (id is the same)
+  // The only problem would be if a user changed their name and someone else took their name right after
   const user = await User.initUsername(msg.chatterName);
 
   if (!unbannableUsers.includes(msg.chatterId)) user?.makeVulnerable(); // Make the user vulnerable to explosions

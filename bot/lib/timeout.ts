@@ -2,18 +2,14 @@ import { streamerApi, streamerId, unbannableUsers } from "..";
 import { User } from "../user";
 
 type SuccessfulTimeout = { status: true };
-type UnSuccessfulTimeout = { status: false; reason: 'noexist' | 'banned' | 'unknown' | 'illegal' };
+type UnSuccessfulTimeout = { status: false; reason: 'banned' | 'unknown' | 'illegal' };
 type TimeoutResult = SuccessfulTimeout | UnSuccessfulTimeout;
 
 /** Give a user a timeout/ban
- * @param target - userid or User class to timeout/ban
+ * @param user - user class of target to timeout/ban
  * @param reason - reason for timeout/ban
  * @param duration - duration of timeout. don't specifiy for ban */
-export const timeout = async (target: string | User, reason: string, duration?: number): Promise<TimeoutResult> => {
-  // set the user object to either the predefined user obj or a new user obj
-  const user = typeof (target) === 'string' ? await User.initUsername(target) : target;
-  if (!user) return { status: false, reason: 'noexist' };
-
+export const timeout = async (user: User, reason: string, duration?: number): Promise<TimeoutResult> => {
   if (unbannableUsers.includes(user.id)) return { status: false, reason: 'illegal' };
 
   // Check if user already has a timeout
