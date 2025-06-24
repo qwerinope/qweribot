@@ -17,21 +17,26 @@ export class Command {
 
 import { readdir } from 'node:fs/promises';
 const commands = new Map<string, Command>;
-const intents: string[] = [];
+const commandintents: string[] = [];
 
 const files = await readdir(import.meta.dir);
 for (const file of files) {
   if (!file.endsWith('.ts')) continue;
   if (file === import.meta.file) continue;
   const command: Command = await import(import.meta.dir + '/' + file.slice(0, -3)).then(a => a.default);
-  intents.push(...command.requiredIntents);
+  commandintents.push(...command.requiredIntents);
   for (const alias of command.aliases) {
     commands.set(alias, command); // Since it's not a primitive type the map is filled with references to the command, not the actual object
   };
 };
 
+import items from "../items";
+for (const [name, item] of Array.from(items)) {
+  commands.set(name, item); // As Item is basically just Command but with more parameters, this should work fine
+};
+
 export default commands;
-export { intents };
+export { commandintents };
 
 import { singleUserMode, chatterApi, chatterId, streamerId } from "..";
 

@@ -1,7 +1,8 @@
 import { createAuthProvider } from "./auth";
 import { ApiClient } from "@twurple/api";
 import { EventSubHttpListener, ReverseProxyAdapter } from "@twurple/eventsub-http";
-import { intents } from "./commands";
+import { commandintents } from "./commands";
+import { itemintents } from "./items";
 
 const CHATTERBASEINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERBASEINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators"];
@@ -17,8 +18,8 @@ if (hostName === "") { console.error('Please set a EVENTSUB_HOSTNAME in the .env
 const port = Number(process.env.EVENTSUB_PORT) ?? 0;
 if (port === 0) { console.error('Please set a EVENTSUB_PORT in the .env'); process.exit(1); };
 
-const chatterIntents = singleUserMode ? CHATTERBASEINTENTS.concat(STREAMERBASEINTENTS) : CHATTERBASEINTENTS;
-const streamerIntents = STREAMERBASEINTENTS.concat(intents);
+const streamerIntents = STREAMERBASEINTENTS.concat(commandintents, itemintents);
+const chatterIntents = singleUserMode ? CHATTERBASEINTENTS.concat(streamerIntents) : CHATTERBASEINTENTS;
 
 export const chatterAuthProvider = await createAuthProvider(chatterId, chatterIntents);
 export const streamerAuthProvider = singleUserMode ? undefined : await createAuthProvider(streamerId, streamerIntents, true);
@@ -38,6 +39,6 @@ export const eventSub = new EventSubHttpListener({
 
 export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
 
-export const unbannableUsers = [chatterId, streamerId]
+export const unbannableUsers = [chatterId, streamerId];
 
 await import("./events");
