@@ -31,12 +31,16 @@ export class Item {
 import { readdir } from 'node:fs/promises';
 const items = new Map<string, Item>;
 const itemintents: string[] = [];
+const emptyInventory = {};
+const itemarray: string[] = [];
 
 const files = await readdir(import.meta.dir);
 for (const file of files) {
   if (!file.endsWith('.ts')) continue;
   if (file === import.meta.file) continue;
   const item: Item = await import(import.meta.dir + '/' + file.slice(0, -3)).then(a => a.default);
+  Object.defineProperty(emptyInventory, item.name, { value: 0 });
+  itemarray.push(item.name);
   itemintents.push(...item.requiredIntents);
   for (const alias of item.aliases) {
     items.set(alias, item); // Since it's not a primitive type the map is filled with references to the item, not the actual object
@@ -44,4 +48,4 @@ for (const file of files) {
 };
 
 export default items;
-export { itemintents };
+export { itemintents, emptyInventory, itemarray };
