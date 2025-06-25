@@ -66,7 +66,7 @@ export async function createAuthProvider(user: string, intents: string[], stream
 
   authData.onRefresh(async (user, token) => {
     console.info(`Successfully refreshed auth for user ${user}`);
-    await updateAuthRecord(user, token.scope, token);
+    await updateAuthRecord(user, token);
   });
 
   authData.onRefreshFailure((user, err) => {

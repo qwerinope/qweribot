@@ -1,31 +1,27 @@
-import Surreal from "surrealdb";
+import type { AccessToken } from "@twurple/auth";
+import PocketBase, { RecordService } from "pocketbase";
 
-const surrealurl = process.env.SURREAL_URL ?? "";
-if (surrealurl === "") { console.error("Please provide a SURREAL_URL in .env."); process.exit(1); };
-const namespace = process.env.SURREAL_NAMESPACE ?? "";
-if (namespace === "") { console.error("Please provide a SURREAL_NAMESPACE in .env."); process.exit(1); };
-const database = process.env.SURREAL_DATABASE ?? "";
-if (database === "") { console.error("Please provide a SURREAL_DATABASE in .env."); process.exit(1); };
-const username = process.env.SURREAL_USERNAME ?? "";
-if (username === "") { console.error("Please provide a SURREAL_USERNAME in .env."); process.exit(1); };
-const password = process.env.SURREAL_PASSWORD ?? "";
-if (password === "") { console.error("Please provide a SURREAL_PASSWORD in .env."); process.exit(1); };
+const pocketbaseurl = process.env.POCKETBASE_URL ?? "localhost:8090";
+if (pocketbaseurl === "") { console.error("Please provide a POCKETBASE_URL in .env."); process.exit(1); };
 
-export default async function DB(): Promise<Surreal> {
-  const db = new Surreal();
-  try {
-    await db.connect(surrealurl, {
-      auth: {
-        username,
-        password
-      }
-    });
-    await db.use({ namespace, database });
-    return db;
-  }
-  catch (err) {
-    console.error("Failed to connect to SurrealDB:", err instanceof Error ? err.message : String(err));
-    await db.close();
-    throw err;
-  };
+export type authRecord = {
+  id: string;
+  accesstoken: AccessToken;
 };
+
+export type userRecord = {
+  id: string;
+  username: string;
+  balance: number;
+  inventory: object;
+  lastlootbox: string;
+};
+
+type TypedPocketBase = {
+  collection(idOrName: 'auth'): RecordService<authRecord>;
+  collection(idOrName: 'users'): RecordService<userRecord>;
+};
+
+const pb = new PocketBase(pocketbaseurl) as TypedPocketBase;
+
+export default pb;

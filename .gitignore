@@ -33,5 +33,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Finder (MacOS) folder config
 .DS_Store
 
-# Redis/Valkey database
+# Redis/Valkey & Pocketbase databases
 db/redis/
+db/pocketbase/

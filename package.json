@@ -12,6 +12,6 @@
   "dependencies": {
     "@twurple/auth": "^7.3.0",
     "@twurple/eventsub-http": "^7.3.0",
-    "surrealdb": "^1.3.2"
+    "pocketbase": "^0.26.1"
   }
 }
