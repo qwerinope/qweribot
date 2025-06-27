@@ -29,9 +29,11 @@ export class Item {
 };
 
 import { readdir } from 'node:fs/promises';
+import type { userRecord } from "../db/connection";
+import { updateUserRecord } from "../db/dbUser";
 const items = new Map<string, Item>;
 const itemintents: string[] = [];
-const emptyInventory = {};
+const emptyInventory: inventory = {};
 const itemarray: string[] = [];
 
 const files = await readdir(import.meta.dir);
@@ -39,7 +41,7 @@ for (const file of files) {
   if (!file.endsWith('.ts')) continue;
   if (file === import.meta.file) continue;
   const item: Item = await import(import.meta.dir + '/' + file.slice(0, -3)).then(a => a.default);
-  Object.defineProperty(emptyInventory, item.name, { value: 0 });
+  emptyInventory[item.name] = 0;
   itemarray.push(item.name);
   itemintents.push(...item.requiredIntents);
   for (const alias of item.aliases) {
@@ -49,3 +51,13 @@ for (const file of files) {
 
 export default items;
 export { itemintents, emptyInventory, itemarray };
+export type inventory = {
+  [key: string]: number;
+};
+
+export async function changeItemCount(user: User, userRecord: userRecord, itemname: string, amount = -1): Promise<false | userRecord> {
+  userRecord.inventory[itemname] = userRecord.inventory[itemname]! += amount;
+  if (userRecord.inventory[itemname] < 0) return false;
+  await updateUserRecord(user, userRecord);
+  return userRecord;
+};

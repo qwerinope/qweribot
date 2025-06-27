@@ -38,7 +38,7 @@ async function initAuth(userId: string, clientId: string, clientSecret: string, 
   await deleteAuthRecord(userId);
 
   const code = await codepromise;
-  await server.stop(true);
+  server.stop(false);
   console.info(`Authentication code received.`);
   const tokenData = await exchangeCode(clientId, clientSecret, code, redirectURL);
   console.info(`Successfully authenticated code.`);

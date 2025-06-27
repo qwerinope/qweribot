@@ -23,7 +23,7 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
   if (msg.messageText.startsWith(commandPrefix)) {
     const commandSelection = msg.messageText.slice(commandPrefix.length).split(' ')[0]!;
     const selected = commands.get(commandSelection.toLowerCase());
-    if (!selected) { await sendMessage(`${commandSelection} command does not exist`, msg.messageId); return; };
+    if (!selected) return;
     try { await selected.execute(msg, user!); }
     catch (err) { console.error(err); };
   };
