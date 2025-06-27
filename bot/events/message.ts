@@ -1,6 +1,7 @@
 import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, unbannableUsers } from "..";
 import { User } from "../user";
-import commands, { sendMessage } from "../commands";
+import commands from "../commands";
+import { redis } from "bun";
 
 console.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
@@ -15,7 +16,11 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
   // This way, if a user changes their name, the original name stays in the cache for at least 1 hour (extendable by using that name as target for item)
   // and both are usable to target the same user (id is the same)
   // The only problem would be if a user changed their name and someone else took their name right after
-  const user = await User.initUsername(msg.chatterName);
+
+  const [user, disabledcommands] = await Promise.all([
+    User.initUsername(msg.chatterName),
+    redis.smembers('disabledcommands')
+  ]);
 
   if (!unbannableUsers.includes(msg.chatterId)) user?.makeVulnerable(); // Make the user vulnerable to explosions
 
@@ -24,6 +29,7 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
     const commandSelection = msg.messageText.slice(commandPrefix.length).split(' ')[0]!;
     const selected = commands.get(commandSelection.toLowerCase());
     if (!selected) return;
+    if (disabledcommands.includes(selected.name)) return;
     try { await selected.execute(msg, user!); }
     catch (err) { console.error(err); };
   };

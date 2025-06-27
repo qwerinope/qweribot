@@ -39,7 +39,10 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
+`getcommands [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcommands` `getc`|:x:
 `vulnchatters`|Get amount of chatters vulnerable to explosives|anyone|`vulnchatters` `vulnc`|:white_check_mark:
+`disablecommand {command/item}`|Disable a specific command/item|admins|`disablecommand`|:x:
+`enablecommand {command/item}`|Re-enable a specific command/item|admins|`enablecommand`|:x:
 `getadmins`|Get a list of every admin in the channel|anyone|`getadmins`|:x:
 `addadmin {target}`|Adds an admin|streamer/botchatter|`addadmin`|:x:
 `removeadmin {target}`|Removes an admin|streamer/botchatter|`removeadmin`|:x:

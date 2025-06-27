@@ -28,4 +28,4 @@ export default new Command('admingive', ['admingive'], [], async msg => {
     await sendMessage(`Failed to give ${target.displayName} ${amount} ${item.prettyName + (amount === 1 ? '' : item.plural)}`, msg.messageId);
   };
   await target.clearLock();
-});
+}, false);
