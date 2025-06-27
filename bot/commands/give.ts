@@ -21,6 +21,7 @@ export default new Command('give', ['give'], [], async (msg, user) => {
   const userRecord = await getUserRecord(user);
   if (userRecord.inventory[item.name]! < amount) { await sendMessage(`You can't give items you don't have!`, msg.messageId); return; };
 
+  if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give item. Please try again!', msg.messageId); return; };
   await user.setLock();
   await target.setLock();
   const data = await Promise.all([
