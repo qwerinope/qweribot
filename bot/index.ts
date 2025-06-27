@@ -3,6 +3,7 @@ import { ApiClient } from "@twurple/api";
 import { EventSubHttpListener, ReverseProxyAdapter } from "@twurple/eventsub-http";
 import { commandintents } from "./commands";
 import { itemintents } from "./items";
+import { addAdmin } from "./lib/admins";
 
 const CHATTERBASEINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERBASEINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators"];
@@ -40,5 +41,6 @@ export const eventSub = new EventSubHttpListener({
 export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
 
 export const unbannableUsers = [chatterId, streamerId];
+unbannableUsers.forEach(async id => await addAdmin(id));
 
 await import("./events");

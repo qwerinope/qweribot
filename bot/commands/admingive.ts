@@ -1,12 +1,12 @@
 import { Command, sendMessage } from ".";
-import { unbannableUsers } from "..";
 import { getUserRecord } from "../db/dbUser";
 import items, { changeItemCount } from "../items";
+import { isAdmin } from "../lib/admins";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { User } from "../user";
 
 export default new Command('admingive', ['admingive'], [], async msg => {
-  if (!unbannableUsers.includes(msg.chatterId)) { await sendMessage('nah', msg.messageId); return; };
+  if (!await isAdmin(msg.chatterId)) return;
   const args = parseCommandArgs(msg.messageText);
   if (!args[0]) { await sendMessage('Please specify a user', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());
