@@ -12,7 +12,7 @@ Arguments like `{this}` are required.
 Commands and items can be disabled and enabled by admins with the [`enable` and `disable` commands](#administrative-commands).
 Not all Commands can be disabled, the `DISABLEABLE` field shows if they can or can't. Items can always be disabled.
 
-Admins are defined by the streamer and can use special administrative command on the bot.
+Admins are defined by the streamer and can use special administrative commands on the bot.
 Admins don't need to have moderator status in the channel.
 The chatterbot and streamer always have admin status and cannot be stripped of admin powers.
 Only the streamer and chatterbot have the power to add and remove admins.
