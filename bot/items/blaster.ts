@@ -9,7 +9,7 @@ const ITEMNAME = 'blaster';
 
 export default new Item(ITEMNAME, 'Blaster', 's',
   'Times a specific person out for 60 seconds',
-  ['blaster', 'blast'], ['moderator:manage:banned_users'],
+  ['blaster', 'blast'],
   async (msg, user) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any blasters!`, msg.messageId); return; };

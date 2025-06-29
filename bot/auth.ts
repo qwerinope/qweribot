@@ -6,7 +6,7 @@ async function initAuth(userId: string, clientId: string, clientSecret: string, 
   const redirectURL = process.env.REDIRECT_URL ?? `http://localhost:${port}`;
   // Set the default url and port to http://localhost:3456
 
-  const state = Bun.randomUUIDv7().replace(/-/g, "").slice(0, 32);
+  const state = Bun.randomUUIDv7().replace(/-/g, "").slice(0, 32).toUpperCase();
   // Generate random state variable to prevent cross-site-scripting attacks
 
   const instruction = `Visit this URL as ${streamer ? 'the streamer' : 'the chatter'} to authenticate the bot.`

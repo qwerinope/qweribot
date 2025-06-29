@@ -2,10 +2,8 @@ import { Command, sendMessage } from ".";
 import { addAdmin } from "../lib/admins";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { User } from "../user";
-import { unbannableUsers } from "..";
 
-export default new Command('addadmin', ['addadmin'], [], async msg => {
-  if (!unbannableUsers.includes(msg.chatterId)) return;
+export default new Command('addadmin', ['addadmin'], 'unbannable', async msg => {
   const args = parseCommandArgs(msg.messageText);
   if (!args[0]) { await sendMessage('Please specify a target', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());

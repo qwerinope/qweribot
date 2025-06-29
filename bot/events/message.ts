@@ -2,6 +2,7 @@ import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, unbanna
 import { User } from "../user";
 import commands from "../commands";
 import { redis } from "bun";
+import { isAdmin } from "../lib/admins";
 
 console.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
@@ -30,6 +31,16 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
     const selected = commands.get(commandSelection.toLowerCase());
     if (!selected) return;
     if (disabledcommands.includes(selected.name)) return;
+
+    switch (selected.usertype) {
+      case "admin":
+        if (!await isAdmin(user!.id)) return;
+        break;
+      case "unbannable":
+        if (!unbannableUsers.includes(msg.chatterId)) return;
+        break;
+    };
+
     try { await selected.execute(msg, user!); }
     catch (err) { console.error(err); };
   };

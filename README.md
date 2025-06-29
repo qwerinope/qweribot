@@ -33,7 +33,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `inventory [target]`|Get inventory contents of target or self|anyone|`inventory` `inv`|:white_check_mark:
 `give {target} {item} {amount}`|Give targeted user amount of items|anyone|`give`|:white_check_mark:
 `use {item} ...`|Use item. More info at [The items section](#items)|anyone|`use`|:white_check_mark:
-`admingive {target} {item} {amount}`|Give targeted user amount of new items|admins|`admingive`|:x:
+`admingive {target} {item} {amount}`|Give targeted user amount of new items|admins|`admingive`|:white_check_mark:
 
 ### Administrative commands
 

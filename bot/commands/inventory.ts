@@ -4,7 +4,7 @@ import parseCommandArgs from "../lib/parseCommandArgs";
 import { User } from "../user";
 import items from "../items";
 
-export default new Command('inventory', ['inv', 'inventory'], [], async (msg, user) => {
+export default new Command('inventory', ['inv', 'inventory'], 'chatter', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);
   let target: User = user;
   if (args[0]) {

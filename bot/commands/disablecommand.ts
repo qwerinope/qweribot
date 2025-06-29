@@ -1,10 +1,8 @@
 import { redis } from "bun";
 import commands, { Command, sendMessage } from ".";
-import { isAdmin } from "../lib/admins";
 import parseCommandArgs from "../lib/parseCommandArgs";
 
-export default new Command('disablecommand', ['disablecommand'], [], async msg => {
-  if (!await isAdmin(msg.chatterId)) return;
+export default new Command('disablecommand', ['disablecommand'], 'admin', async msg => {
   const args = parseCommandArgs(msg.messageText);
   if (!args[0]) { await sendMessage('Please specify a command to disable', msg.messageId); return; };
   const selection = commands.get(args[0].toLowerCase());

@@ -10,7 +10,6 @@ const ITEMNAME = 'grenade';
 export default new Item(ITEMNAME, 'Grenade', 's',
   'Give a random chatter a 60s timeout',
   ['grenade'],
-  ['moderator:manage:banned_users'],
   async (msg, user) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any grenades!`, msg.messageId); return; };

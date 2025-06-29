@@ -5,7 +5,7 @@ import items, { changeItemCount } from "../items";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { User } from "../user";
 
-export default new Command('give', ['give'], [], async (msg, user) => {
+export default new Command('give', ['give'], 'chatter', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);
   if (!args[0]) { await sendMessage('Please specify a user', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());
@@ -34,6 +34,7 @@ export default new Command('give', ['give'], [], async (msg, user) => {
     const newamount = tempdata.inventory[item.name]!;
     await sendMessage(`${user.displayName} gave ${amount} ${item.prettyName + (amount === 1 ? '' : item.plural)} to ${target.displayName}. They now have ${newamount} ${item.prettyName + (newamount === 1 ? '' : item.plural)}`, msg.messageId);
   } else {
+    // TODO: Rewrite this section
     await sendMessage(`Failed to give ${target.displayName} ${amount} ${item.prettyName + (amount === 1 ? '' : item.plural)}`, msg.messageId);
     console.error(`WARNING: Item donation failed: target success: ${data[0] !== false}, donator success: ${data[0] !== false}`);
   };

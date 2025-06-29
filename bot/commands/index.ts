@@ -1,17 +1,19 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
 import { User } from "../user";
 
+export type userType = 'chatter' | 'admin' | 'unbannable';
+
 /** The Command class represents a command */
 export class Command {
   public readonly name: string;
   public readonly aliases: string[];
-  public readonly requiredIntents: string[];
+  public readonly usertype: userType;
   public readonly disableable: boolean;
   public readonly execute: (message: EventSubChannelChatMessageEvent, sender: User) => Promise<void>;
-  constructor(name: string, aliases: string[], requiredIntents: string[], execution: (message: EventSubChannelChatMessageEvent, sender: User) => Promise<void>, disableable?: boolean) {
+  constructor(name: string, aliases: string[], usertype: userType, execution: (message: EventSubChannelChatMessageEvent, sender: User) => Promise<void>, disableable?: boolean) {
     this.name = name.toLowerCase();
     this.aliases = aliases;
-    this.requiredIntents = requiredIntents;
+    this.usertype = usertype;
     this.execute = execution;
     this.disableable = disableable ?? true;
   };
@@ -19,7 +21,6 @@ export class Command {
 
 import { readdir } from 'node:fs/promises';
 const commands = new Map<string, Command>;
-const commandintents: string[] = [];
 const basecommands = new Map<string, Command>;
 
 const files = await readdir(import.meta.dir);
@@ -27,7 +28,6 @@ for (const file of files) {
   if (!file.endsWith('.ts')) continue;
   if (file === import.meta.file) continue;
   const command: Command = await import(import.meta.dir + '/' + file.slice(0, -3)).then(a => a.default);
-  commandintents.push(...command.requiredIntents);
   basecommands.set(command.name, command);
   for (const alias of command.aliases) {
     commands.set(alias, command); // Since it's not a primitive type the map is filled with references to the command, not the actual object
@@ -40,7 +40,7 @@ for (const [name, item] of Array.from(items)) {
 };
 
 export default commands;
-export { commandintents, basecommands };
+export { basecommands };
 
 import { singleUserMode, chatterApi, chatterId, streamerId } from "..";
 

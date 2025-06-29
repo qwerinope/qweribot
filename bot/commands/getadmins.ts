@@ -2,7 +2,7 @@ import { Command, sendMessage } from ".";
 import { getAdmins } from "../lib/admins";
 import { User } from "../user";
 
-export default new Command('getadmins', ['getadmins'], [], async msg => {
+export default new Command('getadmins', ['getadmins'], 'chatter', async msg => {
   const admins = await getAdmins()
   const adminnames: string[] = [];
   for (const id of admins) {
