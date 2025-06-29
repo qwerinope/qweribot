@@ -20,8 +20,8 @@ export class Command {
 };
 
 import { readdir } from 'node:fs/promises';
-const commands = new Map<string, Command>;
-const basecommands = new Map<string, Command>;
+const commands = new Map<string, Command>; // This map has all command/item aliases mapped to commands/items (many-to-one)
+const basecommands = new Map<string, Command>; // This map has all command names mapped to commands (one-to-one) (no items)
 
 const files = await readdir(import.meta.dir);
 for (const file of files) {

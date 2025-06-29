@@ -6,7 +6,7 @@ const pb = pocketbase.collection('users');
 /** Use this function to both ensure existance and to retreive data */
 export async function getUserRecord(user: User): Promise<userRecord> {
   try {
-    const data = await pb.getOne<userRecord>(user.id);
+    const data = await pb.getOne(user.id);
 
     if (Object.keys(data.inventory).sort().toString() !== itemarray.sort().toString()) { // If the items in the user inventory are missing an item.
       itemarray.forEach(key => {
@@ -22,7 +22,7 @@ export async function getUserRecord(user: User): Promise<userRecord> {
 };
 
 async function createUserRecord(user: User): Promise<userRecord> {
-  const data = await pb.create<userRecord>({
+  const data = await pb.create({
     id: user.id,
     username: user.username,
     balance: 0,

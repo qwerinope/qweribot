@@ -12,17 +12,32 @@ export type authRecord = {
 
 export type userRecord = {
   id: string;
-  username: string;
+  username: string; // Don't use this, Use User.username or User.displayName. This is just to make the pocketbase data easier to read.
   balance: number;
   inventory: inventory;
   lastlootbox: string;
 };
 
+export type usedItemRecord = {
+  id?: string;
+  user: string;
+  item: string;
+  created: string;
+};
+
+export type timeoutRecord = {
+  id?: string;
+  user: string;
+  target: string;
+  item: string;
+  created: string;
+};
+
 interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'auth'): RecordService<authRecord>;
   collection(idOrName: 'users'): RecordService<userRecord>;
+  collection(idOrName: 'usedItems'): RecordService<usedItemRecord>;
+  collection(idOrName: 'timeouts'): RecordService<timeoutRecord>;
 };
 
-const pb = new PocketBase(pocketbaseurl) as TypedPocketBase;
-export default pb.autoCancellation(false);
-
+export default new PocketBase(pocketbaseurl).autoCancellation(false) as TypedPocketBase;
