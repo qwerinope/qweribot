@@ -35,7 +35,7 @@ export const eventSub = new EventSubHttpListener({
 
 export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
 
-export const unbannableUsers = [chatterId, streamerId];
-unbannableUsers.forEach(async id => await addAdmin(id));
+export const streamerUsers = [chatterId, streamerId];
+streamerUsers.forEach(async id => await addAdmin(id));
 
 await import("./events");

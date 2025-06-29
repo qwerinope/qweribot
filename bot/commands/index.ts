@@ -1,7 +1,7 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
 import { User } from "../user";
 
-export type userType = 'chatter' | 'admin' | 'unbannable';
+export type userType = 'chatter' | 'admin' | 'streamer';
 
 /** The Command class represents a command */
 export class Command {

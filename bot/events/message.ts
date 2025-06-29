@@ -1,4 +1,4 @@
-import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, unbannableUsers } from "..";
+import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, streamerUsers } from "..";
 import { User } from "../user";
 import commands from "../commands";
 import { redis } from "bun";
@@ -23,7 +23,7 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
     redis.smembers('disabledcommands')
   ]);
 
-  if (!unbannableUsers.includes(msg.chatterId)) user?.makeVulnerable(); // Make the user vulnerable to explosions
+  if (!streamerUsers.includes(msg.chatterId)) user?.makeVulnerable(); // Make the user vulnerable to explosions if not streamerbot or chatterbot
 
   // Parse commands:
   if (msg.messageText.startsWith(commandPrefix)) {
@@ -36,8 +36,8 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
       case "admin":
         if (!await isAdmin(user!.id)) return;
         break;
-      case "unbannable":
-        if (!unbannableUsers.includes(msg.chatterId)) return;
+      case "streamer":
+        if (!streamerUsers.includes(msg.chatterId)) return;
         break;
     };
 

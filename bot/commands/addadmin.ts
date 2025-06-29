@@ -3,7 +3,7 @@ import { addAdmin } from "../lib/admins";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { User } from "../user";
 
-export default new Command('addadmin', ['addadmin'], 'unbannable', async msg => {
+export default new Command('addadmin', ['addadmin'], 'streamer', async msg => {
   const args = parseCommandArgs(msg.messageText);
   if (!args[0]) { await sendMessage('Please specify a target', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());
