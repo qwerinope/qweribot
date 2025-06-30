@@ -25,6 +25,14 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `yabai`|Random number|anyone|`yabai` `goon`|:white_check_mark:
 `seiso`|Random number|anyone|`seiso`|:white_check_mark:
 
+### Qweribucks commands
+
+COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
+-|-|-|-|-
+`getbalance [target]`|Get balance of target or self|anyone|`getbalance` `balance` `qbucks` `qweribucks` `wallet` `getwallet`|:white_check_mark:
+`donate {target} {amount}`|Give the targeted user some or all of your qweribucks|anyone|`donate`|:white_check_mark:
+`admindonate {target} {amount}`|Gives the targeted user amount of qweribucks|admins|`admindonate`|:white_check_mark:
+
 ### Item commands
 
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE

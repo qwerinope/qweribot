@@ -22,8 +22,12 @@ export default new Command('give', ['give'], 'chatter', async (msg, user) => {
   if (userRecord.inventory[item.name]! < amount) { await sendMessage(`You can't give items you don't have!`, msg.messageId); return; };
 
   if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give item. Please try again!', msg.messageId); return; };
-  await user.setLock();
-  await target.setLock();
+
+  await Promise.all([
+    user.setLock(),
+    target.setLock()
+  ]);
+
   const data = await Promise.all([
     await changeItemCount(target, targetRecord, item.name, amount),
     await changeItemCount(user, userRecord, item.name, -amount)
@@ -36,7 +40,7 @@ export default new Command('give', ['give'], 'chatter', async (msg, user) => {
   } else {
     // TODO: Rewrite this section
     await sendMessage(`Failed to give ${target.displayName} ${amount} ${item.prettyName + (amount === 1 ? '' : item.plural)}`, msg.messageId);
-    console.error(`WARNING: Item donation failed: target success: ${data[0] !== false}, donator success: ${data[0] !== false}`);
+    console.error(`WARNING: Item donation failed: target success: ${data[0] !== false}, donator success: ${data[1] !== false}`);
   };
   await user.clearLock();
   await target.clearLock();
