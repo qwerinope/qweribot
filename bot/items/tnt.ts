@@ -1,0 +1,53 @@
+import { redis } from "bun";
+import { sendMessage } from "../commands";
+import { timeout } from "../lib/timeout";
+import { changeItemCount, Item } from ".";
+import { User } from "../user";
+import { getUserRecord } from "../db/dbUser";
+import { createTimeoutRecord } from "../db/dbTimeouts";
+import { createUsedItemRecord } from "../db/dbUsedItems";
+
+const ITEMNAME = 'tnt';
+
+export default new Item(ITEMNAME, 'TNT', 's',
+  'Give 5-10 random chatters 60 second timeouts',
+  ['tnt'],
+  async (msg, user) => {
+    const userObj = await getUserRecord(user);
+    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any TNTs!`, msg.messageId); return; };
+    const vulntargets = await redis.keys('vulnchatters:*');
+    if (vulntargets.length === 0) { await sendMessage('No vulnerable chatters to blow up', msg.messageId); return; };
+    const targets = getTNTTargets(vulntargets);
+
+    if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
+    await user.setLock();
+
+    await Promise.all(targets.map(async targetid => {
+      const target = await User.initUserId(targetid.split(':')[1]!);
+      await getUserRecord(target!); // make sure the user record exist in the database
+      await Promise.all([
+        timeout(target!, `You got hit by ${user.displayName}'s TNT!`, 60),
+        redis.del(targetid),
+        sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s TNT wybuh`),
+        createTimeoutRecord(user, target!, ITEMNAME),
+      ]);
+    }));
+
+    await Promise.all([
+      createUsedItemRecord(user, ITEMNAME),
+      changeItemCount(user, userObj, ITEMNAME)
+    ]);
+    await user.clearLock();
+    await sendMessage(`RIPBOZO ${user.displayName} exploded ${targets.length} chatter${targets.length === 1 ? '' : 's'} with their TNT RIPBOZO`);
+  }
+);
+
+function getTNTTargets<T>(arr: T[]): T[] {
+  if (arr.length <= 5) {
+    return arr;
+  };
+
+  const count = Math.floor(Math.random() * 6) + 5; // Random number between 5 and 10
+  const shuffled = [...arr].sort(() => 0.5 - Math.random()); // Shuffle array
+  return shuffled.slice(0, Math.min(count, arr.length)); // Return up to `count` entries
+};

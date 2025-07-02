@@ -1,6 +1,6 @@
 import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, streamerUsers } from "..";
 import { User } from "../user";
-import commands from "../commands";
+import commands, { sendMessage } from "../commands";
 import { redis } from "bun";
 import { isAdmin } from "../lib/admins";
 
@@ -42,6 +42,10 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
     };
 
     try { await selected.execute(msg, user!); }
-    catch (err) { console.error(err); };
+    catch (err) {
+      console.error(err);
+      await sendMessage('ERROR: Something went wrong', msg.messageId);
+      await user?.clearLock();
+    };
   };
 });

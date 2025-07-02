@@ -21,7 +21,7 @@ export default new Item(ITEMNAME, 'Blaster', 's',
     if (!target) { await sendMessage(`${messagequery[0]} doesn't exist`); return; };
     await getUserRecord(target); // make sure the user record exist in the database
 
-    if (await user.itemLock()) { await sendMessage('Can\'t use two items at once pepeW', msg.messageId); return; };
+    if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
     await user.setLock();
     const result = await timeout(target, `You got blasted by ${user.displayName}!`, 60);
     if (result.status) await Promise.all([

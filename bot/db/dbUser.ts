@@ -10,7 +10,7 @@ export async function getUserRecord(user: User): Promise<userRecord> {
 
     if (Object.keys(data.inventory).sort().toString() !== itemarray.sort().toString()) { // If the items in the user inventory are missing an item.
       itemarray.forEach(key => {
-        if (!(key in data.inventory)) Object.defineProperty(data.inventory, key, { value: 0 });
+        if (!(key in data.inventory)) data.inventory[key] = 0;
       });
     };
 

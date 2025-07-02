@@ -22,7 +22,7 @@ export default new Item(ITEMNAME, 'Grenade', 's',
 
     await getUserRecord(target!); // make sure the user record exist in the database
 
-    if (await user.itemLock()) { await sendMessage('Can\'t use two items at once pepeW', msg.messageId); return; };
+    if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
     await user.setLock();
     await Promise.all([
       timeout(target!, `You got hit by ${user.displayName}'s grenade!`, 60),

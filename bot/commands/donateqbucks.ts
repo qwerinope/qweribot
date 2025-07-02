@@ -10,6 +10,7 @@ export default new Command('donate', ['donate'], 'chatter', async (msg, user) =>
   if (!args[0]) { await sendMessage('Please specify a user', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());
   if (!target) { await sendMessage(`Chatter ${args[0]} doesn't exist`, msg.messageId); return; };
+  if (target.username === user.username) { await sendMessage("You can't give yourself qweribucks", msg.messageId); return; };
   const targetRecord = await getUserRecord(target);
   if (!args[1]) { await sendMessage('Please specify the amount of the item you want to give', msg.messageId); return; };
   const amount = Number(args[1]);
@@ -18,7 +19,7 @@ export default new Command('donate', ['donate'], 'chatter', async (msg, user) =>
   const userRecord = await getUserRecord(user);
   if (userRecord.balance < amount) { await sendMessage(`You can't give qweribucks you don't have!`, msg.messageId); return; };
 
-  if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give qweribucks. Please try again!', msg.messageId); return; };
+  if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give qweribucks', msg.messageId); return; };
 
   await Promise.all([
     user.setLock(),

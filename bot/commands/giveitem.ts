@@ -10,6 +10,7 @@ export default new Command('give', ['give'], 'chatter', async (msg, user) => {
   if (!args[0]) { await sendMessage('Please specify a user', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());
   if (!target) { await sendMessage(`Chatter ${args[0]} doesn't exist`, msg.messageId); return; };
+  if (target.username === user.username) { await sendMessage("You can't give yourself items", msg.messageId); return; };
   const targetRecord = await getUserRecord(target);
   if (!args[1]) { await sendMessage('Please specify an item to give', msg.messageId); return; };
   const item = items.get(args[1].toLowerCase());
@@ -21,7 +22,7 @@ export default new Command('give', ['give'], 'chatter', async (msg, user) => {
   const userRecord = await getUserRecord(user);
   if (userRecord.inventory[item.name]! < amount) { await sendMessage(`You can't give items you don't have!`, msg.messageId); return; };
 
-  if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give item. Please try again!', msg.messageId); return; };
+  if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give item', msg.messageId); return; };
 
   await Promise.all([
     user.setLock(),
