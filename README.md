@@ -1,21 +1,51 @@
 # qweribot
 
-## Commands
+## Concepts
 
-### About commands
-
-All of these command need a prefix. By default this is `!`
-
-Arguments like `[this]` are optional.  
-Arguments like `{this}` are required.
-
-Commands and items can be disabled and enabled by admins with the [`enable` and `disable` commands](#administrative-commands).
-Not all Commands can be disabled, the `DISABLEABLE` field shows if they can or can't. Items can always be disabled.
+### Admins
 
 Admins are defined by the streamer and can use special administrative commands on the bot.
 Admins don't need to have moderator status in the channel.
 The chatterbot and streamer always have admin status and cannot be stripped of admin powers.
 Only the streamer and chatterbot have the power to add and remove admins.
+
+### Commands
+
+Commands are functions that are triggered by typing an instruction in the chat.
+
+All commands need a prefix. By default this is `!`.
+
+Arguments like `[this]` are optional.  
+Arguments like `{this}` are required.
+
+Commands and items can be disabled and enabled by admins with the [`enable` and `disable` commands](#administrative-commands).
+Not all Commands can be disabled, the `DISABLEABLE` field below shows if they can or can't. Items can always be disabled.
+
+A full list of Commands can be found [here](#commands-1)
+
+### Items and Itemlock
+
+Items are commands that can only be used when the chatter has them in their inventory.
+
+Every user has a wallet with qweribucks, and an inventory. There is no limit to how many items each chatter can have.
+
+When using/giving an item or qbucks the itemlock will be set at the start of the transaction and cleared when it ends. This is to prevent items being duplicated.
+Admins can toggle the itemlock on chatters with the [`itemlock`](#administrative-commands) command. This will stop a chatter from giving, receiving and using items and qweribucks.
+
+Items can be used with the alias as a command (example: `blast qwerinope`) or with the [`use` command](#item-commands).
+
+When an Item is used it is removed from the inventory of the chatter.
+
+### Chatterbot/streamerbot
+
+This depends on if the `CHATTER_IS_STREAMER` environment variable is set.
+If it's `true`, the chatterbot and streamerbot are the same account.
+
+The chatterbot is the user that types in chat. They have very minimal required scopes as interacting with the stream is always done by the streamerbot. Only sending chat messages is done by the chatterbot.
+
+The streamerbot (not that streamerbot) is the broadcaster. This bot needs them to authenticate as well. This account will be used to perform moderation and watch the chat.
+
+## Commands
 
 ### Fun commands
 
@@ -57,8 +87,6 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `removeadmin {target}`|Removes an admin|streamer/botchatter|`removeadmin`|:x:
 
 ## Items
-
-Items can be used with the alias as a command (example: `!grenade`) or with the [`use` command](#item-commands).
 
 NAME|COMMAND|FUNCTION|ALIASES
 -|-|-|-
