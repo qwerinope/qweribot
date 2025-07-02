@@ -78,8 +78,7 @@ export class User {
 
   public async itemLock(): Promise<boolean> {
     const lock = await redis.get(`user:${this.id}:itemlock`);
-    if (lock === '0') return false;
-    return true;
+    return lock === '1';
   };
 
   public async setLock(): Promise<void> {
