@@ -52,7 +52,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `disablecommand {command/item}`|Disable a specific command/item|admins|`disablecommand`|:x:
 `enablecommand {command/item}`|Re-enable a specific command/item|admins|`enablecommand`|:x:
 `getadmins`|Get a list of every admin in the channel|anyone|`getadmins`|:x:
-`itemlock {target}`|Toggle the itemlock on the specified target|admins|:x:
+`itemlock {target}`|Toggle the itemlock on the specified target|admins|`itemlock`|:x:
 `addadmin {target}`|Adds an admin|streamer/botchatter|`addadmin`|:x:
 `removeadmin {target}`|Removes an admin|streamer/botchatter|`removeadmin`|:x:
 
