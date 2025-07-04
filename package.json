@@ -11,7 +11,7 @@
   "type": "module",
   "dependencies": {
     "@twurple/auth": "^7.3.0",
-    "@twurple/eventsub-http": "^7.3.0",
+    "@twurple/eventsub-ws": "^7.3.0",
     "pocketbase": "^0.26.1"
   }
 }
