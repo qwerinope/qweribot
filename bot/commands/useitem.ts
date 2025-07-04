@@ -9,4 +9,4 @@ export default new Command('use', ['use'], 'chatter', async (msg, user) => {
   if (!selection) { await sendMessage(`'${messagequery[0]}' is not an item`, msg.messageId); return; };
   if (await redis.sismember('disabledcommands', selection.name)) { await sendMessage(`The ${selection.prettyName} item is disabled`, msg.messageId); return; };
   await selection.execute(msg, user);
-});
+}, false);
