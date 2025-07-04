@@ -1,6 +1,7 @@
 import pocketbase, { type userRecord } from "./connection";
 import { emptyInventory, itemarray } from "../items";
 import type { User } from "../user";
+import { logger } from "..";
 const pb = pocketbase.collection('users');
 
 /** Use this function to both ensure existance and to retreive data */
@@ -38,7 +39,7 @@ export async function updateUserRecord(user: User, newData: userRecord): Promise
     await pb.update(user.id, newData);
     return true;
   } catch (err) {
-    console.error(err);
+    logger.err(err as string);
     return false;
   };
 };

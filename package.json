@@ -12,6 +12,7 @@
   "dependencies": {
     "@twurple/auth": "^7.3.0",
     "@twurple/eventsub-ws": "^7.3.0",
+    "kleur": "^4.1.5",
     "pocketbase": "^0.26.1"
   }
 }

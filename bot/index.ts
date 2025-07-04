@@ -2,15 +2,24 @@ import { createAuthProvider } from "./auth";
 import { ApiClient } from "@twurple/api";
 import { EventSubWsListener } from "@twurple/eventsub-ws";
 import { addAdmin } from "./lib/admins";
+import kleur from "kleur";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users"];
 
+export const logger = {
+  err: (arg: string) => console.error(kleur.red().bold().italic('[ERROR] ') + kleur.red().bold(arg)),
+  warn: (arg: string) => console.warn(kleur.yellow().bold().italic('[WARN] ') + kleur.yellow().bold(arg)),
+  info: (arg: string) => console.info(kleur.white().bold().italic('[INFO] ') + kleur.white(arg)),
+  ok: (arg: string) => console.info(kleur.green().bold(arg)),
+  enverr: (arg: string) => logger.err(`Please provide a ${arg} in the .env`)
+};
+
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
 export const chatterId = process.env.CHATTER_ID ?? "";
-if (chatterId === "") { console.error('Please set a CHATTER_ID in the .env'); process.exit(1); };
+if (chatterId === "") { logger.enverr('CHATTER_ID'); process.exit(1); };
 export const streamerId = process.env.STREAMER_ID ?? "";
-if (streamerId === "") { console.error('Please set a STREAMER_ID in the .env'); process.exit(1); };
+if (streamerId === "") { logger.enverr('STREAMER_ID'); process.exit(1); };
 
 export const chatterAuthProvider = await createAuthProvider(chatterId, singleUserMode ? CHATTERINTENTS.concat(STREAMERINTENTS) : CHATTERINTENTS);
 export const streamerAuthProvider = singleUserMode ? undefined : await createAuthProvider(streamerId, STREAMERINTENTS, true);

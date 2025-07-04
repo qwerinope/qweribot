@@ -1,24 +1,25 @@
-import { eventSub, streamerApi, streamerId } from "..";
+import kleur from "kleur";
+import { eventSub, streamerApi, streamerId, logger } from "..";
 
 eventSub.onRevoke(event => {
-  console.info(`Successfully revoked EventSub subscription: ${event.id}`);
+  logger.ok(`Successfully revoked EventSub subscription: ${event.id}`);
 });
 
 eventSub.onSubscriptionCreateSuccess(event => {
-  console.info(`Successfully created EventSub subscription: ${event.id}`);
+  logger.ok(`Successfully created EventSub subscription: ${kleur.underline(event.id)}`);
   deleteDuplicateSubscriptions.refresh();
 });
 
 eventSub.onSubscriptionCreateFailure(event => {
-  console.error(`Failed to create EventSub subscription: ${event.id}`);
+  logger.err(`Failed to create EventSub subscription: ${event.id}`);
 });
 
 eventSub.onSubscriptionDeleteSuccess(event => {
-  console.info(`Successfully deleted EventSub subscription: ${event.id}`);
+  logger.ok(`Successfully deleted EventSub subscription: ${event.id}`);
 });
 
 eventSub.onSubscriptionDeleteFailure(event => {
-  console.error(`Failed to delete EventSub subscription: ${event.id}`);
+  logger.err(`Failed to delete EventSub subscription: ${event.id}`);
 });
 
 import { readdir } from 'node:fs/promises';
@@ -36,12 +37,12 @@ import { StaticAuthProvider } from "@twurple/auth";
 import { ApiClient, HelixEventSubSubscription } from "@twurple/api";
 
 const deleteDuplicateSubscriptions = setTimeout(async () => {
-  console.info('Deleting all double subscriptions');
+  logger.info('Deleting all double subscriptions');
   const tokendata = await streamerApi.getTokenInfo();
   const authdata = await getAuthRecord(streamerId, []);
   const tempauth = new StaticAuthProvider(tokendata.clientId, authdata?.accesstoken.accessToken!);
   const tempapi: ApiClient = new ApiClient({ authProvider: tempauth });
-  console.info('Created the temporary API client');
+  logger.info('Created the temporary API client');
   const subs = await tempapi.eventSub.getSubscriptionsForStatus('enabled');
   const seen = new Map();
   const duplicates: HelixEventSubSubscription[] = [];
@@ -58,8 +59,8 @@ const deleteDuplicateSubscriptions = setTimeout(async () => {
 
   for (const sub of duplicates) {
     await tempapi.eventSub.deleteSubscription(sub.id);
-    console.info(`Deleted sub: id: ${sub.id}, type: ${sub.type}`);
+    logger.ok(`Deleted sub: id: ${sub.id}, type: ${sub.type}`);
   };
-  if (duplicates.length === 0) console.info('No duplicate subscriptions found');
-  console.info('Removed temporary API client');
+  if (duplicates.length === 0) logger.ok('No duplicate subscriptions found');
+  else logger.ok('Deleted all duplicate EventSub subscriptions');
 }, 5000);

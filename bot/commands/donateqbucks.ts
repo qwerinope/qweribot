@@ -4,6 +4,7 @@ import { getUserRecord } from "../db/dbUser";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { changeBalance } from "../lib/changeBalance";
 import { User } from "../user";
+import { logger } from "..";
 
 export default new Command('donate', ['donate'], 'chatter', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);
@@ -37,7 +38,7 @@ export default new Command('donate', ['donate'], 'chatter', async (msg, user) =>
   } else {
     // TODO: Rewrite this section
     await sendMessage(`Failed to give ${target.displayName} ${amount} qbuck${(amount === 1 ? '' : 's')}`, msg.messageId);
-    console.error(`WARNING: Qweribucks donation failed: target success: ${data[0] !== false}, donator success: ${data[1] !== false}`);
+    logger.err(`WARNING: Qweribucks donation failed: target success: ${data[0] !== false}, donator success: ${data[1] !== false}`);
   };
 
   await Promise.all([

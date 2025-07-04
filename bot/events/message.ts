@@ -1,10 +1,10 @@
-import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, streamerUsers } from "..";
+import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, streamerUsers, logger } from "..";
 import { User } from "../user";
 import commands, { sendMessage } from "../commands";
 import { redis } from "bun";
 import { isAdmin } from "../lib/admins";
 
-console.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
+logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
 eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
   // return if double user mode is on and the chatter says something, we don't need them
@@ -43,7 +43,7 @@ eventSub.onChannelChatMessage(streamerId, streamerId, async msg => {
 
     try { await selected.execute(msg, user!); }
     catch (err) {
-      console.error(err);
+      logger.err(err as string);
       await sendMessage('ERROR: Something went wrong', msg.messageId);
       await user?.clearLock();
     };

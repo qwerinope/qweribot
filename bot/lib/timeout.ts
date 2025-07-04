@@ -1,4 +1,4 @@
-import { streamerApi, streamerId, streamerUsers } from "..";
+import { logger, streamerApi, streamerId, streamerUsers } from "..";
 import { User } from "../user";
 
 type SuccessfulTimeout = { status: true };
@@ -25,7 +25,7 @@ export const timeout = async (user: User, reason: string, duration?: number): Pr
   try {
     await streamerApi.moderation.banUser(streamerId, { user: user.id, reason, duration });
   } catch (err) {
-    console.error(err);
+    logger.err(err as string);
     return { status: false, reason: 'unknown' }
   };
 

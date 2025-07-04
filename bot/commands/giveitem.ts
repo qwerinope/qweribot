@@ -1,4 +1,5 @@
 import { Command, sendMessage } from ".";
+import { logger } from "..";
 import type { userRecord } from "../db/connection";
 import { getUserRecord } from "../db/dbUser";
 import items, { changeItemCount } from "../items";
@@ -41,7 +42,7 @@ export default new Command('give', ['give'], 'chatter', async (msg, user) => {
   } else {
     // TODO: Rewrite this section
     await sendMessage(`Failed to give ${target.displayName} ${amount} ${item.prettyName + (amount === 1 ? '' : item.plural)}`, msg.messageId);
-    console.error(`WARNING: Item donation failed: target success: ${data[0] !== false}, donator success: ${data[1] !== false}`);
+    logger.warn(`WARNING: Item donation failed: target success: ${data[0] !== false}, donator success: ${data[1] !== false}`);
   };
   await user.clearLock();
   await target.clearLock();

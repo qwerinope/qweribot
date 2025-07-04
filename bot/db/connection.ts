@@ -1,9 +1,10 @@
 import type { AccessToken } from "@twurple/auth";
 import PocketBase, { RecordService } from "pocketbase";
 import type { inventory } from "../items";
+import { logger } from "..";
 
 const pocketbaseurl = process.env.POCKETBASE_URL ?? "localhost:8090";
-if (pocketbaseurl === "") { console.error("Please provide a POCKETBASE_URL in .env."); process.exit(1); };
+if (pocketbaseurl === "") { logger.enverr("POCKETBASE_URL"); process.exit(1); };
 
 export type authRecord = {
   id: string;
