@@ -2,7 +2,7 @@ import kleur from "kleur";
 import { eventSub, streamerApi, streamerId, logger } from "..";
 
 eventSub.onRevoke(event => {
-  logger.ok(`Successfully revoked EventSub subscription: ${event.id}`);
+  logger.ok(`Successfully revoked EventSub subscription: ${kleur.underline(event.id)}`);
 });
 
 eventSub.onSubscriptionCreateSuccess(event => {
@@ -11,15 +11,15 @@ eventSub.onSubscriptionCreateSuccess(event => {
 });
 
 eventSub.onSubscriptionCreateFailure(event => {
-  logger.err(`Failed to create EventSub subscription: ${event.id}`);
+  logger.err(`Failed to create EventSub subscription: ${kleur.underline(event.id)}`);
 });
 
 eventSub.onSubscriptionDeleteSuccess(event => {
-  logger.ok(`Successfully deleted EventSub subscription: ${event.id}`);
+  logger.ok(`Successfully deleted EventSub subscription: ${kleur.underline(event.id)}`);
 });
 
 eventSub.onSubscriptionDeleteFailure(event => {
-  logger.err(`Failed to delete EventSub subscription: ${event.id}`);
+  logger.err(`Failed to delete EventSub subscription: ${kleur.underline(event.id)}`);
 });
 
 import { readdir } from 'node:fs/promises';
