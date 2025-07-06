@@ -78,6 +78,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
 `getcommands [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcommands` `getc`|:x:
+`gettimeout {target}`|Get the remaining timeout duration of targeted user|anyone|`gettimeout` `gett`|:white_check_mark:
 `vulnchatters`|Get amount of chatters vulnerable to explosives|anyone|`vulnchatters` `vulnc`|:white_check_mark:
 `disablecommand {command/item}`|Disable a specific command/item|admins|`disablecommand`|:x:
 `enablecommand {command/item}`|Re-enable a specific command/item|admins|`enablecommand`|:x:
@@ -91,4 +92,6 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 NAME|COMMAND|FUNCTION|ALIASES
 -|-|-|-
 Blaster|`blaster {target}`|Times targeted user out for 60 seconds|`blaster` `blast`
+Silver Bullet|`silverbullet {target}`|Times targeted user out for 24 hours|`silverbullet` `execute`
 Grenade|`grenade`|Times a random vulnerable chatter out for 60 seconds|`grenade`
+TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`

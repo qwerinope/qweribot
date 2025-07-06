@@ -7,14 +7,14 @@ import parseCommandArgs from "../lib/parseCommandArgs";
 import { timeout } from "../lib/timeout";
 import { User } from "../user";
 
-const ITEMNAME = 'blaster';
+const ITEMNAME = 'silverbullet';
 
-export default new Item(ITEMNAME, 'Blaster', 's',
-  'Times a specific person out for 60 seconds',
-  ['blaster', 'blast'],
+export default new Item(ITEMNAME, 'Silver bullet', 's',
+  'Times a specific person out for 24 hours',
+  ['execute', 'silverbullet'],
   async (msg, user) => {
     const userObj = await getUserRecord(user);
-    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any blasters!`, msg.messageId); return; };
+    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any silver bullets!`, msg.messageId); return; };
     const messagequery = parseCommandArgs(msg.messageText);
     if (!messagequery[0]) { await sendMessage('Please specify a target'); return; };
     const target = await User.initUsername(messagequery[0].toLowerCase());
@@ -23,9 +23,9 @@ export default new Item(ITEMNAME, 'Blaster', 's',
 
     if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
     await user.setLock();
-    const result = await timeout(target, `You got blasted by ${user.displayName}!`, 60);
+    const result = await timeout(target, `You got blasted by ${user.displayName}!`, 60 * 60 * 24);
     if (result.status) await Promise.all([
-      sendMessage(`GOTTEM ${target.displayName} got BLASTED by ${user.displayName} GOTTEM`),
+      sendMessage(`${target.displayName} RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO`),
       changeItemCount(user, userObj, ITEMNAME),
       createTimeoutRecord(user, target, ITEMNAME),
       createUsedItemRecord(user, ITEMNAME)
