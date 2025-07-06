@@ -1,4 +1,5 @@
-import { logger, streamerApi, streamerId, streamerUsers } from "..";
+import { streamerApi, streamerId, streamerUsers } from "..";
+import logger from "./logger";
 import { User } from "../user";
 
 type SuccessfulTimeout = { status: true };

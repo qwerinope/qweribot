@@ -2,18 +2,10 @@ import { createAuthProvider } from "./auth";
 import { ApiClient } from "@twurple/api";
 import { EventSubWsListener } from "@twurple/eventsub-ws";
 import { addAdmin } from "./lib/admins";
-import kleur from "kleur";
+import logger from "./lib/logger";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users"];
-
-export const logger = {
-  err: (arg: string) => console.error(kleur.red().bold().italic('[ERROR] ') + kleur.red().bold(arg)),
-  warn: (arg: string) => console.warn(kleur.yellow().bold().italic('[WARN] ') + kleur.yellow().bold(arg)),
-  info: (arg: string) => console.info(kleur.white().bold().italic('[INFO] ') + kleur.white(arg)),
-  ok: (arg: string) => console.info(kleur.green().bold(arg)),
-  enverr: (arg: string) => logger.err(`Please provide a ${arg} in the .env`)
-};
 
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
 export const chatterId = process.env.CHATTER_ID ?? "";

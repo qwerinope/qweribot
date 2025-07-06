@@ -1,6 +1,6 @@
 import pocketbase from "./connection";
 import { User } from "../user";
-import { logger } from "..";
+import logger from "../lib/logger";
 const pb = pocketbase.collection('usedItems');
 
 export async function createUsedItemRecord(user: User, item: string): Promise<void> {

@@ -1,10 +1,10 @@
 import { Command, sendMessage } from ".";
-import { logger } from "..";
 import type { userRecord } from "../db/connection";
 import { getUserRecord } from "../db/dbUser";
 import items, { changeItemCount } from "../items";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { User } from "../user";
+import logger from "../lib/logger";
 
 export default new Command('give', ['give'], 'chatter', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);

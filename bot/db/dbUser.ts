@@ -1,7 +1,8 @@
 import pocketbase, { type userRecord } from "./connection";
 import { emptyInventory, itemarray } from "../items";
 import type { User } from "../user";
-import { logger } from "..";
+import logger from "../lib/logger";
+
 const pb = pocketbase.collection('users');
 
 /** Use this function to both ensure existance and to retreive data */

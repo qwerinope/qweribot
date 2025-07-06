@@ -1,5 +1,6 @@
 import kleur from "kleur";
-import { eventSub, streamerApi, streamerId, logger } from "..";
+import { eventSub, streamerApi, streamerId } from "..";
+import logger from "../lib/logger";
 
 eventSub.onRevoke(event => {
   logger.ok(`Successfully revoked EventSub subscription: ${kleur.underline(event.id)}`);

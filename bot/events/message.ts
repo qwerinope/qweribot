@@ -1,8 +1,9 @@
-import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, streamerUsers, logger } from "..";
+import { chatterId, streamerId, eventSub, commandPrefix, singleUserMode, streamerUsers } from "..";
 import { User } from "../user";
 import commands, { sendMessage } from "../commands";
 import { redis } from "bun";
 import { isAdmin } from "../lib/admins";
+import logger from "../lib/logger";
 
 logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 

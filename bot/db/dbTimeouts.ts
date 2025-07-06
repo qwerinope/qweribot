@@ -1,6 +1,6 @@
 import pocketbase from "./connection";
 import { User } from "../user";
-import { logger } from "..";
+import logger from "../lib/logger";
 const pb = pocketbase.collection('timeouts');
 
 export async function createTimeoutRecord(user: User, target: User, item: string): Promise<void> {

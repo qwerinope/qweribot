@@ -4,7 +4,7 @@ import { getUserRecord } from "../db/dbUser";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { changeBalance } from "../lib/changeBalance";
 import { User } from "../user";
-import { logger } from "..";
+import logger from "../lib/logger";
 
 export default new Command('donate', ['donate'], 'chatter', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);
