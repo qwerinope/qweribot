@@ -78,14 +78,18 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
 `getcommands [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcommands` `getc`|:x:
+`getcheers [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcheers` `getcheer`|:x:
 `gettimeout {target}`|Get the remaining timeout duration of targeted user|anyone|`gettimeout` `gett`|:white_check_mark:
 `vulnchatters`|Get amount of chatters vulnerable to explosives|anyone|`vulnchatters` `vulnc`|:white_check_mark:
 `disablecommand {command/item}`|Disable a specific command/item|admins|`disablecommand`|:x:
 `enablecommand {command/item}`|Re-enable a specific command/item|admins|`enablecommand`|:x:
+`disablecheer {cheer}`|Disable a specific cheer event|admins|`disablecheer`|:x:
+`enablecheer {cheer}`|Re-enable a specific cheer event|admins|`enablecheer`|:x:
 `getadmins`|Get a list of every admin in the channel|anyone|`getadmins`|:x:
 `itemlock {target}`|Toggle the itemlock on the specified target|admins|`itemlock`|:x:
-`addadmin {target}`|Adds an admin|streamer/botchatter|`addadmin`|:x:
-`removeadmin {target}`|Removes an admin|streamer/botchatter|`removeadmin`|:x:
+`testcheer {amount} [args]`|Create a fake cheering event|streamer/chatterbot|`testcheer`|:x:
+`addadmin {target}`|Adds an admin|streamer/chatterbot|`addadmin`|:x:
+`removeadmin {target}`|Removes an admin|streamer/chatterbot|`removeadmin`|:x:
 
 ## Items
 
@@ -95,3 +99,9 @@ Blaster|`blaster {target}`|Times targeted user out for 60 seconds|`blaster` `bla
 Silver Bullet|`silverbullet {target}`|Times targeted user out for 24 hours|`silverbullet` `execute`
 Grenade|`grenade`|Times a random vulnerable chatter out for 60 seconds|`grenade`
 TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`
+
+## Cheers
+
+NAME|AMOUNT|USAGE|FUNCTION
+-|-|-|-
+`timeout`|100|`cheer100 {target}`|Times specified user out for 1 minute

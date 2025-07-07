@@ -5,7 +5,7 @@ import { addAdmin } from "./lib/admins";
 import logger from "./lib/logger";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
-const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users"];
+const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read"];
 
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
 export const chatterId = process.env.CHATTER_ID ?? "";
