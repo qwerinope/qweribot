@@ -61,7 +61,7 @@ async function handleChatMessage(msg: EventSubChannelChatMessageEvent) {
   };
 };
 
-export async function handleCheer(msg: EventSubChannelChatMessageEvent, bits: number, testmessage = false) {
+export async function handleCheer(msg: EventSubChannelChatMessageEvent, bits: number) {
   const selection = cheers.get(bits);
   if (!selection) return;
 
@@ -73,7 +73,7 @@ export async function handleCheer(msg: EventSubChannelChatMessageEvent, bits: nu
   if (disabledcheers.includes(selection.name)) { await sendMessage(`The ${selection.name} cheer is disabled`); return; };
 
   try {
-    selection.execute(msg, user!, testmessage);
+    selection.execute(msg, user!);
   } catch (err) {
     logger.err(err as string);
   };

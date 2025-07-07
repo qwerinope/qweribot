@@ -4,8 +4,8 @@ import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
 export class Cheer {
   public readonly name: string;
   public readonly amount: number;
-  public readonly execute: (msg: EventSubChannelChatMessageEvent, sender: User, testmessage: boolean) => Promise<void>;
-  constructor(name: string, amount: number, execution: (msg: EventSubChannelChatMessageEvent, sender: User, testmessage: boolean) => Promise<void>) {
+  public readonly execute: (msg: EventSubChannelChatMessageEvent, sender: User) => Promise<void>;
+  constructor(name: string, amount: number, execution: (msg: EventSubChannelChatMessageEvent, sender: User) => Promise<void>) {
     this.name = name.toLowerCase();
     this.amount = amount;
     this.execute = execution;

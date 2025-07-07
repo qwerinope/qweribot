@@ -7,15 +7,16 @@ import { User } from "../user";
 import { timeout } from "../lib/timeout";
 import { createTimeoutRecord } from "../db/dbTimeouts";
 import logger from "../lib/logger";
+import { parseCheerArgs } from "../lib/parseCommandArgs";
 
-export default new Cheer('timeout', 100, async (msg, user, testmessage) => {
-  const args = msg.messageText.split(' ');
-  if (testmessage) { args.shift(); args.shift(); }; //Discard the '!testcheer' and '100' arguments
+export default new Cheer('timeout', 100, async (msg, user) => {
+  const args = parseCheerArgs(msg.messageText);
   if (!args[0]) { await handleNoBlasterTarget(msg, user, false); return; };
   const target = await User.initUsername(args[0].toLowerCase());
   if (!target) { await handleNoBlasterTarget(msg, user, false); return; };
+  await getUserRecord(target);
 
-  const result = await timeout(target, `You got blasted by ${user.displayName}!`)
+  const result = await timeout(target, `You got blasted by ${user.displayName}!`, 60);
   if (result.status) await Promise.all([
     sendMessage(`GOTTEM ${target.displayName} got BLASTED by ${user.displayName} GOTTEM`),
     createTimeoutRecord(user, target, 'blaster'),

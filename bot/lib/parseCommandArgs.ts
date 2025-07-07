@@ -7,3 +7,10 @@ export default function parseCommandArgs(input: string) {
   const b = a.trim().split(' ').slice(sliceLength);
   return b;
 };
+
+export function parseCheerArgs(input: string) {
+  const a = input.slice(commandPrefix.length);
+  const sliceLength = a.startsWith('testcheer') ? 2 : 0;
+  const b = a.trim().split(' ').slice(sliceLength);
+  return b;
+};
