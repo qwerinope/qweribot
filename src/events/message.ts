@@ -6,12 +6,14 @@ import { redis } from "bun";
 import { isAdmin } from "../lib/admins";
 import cheers from "../cheers";
 import logger from "../lib/logger";
+import { addMessageToChatWidget } from "../chatwidget/message";
 
 logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
 eventSub.onChannelChatMessage(streamerId, streamerId, parseChatMessage);
 
 async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
+  addMessageToChatWidget(msg);
   if (!singleUserMode && msg.chatterId === chatterId) return;
   // return if double user mode is on and the chatter says something, we don't need them
 

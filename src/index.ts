@@ -31,3 +31,5 @@ export const streamerUsers = [chatterId, streamerId];
 streamerUsers.forEach(async id => await addAdmin(id));
 
 await import("./events");
+
+await import("./chatwidget");

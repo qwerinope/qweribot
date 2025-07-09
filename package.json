@@ -1,6 +1,6 @@
 {
   "name": "qweribot",
-  "module": "bot/index.ts",
+  "module": "src/index.ts",
   "devDependencies": {
     "@types/bun": "latest"
   },
