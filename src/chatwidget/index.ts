@@ -33,12 +33,11 @@ const server = Bun.serve({
     },
   },
   websocket: {
-    open(ws) {
-      logger.ok('Opened websocket connection to chatwidget');
-      ws.sendText(JSON.stringify({
+    open(_ws) {
+      sendTwitchEvent({
         function: 'serverNotification',
         message: 'Sucessfully opened websocket connection'
-      }));
+      });
     },
     message(ws, omessage) {
       const message = JSON.parse(omessage.toString());
@@ -47,10 +46,10 @@ const server = Bun.serve({
         case 'subscribe':
           if (!message.target) return;
           ws.subscribe(message.target);
-          ws.send(JSON.stringify({
+          sendTwitchEvent({
             function: 'serverNotification',
             message: `Successfully subscribed to all ${message.target} events`
-          }));
+          });
           break;
       };
     },
@@ -58,7 +57,11 @@ const server = Bun.serve({
       ws.close();
     }
   },
-  development: true
+  development: false,
+  error(error) {
+    logger.err(`Error at chatwidget server: ${error}`);
+    return new Response("Internal Server Error", { status: 500 })
+  },
 });
 
 export async function sendTwitchEvent(event: twitchEventData) {
