@@ -1,5 +1,6 @@
 import { chatterApi, streamerId } from "..";
 import logger from "../lib/logger";
+import type { twitchEventData } from "./websockettypes";
 import chatWidget from "./www/index.html";
 
 type badgeObject = {
@@ -11,7 +12,7 @@ type badgeObject = {
 const port = Number(process.env.CHATWIDGET_PORT);
 if (isNaN(port)) { logger.enverr("CHATWIDGET_PORT"); process.exit(1); };
 
-export default Bun.serve({
+const server = Bun.serve({
   port,
   fetch(request, server) {
     if (server.upgrade(request)) return;
@@ -59,6 +60,10 @@ export default Bun.serve({
   },
   development: true
 });
+
+export async function sendTwitchEvent(event: twitchEventData) {
+  server.publish('twitch', JSON.stringify(event));
+};
 
 import { HelixChatBadgeSet } from "@twurple/api";
 

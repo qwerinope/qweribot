@@ -1,5 +1,6 @@
-import { type eventData } from "../../websockettypes";
+import './style.css';
 
+import { type twitchEventData } from "../../websockettypes";
 import { parseMessage } from './createMessage';
 
 const socket = new WebSocket(`ws://${location.host}`);
@@ -12,7 +13,7 @@ socket.onopen = () => {
 };
 
 socket.onmessage = event => {
-  const data: eventData = JSON.parse(event.data);
+  const data: twitchEventData = JSON.parse(event.data);
   switch (data.function) {
     case 'createMessage':
       const newMessageElement = parseMessage(data);

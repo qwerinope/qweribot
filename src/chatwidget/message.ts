@@ -1,8 +1,8 @@
 import { EventSubChannelChatMessageEvent, EventSubChannelChatMessageDeleteEvent } from "@twurple/eventsub-base";
-import chatwserver from ".";
+import { sendTwitchEvent } from ".";
 
 export async function addMessageToChatWidget(msg: EventSubChannelChatMessageEvent) {
-  chatwserver.publish('twitch', JSON.stringify({
+  sendTwitchEvent({
     function: 'createMessage',
     messageParts: msg.messageParts,
     displayName: msg.chatterDisplayName,
@@ -10,12 +10,12 @@ export async function addMessageToChatWidget(msg: EventSubChannelChatMessageEven
     chatterColor: msg.color,
     messageId: msg.messageId,
     badgeData: msg.badges
-  }));
+  });
 };
 
 export async function deleteMessageFromChatWidget(msg: EventSubChannelChatMessageDeleteEvent) {
-  chatwserver.publish('twitch', JSON.stringify({
+  sendTwitchEvent({
     function: 'deleteMessage',
     messageId: msg.messageId
-  }));
+  })
 };

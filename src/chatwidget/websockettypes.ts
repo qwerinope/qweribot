@@ -1,8 +1,25 @@
-export type createMessageEvent = { function: 'createMessage', messageParts: EventSubChatMessagePart[], messageId: string, displayName: string, chatterId: string, chatterColor: null | string, badgeData: string[] };
-export type deleteMessageEvent = { function: 'deleteMessage', messageId: string };
-export type serverNotificationEvent = { function: 'serverNotification', message: string };
+export type createMessageEvent = {
+  function: 'createMessage';
+  messageParts: EventSubChatMessagePart[];
+  messageId: string;
+  displayName: string;
+  chatterId: string;
+  chatterColor: null | string;
+  badgeData: Record<string, string>;
+};
 
-export type eventData = createMessageEvent | deleteMessageEvent | serverNotificationEvent;
+export type deleteMessageEvent = {
+  function: 'deleteMessage';
+  messageId: string;
+};
+export type serverNotificationEvent = {
+  function: 'serverNotification';
+  message: string;
+};
+
+export type twitchEventData = createMessageEvent |
+  deleteMessageEvent |
+  serverNotificationEvent;
 
 // The types below are taken straight from @twurple/eventsub-base
 // I would import this from the package, but that's impossible

@@ -1,5 +1,3 @@
-import './style.css';
-
 const badges = await fetch(`http://${location.host}/getBadges`).then(data => data.json());
 
 import { type createMessageEvent } from '../../websockettypes';
