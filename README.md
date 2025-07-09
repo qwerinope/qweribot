@@ -54,6 +54,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `ping`|Testing command|anyone|`ping`|:white_check_mark:
 `yabai`|Random number|anyone|`yabai` `goon`|:white_check_mark:
 `seiso`|Random number|anyone|`seiso`|:white_check_mark:
+`timeout {target}`|Times targeted user out for 60 seconds (costs 100 qweribucks)|anyone|`timeout`|:white_check_mark:
 
 ### Qweribucks commands
 
@@ -104,4 +105,5 @@ TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`
 
 NAME|AMOUNT|USAGE|FUNCTION
 -|-|-|-
-`timeout`|100|`cheer100 {target}`|Times specified user out for 1 minute
+`timeout`|100|`cheer100 {target}`|Times specified user out for 1 minute. On failure gives cheerer a blaster
+`execute`|6666|`cheer6666 {target}`|Times specified user out for 24 hours. On failure gives cheerer a silver bullet
