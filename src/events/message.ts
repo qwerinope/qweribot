@@ -7,6 +7,7 @@ import { isAdmin } from "../lib/admins";
 import cheers from "../cheers";
 import logger from "../lib/logger";
 import { addMessageToChatWidget } from "../chatwidget/message";
+import { isInvuln } from "../lib/invuln";
 
 logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
@@ -14,8 +15,6 @@ eventSub.onChannelChatMessage(streamerId, streamerId, parseChatMessage);
 
 async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
   addMessageToChatWidget(msg);
-  if (!singleUserMode && msg.chatterId === chatterId) return;
-  // return if double user mode is on and the chatter says something, we don't need them
 
   const user = await User.initUsername(msg.chatterName);
 
@@ -27,7 +26,7 @@ async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
   // and both are usable to target the same user (id is the same)
   // The only problem would be if a user changed their name and someone else took their name right after
 
-  if (!streamerUsers.includes(msg.chatterId)) user?.makeVulnerable(); // Make the user vulnerable to explosions if not streamerbot or chatterbot
+  if (!await isInvuln(user?.id!)) user?.setVulnerable(); // Make the user vulnerable to explosions if not marked as invuln
 
   if (!msg.isCheer && !msg.isRedemption) await handleChatMessage(msg, user!)
   else if (msg.isCheer && !msg.isRedemption) await handleCheer(msg, msg.bits, user!);

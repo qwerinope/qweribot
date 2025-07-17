@@ -89,12 +89,12 @@ export class User {
     await redis.set(`user:${this.id}:itemlock`, '0');
   };
 
-  public async makeVulnerable(): Promise<void> {
-    await redis.set(`vulnchatters:${this.id}`, this.displayName);
-    await redis.expire(`vulnchatters:${this.id}`, Math.floor(EXPIRETIME / 2)); // Vulnerable chatter gets removed from the pool after 30 minutes
+  public async setVulnerable(): Promise<void> {
+    await redis.set(`user:${this.id}:vulnerable`, '1');
+    await redis.expire(`user:${this.id}:vulnerable`, Math.floor(EXPIRETIME / 2)); // Vulnerable chatter gets removed from the pool after 30 minutes
   };
 
-  public async makeInvulnerable(): Promise<void> {
-    await redis.del(`vulnchatters:${this.id}`);
+  public async clearVulnerable(): Promise<void> {
+    await redis.del(`user:${this.id}:vulnerable`);
   };
 };

@@ -1,9 +1,10 @@
-import { streamerApi, streamerId, streamerUsers } from "..";
+import { streamerApi, streamerId } from "..";
 import logger from "./logger";
 import { User } from "../user";
+import { isInvuln } from "./invuln";
 
-type SuccessfulTimeout = { status: true };
-type UnSuccessfulTimeout = { status: false; reason: 'banned' | 'unknown' | 'illegal' };
+type SuccessfulTimeout = { status: true; };
+type UnSuccessfulTimeout = { status: false; reason: 'banned' | 'unknown' | 'illegal'; };
 type TimeoutResult = SuccessfulTimeout | UnSuccessfulTimeout;
 
 /** Give a user a timeout/ban
@@ -11,7 +12,7 @@ type TimeoutResult = SuccessfulTimeout | UnSuccessfulTimeout;
  * @param reason - reason for timeout/ban
  * @param duration - duration of timeout. don't specifiy for ban */
 export const timeout = async (user: User, reason: string, duration?: number): Promise<TimeoutResult> => {
-  if (streamerUsers.includes(user.id)) return { status: false, reason: 'illegal' };
+  if (await isInvuln(user.id)) return { status: false, reason: 'illegal' }; // Don't timeout invulnerable chatters
 
   // Check if user already has a timeout
   const banStatus = await streamerApi.moderation.getBannedUsers(streamerId, { userId: user.id }).then(a => a.data);

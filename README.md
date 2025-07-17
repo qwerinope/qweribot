@@ -8,6 +8,16 @@ Admins are defined by the streamer and can use special administrative commands o
 Admins don't need to have moderator status in the channel.
 The chatterbot and streamer always have admin status and cannot be stripped of admin powers.
 Only the streamer and chatterbot have the power to add and remove admins.
+Admins have the power to destroy the item economy. Be very careful with admin powers.
+
+### Invulns
+
+Invulns, or invulnerable chatters cannot be shot with items and cannot get hit by explosives.
+They can however use items.
+The intended use for invulns is for when you need to talk to a chatter, or for using other bots.
+Invulns don't need moderator or vip status in the channel.
+The chatterbot and streamer always are invuln and cannot be stripped of this status.
+Only the streamer and chatterbot have the power to add and remove invulns.
 
 ### Commands
 
@@ -86,9 +96,12 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `enablecommand {command/item}`|Re-enable a specific command/item|admins|`enablecommand`|:x:
 `disablecheer {cheer}`|Disable a specific cheer event|admins|`disablecheer`|:x:
 `enablecheer {cheer}`|Re-enable a specific cheer event|admins|`enablecheer`|:x:
+`getinvulns`|Get a list of every invulnerable chatter in the channel|anyone|`getinvulns`|:x:
 `getadmins`|Get a list of every admin in the channel|anyone|`getadmins`|:x:
 `itemlock {target}`|Toggle the itemlock on the specified target|admins|`itemlock`|:x:
 `testcheer {amount} [args]`|Create a fake cheering event|streamer/chatterbot|`testcheer`|:x:
+`addinvuln {target}`|Adds an invuln user|streamer/chatterbot|`addinvuln`|:x:
+`removeinvuln {target}`|Removes an invuln user| streamer/chatterbot|`removeinvuln`|:x:
 `addadmin {target}`|Adds an admin|streamer/chatterbot|`addadmin`|:x:
 `removeadmin {target}`|Removes an admin|streamer/chatterbot|`removeadmin`|:x:
 

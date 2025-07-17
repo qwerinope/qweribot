@@ -3,6 +3,7 @@ import { ApiClient } from "@twurple/api";
 import { EventSubWsListener } from "@twurple/eventsub-ws";
 import { addAdmin } from "./lib/admins";
 import logger from "./lib/logger";
+import { addInvuln } from "./lib/invuln";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read"];
@@ -28,7 +29,7 @@ export const eventSub = new EventSubWsListener({ apiClient: streamerApi });
 export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
 
 export const streamerUsers = [chatterId, streamerId];
-streamerUsers.forEach(async id => await addAdmin(id));
+streamerUsers.forEach(async id => await Promise.all([addAdmin(id), addInvuln(id)]));
 
 await import("./events");
 

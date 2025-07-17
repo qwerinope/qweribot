@@ -1,14 +1,14 @@
 import { Command, sendMessage } from ".";
-import { addAdmin } from "../lib/admins";
+import { addInvuln } from "../lib/invuln";
 import parseCommandArgs from "../lib/parseCommandArgs";
 import { User } from "../user";
 
-export default new Command('addadmin', ['addadmin'], 'streamer', async msg => {
+export default new Command('addinvuln', ['addinvuln'], 'streamer', async msg => {
   const args = parseCommandArgs(msg.messageText);
   if (!args[0]) { await sendMessage('Please specify a target', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());
   if (!target) { await sendMessage(`Chatter ${args[0]} doesn't exist`, msg.messageId); return; };
-  const data = await addAdmin(target.id);
-  if (data === "OK") await sendMessage(`${target.displayName} is now an admin`, msg.messageId);
-  else await sendMessage(`${target.displayName} is already an admin`, msg.messageId);
+  const data = await addInvuln(target.id);
+  if (data === "OK") await sendMessage(`${target.displayName} is now an invuln`, msg.messageId);
+  else await sendMessage(`${target.displayName} is already an invuln`, msg.messageId);
 }, false);

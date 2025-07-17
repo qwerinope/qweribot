@@ -15,7 +15,7 @@ export default new Item(ITEMNAME, 'TNT', 's',
   async (msg, user) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any TNTs!`, msg.messageId); return; };
-    const vulntargets = await redis.keys('vulnchatters:*');
+    const vulntargets = await redis.keys('user:*:vulnerable').then(a => a.map(b => b.slice(5, -11)));
     if (vulntargets.length === 0) { await sendMessage('No vulnerable chatters to blow up', msg.messageId); return; };
     const targets = getTNTTargets(vulntargets);
 
@@ -23,7 +23,7 @@ export default new Item(ITEMNAME, 'TNT', 's',
     await user.setLock();
 
     await Promise.all(targets.map(async targetid => {
-      const target = await User.initUserId(targetid.split(':')[1]!);
+      const target = await User.initUserId(targetid);
       await getUserRecord(target!); // make sure the user record exist in the database
       await Promise.all([
         timeout(target!, `You got hit by ${user.displayName}'s TNT!`, 60),
