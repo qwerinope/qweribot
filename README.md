@@ -119,4 +119,5 @@ TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`
 NAME|AMOUNT|USAGE|FUNCTION
 -|-|-|-
 `timeout`|100|`cheer100 {target}`|Times specified user out for 1 minute. On failure gives cheerer a blaster
+`tnt`|1000|`cheer1000`|Gives 5-10 random vulnerable chatters 60 second timeouts. On failure gives cheerer a TNT
 `execute`|6666|`cheer6666 {target}`|Times specified user out for 24 hours. On failure gives cheerer a silver bullet
