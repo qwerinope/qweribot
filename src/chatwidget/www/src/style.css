@@ -27,12 +27,10 @@ body {
 }
 
 .message {
-  >* {
-    display: inline;
-  }
+  display: flex;
 
-  .chatMesssage {
-    display: inline;
+  .chatMessage {
+    display: flex;
   }
 
   .replyMessage {
@@ -47,10 +45,6 @@ img {
   vertical-align: middle;
   height: 18px;
   padding: 1px;
-}
-
-.message {
-  display: flex;
 }
 
 .chatMessageSeparator {
