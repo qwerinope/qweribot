@@ -62,7 +62,7 @@ export async function handleCheer(msg: EventSubChannelChatMessageEvent, bits: nu
   const selection = cheers.get(bits);
   if (!selection) return;
 
-  if (await redis.sismember('disabledcheers', selection.name)) { await sendMessage(`The ${selection.name} cheer is disabled`); return; };
+  if (await redis.sismember('disabledcheers', selection.name)) { await sendMessage(`The ${selection.name} cheer is disabled! Sorry!`, msg.messageId); return; };
   try {
     selection.execute(msg, user);
   } catch (err) {

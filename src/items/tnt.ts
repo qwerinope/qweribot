@@ -27,7 +27,7 @@ export default new Item(ITEMNAME, 'TNT', 's',
       await getUserRecord(target!); // make sure the user record exist in the database
       await Promise.all([
         timeout(target!, `You got hit by ${user.displayName}'s TNT!`, 60),
-        redis.del(targetid),
+        redis.del(`user:${targetid}:vulnerable`),
         sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s TNT wybuh`),
         createTimeoutRecord(user, target!, ITEMNAME),
       ]);
@@ -42,7 +42,7 @@ export default new Item(ITEMNAME, 'TNT', 's',
   }
 );
 
-function getTNTTargets<T>(arr: T[]): T[] {
+export function getTNTTargets<T>(arr: T[]): T[] {
   if (arr.length <= 5) {
     return arr;
   };

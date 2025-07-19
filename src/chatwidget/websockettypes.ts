@@ -12,14 +12,20 @@ export type deleteMessageEvent = {
   function: 'deleteMessage';
   messageId: string;
 };
+export type userBanEvent = {
+  function: 'userBan';
+  chatterId: string;
+};
 export type serverNotificationEvent = {
   function: 'serverNotification';
   message: string;
 };
 
-export type twitchEventData = createMessageEvent |
-  deleteMessageEvent |
-  serverNotificationEvent;
+export type twitchEventData =
+  createMessageEvent
+  | deleteMessageEvent
+  | userBanEvent
+  | serverNotificationEvent;
 
 // The types below are taken straight from @twurple/eventsub-base
 // I would import this from the package, but that's impossible

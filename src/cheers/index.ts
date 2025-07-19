@@ -27,3 +27,21 @@ for (const file of files) {
 
 export default cheers;
 export { namedcheers };
+
+import { sendMessage } from '../commands';
+import logger from '../lib/logger';
+import { getUserRecord } from '../db/dbUser';
+import { changeItemCount } from '../items';
+
+export async function handleNoTarget(msg: EventSubChannelChatMessageEvent, user: User, itemname: string, silent = true) {
+  if (await user.itemLock()) {
+    await sendMessage(`Cannot give ${user.displayName} a ${itemname}`, msg.messageId);
+    logger.err(`Failed to give ${user.displayName} a ${itemname} for their cheer`);
+    return;
+  };
+  await user.setLock();
+  const userRecord = await getUserRecord(user);
+  if (!silent) await sendMessage(`No (valid) target specified. You got a ${itemname}!`, msg.messageId);
+  await changeItemCount(user, userRecord, itemname, 1);
+  await user.clearLock();
+}

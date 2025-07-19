@@ -1,8 +1,8 @@
-import { EventSubChannelChatMessageEvent, EventSubChannelChatMessageDeleteEvent } from "@twurple/eventsub-base";
+import { EventSubChannelChatMessageEvent, EventSubChannelChatMessageDeleteEvent, EventSubChannelBanEvent } from "@twurple/eventsub-base";
 import { sendTwitchEvent } from ".";
 
 export async function addMessageToChatWidget(msg: EventSubChannelChatMessageEvent) {
-  sendTwitchEvent({
+  await sendTwitchEvent({
     function: 'createMessage',
     messageParts: msg.messageParts,
     displayName: msg.chatterDisplayName,
@@ -14,8 +14,15 @@ export async function addMessageToChatWidget(msg: EventSubChannelChatMessageEven
 };
 
 export async function deleteMessageFromChatWidget(msg: EventSubChannelChatMessageDeleteEvent) {
-  sendTwitchEvent({
+  await sendTwitchEvent({
     function: 'deleteMessage',
     messageId: msg.messageId
   })
 };
+
+export async function deleteBannedUserMessagesFromChatWidget(msg: EventSubChannelBanEvent) {
+  sendTwitchEvent({
+    function: 'userBan',
+    chatterId: msg.userId
+  });
+}

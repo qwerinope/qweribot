@@ -6,7 +6,7 @@ import logger from "./lib/logger";
 import { addInvuln } from "./lib/invuln";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
-const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read"];
+const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read", "channel:moderate"];
 
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
 export const chatterId = process.env.CHATTER_ID ?? "";

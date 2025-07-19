@@ -18,10 +18,14 @@ socket.onmessage = event => {
     case 'createMessage':
       const newMessageElement = parseMessage(data);
       newMessageElement.id = data.messageId;
+      newMessageElement.classList.add(data.chatterId);
       document.querySelector("#message-container")?.appendChild(newMessageElement);
       break;
     case 'deleteMessage':
-      document.querySelector(`#${CSS.escape(data.messageId)}`)?.remove();
+      document.querySelectorAll(`#${CSS.escape(data.messageId)}`).forEach(msg => msg.remove());
+      break;
+    case 'userBan':
+      document.querySelectorAll(`.${CSS.escape(data.chatterId)}`).forEach(msg => msg.remove());
       break;
     case 'serverNotification':
       console.log(data.message);
