@@ -1,4 +1,5 @@
 const badges = await fetch(`http://${location.host}/getBadges`).then(data => data.json());
+const emotes = await fetch(`http://${location.host}/getEmotes`).then(data => data.json());
 
 import { type createMessageEvent } from '../../websockettypes';
 
@@ -25,18 +26,38 @@ export function parseMessage(data: createMessageEvent): HTMLDivElement {
   parentDiv.appendChild(chatterName);
 
   const seperator = document.createElement('span');
-  seperator.innerText = ": ";
+  seperator.innerText = ":";
   seperator.className = "chatMessageSeparator";
   parentDiv.appendChild(seperator);
 
   const textElement = document.createElement('div');
+  textElement.className = "chatMessage"
   for (const messagePart of data.messageParts) {
     let messageElement;
     switch (messagePart.type) {
       case 'text':
-        messageElement = document.createElement('span');
+        messageElement = document.createElement('div');
         messageElement.className = "textMessage";
-        messageElement.innerText = messagePart.text;
+        let temparray: string[] = [];
+        for (const part of messagePart.text.split(' ')) {
+          if (emotes[part]) {
+            const messagepart = document.createElement('span');
+            messagepart.className = 'textPart';
+            messagepart.innerText = temparray.join(' ');
+            messageElement.appendChild(messagepart);
+            temparray = []; // We flush the array of all pieces of text
+            const emotePart = document.createElement('img');
+            emotePart.className = 'emotePart';
+            emotePart.src = emotes[part];
+            messageElement.appendChild(emotePart);
+          } else {
+            temparray.push(part);
+          };
+        };
+        const finalmessagepart = document.createElement('span');
+        finalmessagepart.className = 'textPart';
+        finalmessagepart.innerText = temparray.join(' ');
+        messageElement.appendChild(finalmessagepart);
         break;
       case 'cheermote':
         messageElement = document.createElement('img');

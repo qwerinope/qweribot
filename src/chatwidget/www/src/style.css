@@ -31,7 +31,11 @@ body {
     display: inline;
   }
 
-  .replymessage {
+  .chatMesssage {
+    display: inline;
+  }
+
+  .replyMessage {
     color: grey;
     font-size: 2px;
   }
@@ -41,6 +45,14 @@ body {
 
 img {
   vertical-align: middle;
-  width: 18px;
+  height: 18px;
   padding: 1px;
+}
+
+.message {
+  display: flex;
+}
+
+.chatMessageSeparator {
+  margin-right: 5px
 }

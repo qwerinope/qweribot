@@ -9,6 +9,10 @@ type badgeObject = {
   };
 };
 
+type emoteObject = {
+  [key: string]: string;
+}
+
 const port = Number(process.env.CHATWIDGET_PORT);
 if (isNaN(port)) { logger.enverr("CHATWIDGET_PORT"); process.exit(1); };
 
@@ -31,6 +35,38 @@ const server = Bun.serve({
 
       return Response.json(newObj);
     },
+    "/getEmotes": async () => {
+      const [bttvglobal, bttvuser, ffzglobal, ffzuser, seventvglobal, seventvuser] = await Promise.all([
+        fetch("https://api.betterttv.net/3/cached/emotes/global").then(a => a.json() as any),
+        fetch("https://api.betterttv.net/3/cached/users/twitch/" + streamerId).then(a => a.json() as any),
+        fetch("https://api.frankerfacez.com/v1/set/global").then(a => a.json() as any),
+        fetch("https://api.frankerfacez.com/v1/room/id/" + streamerId).then(a => a.json() as any),
+        fetch("https://7tv.io/v3/emote-sets/global").then(a => a.json() as any),
+        fetch("https://7tv.io/v3/users/twitch/" + streamerId).then(a => a.json() as any)
+      ]);
+      const emotes: emoteObject = {};
+      for (const a of bttvglobal) {
+        emotes[a.code] = `https://cdn.betterttv.net/emote/${a.id}/3x.${a.imageType}`;
+      };
+      for (const a of bttvuser.sharedEmotes) {
+        emotes[a.code] = `https://cdn.betterttv.net/emote/${a.id}/3x.${a.imageType}`;
+      };
+      for (const a of ffzglobal.default_sets) {
+        for (const b of ffzglobal.sets[a].emoticons) {
+          emotes[b.name] = `https://cdn.frankerfacez.com/emote/${b.id}/4`;
+        };
+      };
+      for (const a of ffzuser.sets[ffzuser.room.set].emoticons) {
+        emotes[a.name] = `https://cdn.frankerfacez.com/emote/${a.id}/4`;
+      }
+      for (const a of seventvglobal.emotes) {
+        emotes[a.name] = `https://cdn.7tv.app/emote/${a.id}/4x.avif`;
+      };
+      for (const a of seventvuser.emote_set.emotes) {
+        emotes[a.name] = `https://cdn.7tv.app/emote/${a.id}/4x.avif`;
+      };
+      return Response.json(emotes);
+    }
   },
   websocket: {
     open(_ws) {
@@ -57,7 +93,7 @@ const server = Bun.serve({
       ws.close();
     }
   },
-  development: false,
+  development: true,
   error(error) {
     logger.err(`Error at chatwidget server: ${error}`);
     return new Response("Internal Server Error", { status: 500 })
