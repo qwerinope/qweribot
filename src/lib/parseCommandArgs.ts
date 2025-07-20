@@ -14,5 +14,5 @@ export function parseCheerArgs(input: string) {
   if (nice.startsWith(commandPrefix + 'testcheer')) return nice.slice(commandPrefix.length + 'testcheer'.length + 1).split(' ').slice(1);
 
   // This is for actual cheers. Remove all 'cheerx' parts of the message
-  return nice.split(' ').filter(a => !/cheer[0-9]+/.test(a));
+  return nice.split(' ').filter(a => !/cheer[0-9]+/i.test(a));
 };
