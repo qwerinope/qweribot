@@ -11,7 +11,7 @@ const ITEMNAME = 'tnt';
 
 export default new Cheer('tnt', 1000, async (msg, user) => {
   const vulntargets = await redis.keys('user:*:vulnerable').then(a => a.map(b => b.slice(5, -11)));
-  if (vulntargets.length === 0) { await sendMessage('No vulnerable chatters to blow up', msg.messageId); handleNoTarget(msg, user, ITEMNAME); return; };
+  if (vulntargets.length === 0) { await sendMessage('No vulnerable chatters to blow up', msg.messageId); await handleNoTarget(msg, user, ITEMNAME); return; };
   const targets = getTNTTargets(vulntargets);
 
   await Promise.all(targets.map(async targetid => {

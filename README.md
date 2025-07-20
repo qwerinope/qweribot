@@ -41,6 +41,7 @@ Every user has a wallet with qweribucks, and an inventory. There is no limit to 
 
 When using/giving an item or qbucks the itemlock will be set at the start of the transaction and cleared when it ends. This is to prevent items being duplicated.
 Admins can toggle the itemlock on chatters with the [`itemlock`](#administrative-commands) command. This will stop a chatter from giving, receiving and using items and qweribucks.
+It will NOT stop them from using items by cheering, but if that cheer item usage fails, they will not be given an equivalent item as compensation.
 
 Items can be used with the alias as a command (example: `blast qwerinope`) or with the [`use` command](#item-commands).
 
@@ -119,6 +120,7 @@ TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`
 
 NAME|AMOUNT|USAGE|FUNCTION
 -|-|-|-
+`grenade`|99|`cheer99`|Times a random vulnerable chatter out for 60 seconds. Of failure gives cheerer a grenade
 `timeout`|100|`cheer100 {target}`|Times specified user out for 1 minute. On failure gives cheerer a blaster
 `tnt`|1000|`cheer1000`|Gives 5-10 random vulnerable chatters 60 second timeouts. On failure gives cheerer a TNT
 `execute`|6666|`cheer6666 {target}`|Times specified user out for 24 hours. On failure gives cheerer a silver bullet
