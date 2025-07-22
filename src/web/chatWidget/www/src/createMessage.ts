@@ -1,5 +1,47 @@
-const badges = await fetch(`http://${location.host}/getBadges`).then(data => data.json());
-const emotes = await fetch(`http://${location.host}/getEmotes`).then(data => data.json());
+const popover = document.createElement('div')
+Object.assign(popover.style, {
+  position: 'fixed',
+  top: '20px',
+  right: '20px',
+  background: 'rgba(0, 0, 0, 0.85)',
+  color: 'white',
+  padding: '10px 20px',
+  borderRadius: '5px',
+  fontSize: '9vmin',
+  zIndex: 9999
+});
+popover.textContent = 'Loading...'
+document.body.appendChild(popover);
+
+const [badges, emotes] = await Promise.all([
+  fetch(`http://${location.host}/chat/getBadges`).then(data => data.json()),
+  fetch(`http://${location.host}/chat/getEmotes`).then(data => data.json())
+]);
+
+await prefetchImages(Object.values(emotes));
+
+popover.remove();
+
+async function prefetchImages(urls: string[], maxRetries = 3, retryDelay = 500) {
+  const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+  const loadImage = async (url: string) => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(true);
+          img.onerror = () => reject();
+          img.src = url;
+        });
+      } catch (err) {
+        if (attempt < maxRetries) await sleep(retryDelay);
+      };
+    };
+  };
+
+  await Promise.all(urls.map(url => loadImage(url)));
+};
 
 import { type createMessageEvent } from '../../websockettypes';
 

@@ -33,4 +33,4 @@ streamerUsers.forEach(async id => await Promise.all([addAdmin(id), addInvuln(id)
 
 await import("./events");
 
-await import("./chatwidget");
+await import("./web");

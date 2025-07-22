@@ -8,7 +8,7 @@ const socket = new WebSocket(`ws://${location.host}`);
 socket.onopen = () => {
   socket.send(JSON.stringify({
     type: 'subscribe',
-    target: 'twitch'
+    target: 'twitchchat'
   }));
 };
 
