@@ -62,8 +62,8 @@ The streamerbot (not that streamerbot) is the broadcaster. This bot needs them t
 
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
-`yabai`|Random number|anyone|`yabai` `goon`|:white_check_mark:
-`seiso`|Random number|anyone|`seiso`|:white_check_mark:
+`yabai`|Get a yabai rating|anyone|`yabai` `goon`|:white_check_mark:
+`seiso`|Get a seiso rating|anyone|`seiso`|:white_check_mark:
 `backshot`|'Backshot' a random previous chatter|anyone|`backshot`|:white_check_mark:
 `roulette`|Play russian roulette for a 5 minute timeout|anyone|`roulette`|:white_check_mark:
 `timeout {target}`|Times targeted user out for 60 seconds (costs 100 qweribucks)|anyone|`timeout`|:white_check_mark:
@@ -91,7 +91,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
 `getcommands [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcommands` `getc`|:x:
-`getcheers [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcheers` `getcheer`|:x:
+`getcheers [enabled/disabled]`|Get a list of all, enabled or disabled cheers|anyone|`getcheers` `getcheer`|:x:
 `gettimeout {target}`|Get the remaining timeout duration of targeted user|anyone|`gettimeout` `gett`|:white_check_mark:
 `vulnchatters`|Get amount of chatters vulnerable to explosives|anyone|`vulnchatters` `vulnc`|:white_check_mark:
 `disablecommand {command/item}`|Disable a specific command/item|admins|`disablecommand`|:x:
