@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["DOM", "ES2020"],
+    "types": []
+  },
+  "include": ["src/web/chatWidget/www/**/*"]
+}

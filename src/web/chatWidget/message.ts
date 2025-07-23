@@ -25,4 +25,4 @@ export async function deleteBannedUserMessagesFromChatWidget(msg: EventSubChanne
     function: 'userBan',
     chatterId: msg.userId
   });
-}
+};
