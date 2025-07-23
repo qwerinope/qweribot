@@ -1,6 +1,7 @@
 import { redis } from "bun";
 import { chatterApi } from ".";
 import { HelixUser } from "@twurple/api"
+import logger from "./lib/logger";
 
 const EXPIRETIME = 60 * 60 // 60 minutes
 
@@ -20,43 +21,53 @@ export class User {
   public displayName!: string;
 
   static async initUsername(username: string): Promise<User | null> {
-    const userObj = new User();
-    userObj.username = username;
-    const userid = await redis.get(`userlookup:${username}`);
-    if (!userid) {
-      const userdata = await chatterApi.users.getUserByName(username);
-      if (!userdata) return null;
-      userObj._setCache(userdata);
-      userObj.id = userdata.id;
-      userObj.displayName = userdata.displayName;
-    } else {
-      const displayname = await redis.get(`user:${userid}:displayName`);
-      userObj._setExpire(userid, username);
-      userObj.id = userid;
-      userObj.displayName = displayname!;
+    try {
+      const userObj = new User();
+      userObj.username = username.replaceAll(/[@]/g, '');
+      const userid = await redis.get(`userlookup:${username}`);
+      if (!userid) {
+        const userdata = await chatterApi.users.getUserByName(username);
+        if (!userdata) return null;
+        userObj._setCache(userdata);
+        userObj.id = userdata.id;
+        userObj.displayName = userdata.displayName;
+      } else {
+        const displayname = await redis.get(`user:${userid}:displayName`);
+        userObj._setExpire(userid, username);
+        userObj.id = userid;
+        userObj.displayName = displayname!;
+      };
+      return userObj;
+    } catch {
+      logger.err(`Failed to initialize user with name: ${username}`);
+      return null;
     };
-    return userObj;
   };
 
   static async initUserId(userId: string): Promise<User | null> {
-    const userObj = new User();
-    userObj.id = userId;
-    if (!await redis.exists(`user:${userId}:displayName`)) {
-      const userdata = await chatterApi.users.getUserById(userId);
-      if (!userdata) return null;
-      userObj._setCache(userdata);
-      userObj.username = userdata.name;
-      userObj.displayName = userdata.displayName;
-    } else {
-      const [displayName, username] = await Promise.all([
-        redis.get(`user:${userId}:displayName`),
-        redis.get(`user:${userId}:username`)
-      ]);
-      userObj._setExpire(userId, username!);
-      userObj.username = username!;
-      userObj.displayName = displayName!;
+    try {
+      const userObj = new User();
+      userObj.id = userId;
+      if (!await redis.exists(`user:${userId}:displayName`)) {
+        const userdata = await chatterApi.users.getUserById(userId);
+        if (!userdata) return null;
+        userObj._setCache(userdata);
+        userObj.username = userdata.name;
+        userObj.displayName = userdata.displayName;
+      } else {
+        const [displayName, username] = await Promise.all([
+          redis.get(`user:${userId}:displayName`),
+          redis.get(`user:${userId}:username`)
+        ]);
+        userObj._setExpire(userId, username!);
+        userObj.username = username!;
+        userObj.displayName = displayName!;
+      };
+      return userObj;
+    } catch {
+      logger.err(`Failed to initializer user with id: ${userId}`);
+      return null;
     };
-    return userObj;
   };
 
   private async _setCache(userdata: HelixUser) {
