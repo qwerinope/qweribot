@@ -7,7 +7,7 @@ import { isAdmin } from "../lib/admins";
 import cheers from "../cheers";
 import logger from "../lib/logger";
 import { addMessageToChatWidget } from "../web/chatWidget/message";
-import { isInvuln } from "../lib/invuln";
+import { isInvuln, setTemporaryInvuln } from "../lib/invuln";
 
 logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
@@ -27,6 +27,12 @@ async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
   // The only problem would be if a user changed their name and someone else took their name right after
 
   if (!await isInvuln(user?.id!)) user?.setVulnerable(); // Make the user vulnerable to explosions if not marked as invuln
+
+  if (!await redis.exists(`user:${user?.id}:haschatted`)) {
+    await sendMessage(`Welcome ${user?.displayName}. Please note: This chat has PvP, if you get timed out that's part of the qwerinope experience. You have 10 minutes of invincibility. A full list of commands, cheer events and items can be found here: https://github.com/qwerinope/qweribot/#qweribot`);
+    await redis.set(`user:${user?.id}:haschatted`, "1");
+    if (!streamerUsers.includes(msg.chatterId)) await setTemporaryInvuln(user?.id!); // This would set the invuln expiration lmao
+  };
 
   if (!msg.isCheer && !msg.isRedemption) await handleChatMessage(msg, user!)
   else if (msg.isCheer && !msg.isRedemption) await handleCheer(msg, msg.bits, user!);

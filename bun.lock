@@ -4,6 +4,7 @@
     "": {
       "name": "qweribot",
       "dependencies": {
+        "@fontsource/jersey-15": "^5.2.6",
         "@twurple/auth": "^7.3.0",
         "@twurple/eventsub-ws": "^7.3.0",
         "kleur": "^4.1.5",
@@ -37,6 +38,8 @@
     "@d-fischer/shared-utils": ["@d-fischer/shared-utils@3.6.4", "", { "dependencies": { "tslib": "^2.4.1" } }, "sha512-BPkVLHfn2Lbyo/ENDBwtEB8JVQ+9OzkjJhUunLaxkw4k59YFlQxUUwlDBejVSFcpQT0t+D3CQlX+ySZnQj0wxw=="],
 
     "@d-fischer/typed-event-emitter": ["@d-fischer/typed-event-emitter@3.3.3", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-OvSEOa8icfdWDqcRtjSEZtgJTFOFNgTjje7zaL0+nAtu2/kZtRCSK5wUMrI/aXtCH8o0Qz2vA8UqkhWUTARFQQ=="],
+
+    "@fontsource/jersey-15": ["@fontsource/jersey-15@5.2.6", "", {}, "sha512-3zkkEnu91esusWLqAK/AN1uc6jNtWT8idfO0UfYLqNlbMBKkbbiIVXtq6UbQsyegxnmRMppVV1J2t1zrJ36VgA=="],
 
     "@twurple/api": ["@twurple/api@7.3.0", "", { "dependencies": { "@d-fischer/cache-decorators": "^4.0.0", "@d-fischer/cross-fetch": "^5.0.1", "@d-fischer/detect-node": "^3.0.1", "@d-fischer/logger": "^4.2.1", "@d-fischer/rate-limiter": "^1.1.0", "@d-fischer/shared-utils": "^3.6.1", "@d-fischer/typed-event-emitter": "^3.3.1", "@twurple/api-call": "7.3.0", "@twurple/common": "7.3.0", "retry": "^0.13.1", "tslib": "^2.0.3" }, "peerDependencies": { "@twurple/auth": "7.3.0" } }, "sha512-QtaVgYi50E3AB/Nxivjou/u6w1cuQ6g4R8lzQawYDaQNtlP2Ue8vvYuSp2PfxSpe8vNiKhgV8hZAs+j4V29sxQ=="],
 

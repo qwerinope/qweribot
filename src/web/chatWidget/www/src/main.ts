@@ -1,4 +1,5 @@
 import './style.css';
+import '@fontsource/jersey-15';
 
 import { type twitchEventData } from "../../websockettypes";
 import { parseMessage } from './createMessage';
