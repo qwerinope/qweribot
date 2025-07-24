@@ -88,8 +88,7 @@ export default class User {
   };
 
   public async itemLock(): Promise<boolean> {
-    const lock = await redis.get(`user:${this.id}:itemlock`);
-    return lock === '1';
+    return await redis.exists(`user:${this.id}:itemlock`);
   };
 
   public async setLock(): Promise<void> {
@@ -97,7 +96,7 @@ export default class User {
   };
 
   public async clearLock(): Promise<void> {
-    await redis.set(`user:${this.id}:itemlock`, '0');
+    await redis.del(`user:${this.id}:itemlock`);
   };
 
   public async setVulnerable(): Promise<void> {
