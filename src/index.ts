@@ -1,9 +1,9 @@
 import { createAuthProvider } from "./auth";
 import { ApiClient } from "@twurple/api";
 import { EventSubWsListener } from "@twurple/eventsub-ws";
-import { addAdmin } from "./lib/admins";
-import logger from "./lib/logger";
-import { addInvuln } from "./lib/invuln";
+import { addAdmin } from "lib/admins";
+import logger from "lib/logger";
+import { addInvuln } from "lib/invuln";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read", "channel:moderate"];

@@ -43,7 +43,7 @@ async function prefetchImages(urls: string[], maxRetries = 3, retryDelay = 500) 
   await Promise.all(urls.map(url => loadImage(url)));
 };
 
-import { type createMessageEvent } from '../../websockettypes';
+import { type createMessageEvent } from 'web/chatWidget/websockettypes';
 
 export function parseMessage(data: createMessageEvent): HTMLDivElement {
   const parentDiv = document.createElement('div');

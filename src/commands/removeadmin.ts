@@ -1,8 +1,8 @@
-import { Command, sendMessage } from ".";
-import { streamerUsers } from "..";
-import { removeAdmin } from "../lib/admins";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { User } from "../user";
+import { Command, sendMessage } from "commands";
+import { streamerUsers } from "main";
+import { removeAdmin } from "lib/admins";
+import parseCommandArgs from "lib/parseCommandArgs";
+import User from "user";
 
 export default new Command('removeadmin', ['removeadmin'], 'streamer', async msg => {
   const args = parseCommandArgs(msg.messageText);

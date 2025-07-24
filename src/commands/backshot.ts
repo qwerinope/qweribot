@@ -1,5 +1,5 @@
-import { Command, sendMessage } from ".";
-import { User } from "../user";
+import { Command, sendMessage } from "commands";
+import User from "user";
 import { redis } from "bun";
 
 export default new Command('backshot', ['backshot'], 'chatter', async (msg, user) => {

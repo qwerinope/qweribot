@@ -1,5 +1,5 @@
-import { Command, sendMessage } from ".";
-import { timeout } from "../lib/timeout";
+import { Command, sendMessage } from "commands";
+import { timeout } from "lib/timeout";
 
 // Remake of the !yabai command in ttv/kiara_tv
 export default new Command('yabai', ['yabai', 'goon'], 'chatter', async (msg, user) => {

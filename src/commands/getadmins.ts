@@ -1,6 +1,6 @@
-import { Command, sendMessage } from ".";
-import { getAdmins } from "../lib/admins";
-import { User } from "../user";
+import { Command, sendMessage } from "commands";
+import { getAdmins } from "lib/admins";
+import User from "user";
 
 export default new Command('getadmins', ['getadmins'], 'chatter', async msg => {
   const admins = await getAdmins()

@@ -1,6 +1,6 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
-import { User } from "../user";
-import { type userType } from "../commands";
+import User from "user";
+import { type userType } from "commands";
 
 export class Item {
   public readonly name: string;
@@ -31,8 +31,8 @@ export class Item {
 };
 
 import { readdir } from 'node:fs/promises';
-import type { userRecord } from "../db/connection";
-import { updateUserRecord } from "../db/dbUser";
+import type { userRecord } from "db/connection";
+import { updateUserRecord } from "db/dbUser";
 const items = new Map<string, Item>;
 const emptyInventory: inventory = {};
 const itemarray: string[] = [];

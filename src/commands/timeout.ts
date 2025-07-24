@@ -1,10 +1,10 @@
-import { Command, sendMessage } from ".";
-import { getUserRecord } from "../db/dbUser";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { User } from "../user";
-import { timeout } from "../lib/timeout";
-import { changeBalance } from "../lib/changeBalance";
-import { createTimeoutRecord } from "../db/dbTimeouts";
+import { Command, sendMessage } from "commands";
+import { getUserRecord } from "db/dbUser";
+import parseCommandArgs from "lib/parseCommandArgs";
+import User from "user";
+import { timeout } from "lib/timeout";
+import { changeBalance } from "lib/changeBalance";
+import { createTimeoutRecord } from "db/dbTimeouts";
 
 export default new Command('timeout', ['timeout'], 'chatter', async (msg, user) => {
   const userObj = await getUserRecord(user);

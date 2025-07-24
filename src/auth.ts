@@ -1,7 +1,7 @@
 import { RefreshingAuthProvider, exchangeCode, type AccessToken } from "@twurple/auth";
-import { createAuthRecord, deleteAuthRecord, getAuthRecord, updateAuthRecord } from "./db/dbAuth";
+import { createAuthRecord, deleteAuthRecord, getAuthRecord, updateAuthRecord } from "db/dbAuth";
 
-import logger from "./lib/logger";
+import logger from "lib/logger";
 import kleur from "kleur";
 
 async function initAuth(userId: string, clientId: string, clientSecret: string, requestedIntents: string[], streamer: boolean): Promise<AccessToken> {

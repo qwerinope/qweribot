@@ -1,7 +1,7 @@
-import logger from "../lib/logger";
-import { getBadges, getExternalEmotes } from "./chatWidget/widgetServerFunctions";
-import chatWidget from "./chatWidget/www/index.html";
-import { sendTwitchChatEvent } from "./chatWidget/widgetServerFunctions";
+import logger from "lib/logger";
+import { getBadges, getExternalEmotes } from "web/chatWidget/widgetServerFunctions";
+import chatWidget from "web/chatWidget/www/index.html";
+import { sendTwitchChatEvent } from "web/chatWidget/widgetServerFunctions";
 
 const port = Number(process.env.WEB_PORT);
 if (isNaN(port)) { logger.enverr("WEB_PORT"); process.exit(1); };

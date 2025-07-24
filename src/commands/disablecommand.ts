@@ -1,6 +1,6 @@
 import { redis } from "bun";
-import commands, { Command, sendMessage } from ".";
-import parseCommandArgs from "../lib/parseCommandArgs";
+import commands, { Command, sendMessage } from "commands";
+import parseCommandArgs from "lib/parseCommandArgs";
 
 export default new Command('disablecommand', ['disablecommand'], 'admin', async msg => {
   const args = parseCommandArgs(msg.messageText);

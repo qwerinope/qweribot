@@ -1,4 +1,4 @@
-import { User } from '../user';
+import User from 'user';
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
 
 export class Cheer {
@@ -28,10 +28,10 @@ for (const file of files) {
 export default cheers;
 export { namedcheers };
 
-import { sendMessage } from '../commands';
-import logger from '../lib/logger';
-import { getUserRecord } from '../db/dbUser';
-import { changeItemCount } from '../items';
+import { sendMessage } from 'commands';
+import logger from 'lib/logger';
+import { getUserRecord } from 'db/dbUser';
+import { changeItemCount } from 'items';
 
 export async function handleNoTarget(msg: EventSubChannelChatMessageEvent, user: User, itemname: string, silent = true) {
   if (await user.itemLock()) {

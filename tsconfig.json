@@ -1,5 +1,18 @@
 {
   "files": [],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "lib/*": ["./lib/*"],
+      "main": ["./index.ts"],
+      "user": ["./user.ts"],
+      "commands": ["./commands/index.ts"],
+      "items": ["./items/index.ts"],
+      "cheers": ["./cheers/index.ts"],
+      "events": ["./events/index.ts"],
+      "web/*": ["./web/*"]
+    }
+  },
   "references": [
     { "path": "./tsconfig.bot.json" },
     { "path": "./tsconfig.chatwidget.json" }

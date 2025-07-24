@@ -1,5 +1,5 @@
-import { Command, sendMessage } from ".";
-import { timeout } from "../lib/timeout";
+import { Command, sendMessage } from "commands";
+import { timeout } from "lib/timeout";
 
 export default new Command('seiso', ['seiso'], 'chatter', async (msg, user) => {
   const rand = Math.floor(Math.random() * 101);

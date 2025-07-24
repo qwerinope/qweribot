@@ -1,7 +1,7 @@
-import { Command, sendMessage } from ".";
-import { addInvuln } from "../lib/invuln";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { User } from "../user";
+import { Command, sendMessage } from "commands";
+import { addInvuln } from "lib/invuln";
+import parseCommandArgs from "lib/parseCommandArgs";
+import User from "user";
 
 export default new Command('addinvuln', ['addinvuln'], 'streamer', async msg => {
   const args = parseCommandArgs(msg.messageText);

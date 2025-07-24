@@ -1,6 +1,6 @@
 import { redis } from "bun";
-import { basecommands, Command, sendMessage } from ".";
-import parseCommandArgs from "../lib/parseCommandArgs";
+import { basecommands, Command, sendMessage } from "commands";
+import parseCommandArgs from "lib/parseCommandArgs";
 
 export default new Command('getcommands', ['getcommands', 'getc'], 'chatter', async msg => {
   const args = parseCommandArgs(msg.messageText);

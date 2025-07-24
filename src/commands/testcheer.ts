@@ -1,6 +1,6 @@
-import { Command, sendMessage } from ".";
-import { handleCheer } from "../events/message";
-import parseCommandArgs from "../lib/parseCommandArgs";
+import { Command, sendMessage } from "commands";
+import { handleCheer } from "events/message";
+import parseCommandArgs from "lib/parseCommandArgs";
 
 export default new Command('testcheer', ['testcheer'], 'streamer', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);

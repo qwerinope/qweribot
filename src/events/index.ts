@@ -1,6 +1,6 @@
 import kleur from "kleur";
-import { eventSub, streamerApi, streamerId } from "..";
-import logger from "../lib/logger";
+import { eventSub, streamerApi, streamerId } from "main";
+import logger from "lib/logger";
 
 eventSub.onRevoke(event => {
   logger.ok(`Successfully revoked EventSub subscription: ${kleur.underline(event.id)}`);
@@ -33,7 +33,7 @@ for (const file of files) {
 
 eventSub.start();
 
-import { getAuthRecord } from "../db/dbAuth";
+import { getAuthRecord } from "db/dbAuth";
 import { StaticAuthProvider } from "@twurple/auth";
 import { ApiClient, HelixEventSubSubscription } from "@twurple/api";
 

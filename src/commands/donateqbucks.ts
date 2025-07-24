@@ -1,10 +1,10 @@
-import { Command, sendMessage } from ".";
-import type { userRecord } from "../db/connection";
-import { getUserRecord } from "../db/dbUser";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { changeBalance } from "../lib/changeBalance";
-import { User } from "../user";
-import logger from "../lib/logger";
+import { Command, sendMessage } from "commands";
+import type { userRecord } from "db/connection";
+import { getUserRecord } from "db/dbUser";
+import parseCommandArgs from "lib/parseCommandArgs";
+import { changeBalance } from "lib/changeBalance";
+import User from "user";
+import logger from "lib/logger";
 
 export default new Command('donate', ['donate'], 'chatter', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);

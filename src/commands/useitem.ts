@@ -1,6 +1,6 @@
 import { redis } from "bun";
-import { Command, sendMessage } from ".";
-import items from "../items";
+import { Command, sendMessage } from "commands";
+import items from "items";
 
 export default new Command('use', ['use'], 'chatter', async (msg, user) => {
   const messagequery = msg.messageText.trim().split(' ').slice(1);

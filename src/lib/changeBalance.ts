@@ -1,6 +1,6 @@
-import { updateUserRecord } from "../db/dbUser";
-import { type userRecord } from "../db/connection";
-import { User } from "../user";
+import { updateUserRecord } from "db/dbUser";
+import { type userRecord } from "db/connection";
+import User from "user";
 
 export async function changeBalance(user: User, userRecord: userRecord, amount: number): Promise<false | userRecord> {
   userRecord.balance = userRecord.balance += amount;

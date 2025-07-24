@@ -1,6 +1,6 @@
-import { Command, sendMessage } from ".";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { User } from "../user";
+import { Command, sendMessage } from "commands";
+import parseCommandArgs from "lib/parseCommandArgs";
+import User from "user";
 
 export default new Command('itemlock', ['itemlock'], 'admin', async msg => {
   const args = parseCommandArgs(msg.messageText);

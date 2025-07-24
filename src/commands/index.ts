@@ -1,5 +1,5 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
-import { User } from "../user";
+import User from "user";
 
 export type userType = 'chatter' | 'admin' | 'streamer';
 
@@ -34,7 +34,7 @@ for (const file of files) {
   };
 };
 
-import items from "../items";
+import items from "items";
 for (const [name, item] of Array.from(items)) {
   commands.set(name, item); // As Item is basically just Command but with more parameters, this should work fine
 };
@@ -42,7 +42,7 @@ for (const [name, item] of Array.from(items)) {
 export default commands;
 export { basecommands };
 
-import { singleUserMode, chatterApi, chatterId, streamerId } from "..";
+import { singleUserMode, chatterApi, chatterId, streamerId } from "main";
 
 /** Helper function to send a message to the stream */
 export const sendMessage = async (message: string, replyParentMessageId?: string) => {

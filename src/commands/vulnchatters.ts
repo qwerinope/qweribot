@@ -1,5 +1,5 @@
 import { redis } from "bun";
-import { Command, sendMessage } from ".";
+import { Command, sendMessage } from "commands";
 
 export default new Command('vulnchatters', ['vulnchatters', 'vulnc'], 'chatter', async msg => {
   const data = await redis.keys('user:*:vulnerable');

@@ -1,7 +1,7 @@
-import pocketbase, { type userRecord } from "./connection";
-import { emptyInventory, itemarray } from "../items";
-import type { User } from "../user";
-import logger from "../lib/logger";
+import pocketbase, { type userRecord } from "db/connection";
+import { emptyInventory, itemarray } from "items";
+import type User from "user";
+import logger from "lib/logger";
 
 const pb = pocketbase.collection('users');
 

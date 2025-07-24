@@ -1,13 +1,13 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base"
-import { streamerId, eventSub, commandPrefix, streamerUsers } from "..";
-import { User } from "../user";
-import commands, { sendMessage } from "../commands";
+import { streamerId, eventSub, commandPrefix, streamerUsers } from "main";
+import User from "user";
+import commands, { sendMessage } from "commands";
 import { redis } from "bun";
-import { isAdmin } from "../lib/admins";
-import cheers from "../cheers";
-import logger from "../lib/logger";
-import { addMessageToChatWidget } from "../web/chatWidget/message";
-import { isInvuln, setTemporaryInvuln } from "../lib/invuln";
+import { isAdmin } from "lib/admins";
+import cheers from "cheers";
+import logger from "lib/logger";
+import { addMessageToChatWidget } from "web/chatWidget/message";
+import { isInvuln, setTemporaryInvuln } from "lib/invuln";
 
 logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 

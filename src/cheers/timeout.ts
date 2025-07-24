@@ -1,10 +1,10 @@
-import { Cheer, handleNoTarget } from ".";
-import { sendMessage } from "../commands";
-import { getUserRecord } from "../db/dbUser";
-import { User } from "../user";
-import { timeout } from "../lib/timeout";
-import { createTimeoutRecord } from "../db/dbTimeouts";
-import { parseCheerArgs } from "../lib/parseCommandArgs";
+import { Cheer, handleNoTarget } from "cheers";
+import { sendMessage } from "commands";
+import { getUserRecord } from "db/dbUser";
+import User from "user";
+import { timeout } from "lib/timeout";
+import { createTimeoutRecord } from "db/dbTimeouts";
+import { parseCheerArgs } from "lib/parseCommandArgs";
 
 const ITEMNAME = 'blaster';
 

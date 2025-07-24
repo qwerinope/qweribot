@@ -1,7 +1,7 @@
 import { redis } from "bun";
-import { chatterApi } from ".";
+import { chatterApi } from "main";
 import { HelixUser } from "@twurple/api"
-import logger from "./lib/logger";
+import logger from "lib/logger";
 
 const EXPIRETIME = 60 * 60 // 60 minutes
 
@@ -15,7 +15,7 @@ const EXPIRETIME = 60 * 60 // 60 minutes
 // userlookup expiration gets set when user chats or is targeted by another user
 // vulnchatters only gets set when user chats
 
-export class User {
+export default class User {
   public username!: string;
   public id!: string;
   public displayName!: string;

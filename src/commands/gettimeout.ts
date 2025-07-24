@@ -1,8 +1,8 @@
-import { Command, sendMessage } from ".";
-import { streamerApi, streamerId } from "..";
-import { buildTimeString } from "../lib/dateManager";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { User } from "../user";
+import { Command, sendMessage } from "commands";
+import { streamerApi, streamerId } from "main";
+import { buildTimeString } from "lib/dateManager";
+import parseCommandArgs from "lib/parseCommandArgs";
+import User from "user";
 
 export default new Command('gettimeout', ['gett', 'gettimeout'], 'chatter', async msg => {
   const args = parseCommandArgs(msg.messageText);

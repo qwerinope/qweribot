@@ -1,7 +1,7 @@
 import './style.css';
 import '@fontsource/jersey-15';
 
-import { type twitchEventData } from "../../websockettypes";
+import { type twitchEventData } from "web/chatWidget/websockettypes";
 import { parseMessage } from './createMessage';
 
 const socket = new WebSocket(`ws://${location.host}`);

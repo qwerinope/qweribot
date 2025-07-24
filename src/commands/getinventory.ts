@@ -1,8 +1,8 @@
-import { Command, sendMessage } from ".";
-import { getUserRecord } from "../db/dbUser";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { User } from "../user";
-import items from "../items";
+import { Command, sendMessage } from "commands";
+import { getUserRecord } from "db/dbUser";
+import parseCommandArgs from "lib/parseCommandArgs";
+import User from "user";
+import items from "items";
 
 export default new Command('inventory', ['inv', 'inventory'], 'chatter', async (msg, user) => {
   const args = parseCommandArgs(msg.messageText);

@@ -1,4 +1,4 @@
-import { streamerId, chatterApi } from "../..";
+import { streamerId, chatterApi } from "main";
 import { redis } from "bun";
 
 type badgeObject = {
@@ -80,8 +80,8 @@ function parseRawBadges(returnobj: badgeObject, data: HelixChatBadgeSet[]) {
   };
 };
 
-import server from "..";
-import type { twitchEventData } from "./websockettypes";
+import server from "web";
+import type { twitchEventData } from "web/chatWidget/websockettypes";
 
 export async function sendTwitchChatEvent(event: twitchEventData) {
   server.publish('twitchchat', JSON.stringify(event));

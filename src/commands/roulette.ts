@@ -1,6 +1,6 @@
-import { Command, sendMessage } from ".";
+import { Command, sendMessage } from "commands";
 import { redis } from "bun";
-import { timeout } from "../lib/timeout";
+import { timeout } from "lib/timeout";
 
 const barrelCount = 6;
 

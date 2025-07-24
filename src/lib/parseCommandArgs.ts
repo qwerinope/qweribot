@@ -1,4 +1,4 @@
-import { commandPrefix } from "..";
+import { commandPrefix } from "main";
 
 /** Helper function to extract arguments from commands */
 export default function parseCommandArgs(input: string) {

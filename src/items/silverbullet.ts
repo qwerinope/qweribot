@@ -1,11 +1,11 @@
-import { changeItemCount, Item } from ".";
-import { sendMessage } from "../commands";
-import { createTimeoutRecord } from "../db/dbTimeouts";
-import { createUsedItemRecord } from "../db/dbUsedItems";
-import { getUserRecord } from "../db/dbUser";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { timeout } from "../lib/timeout";
-import { User } from "../user";
+import { changeItemCount, Item } from "items";
+import { sendMessage } from "commands";
+import { createTimeoutRecord } from "db/dbTimeouts";
+import { createUsedItemRecord } from "db/dbUsedItems";
+import { getUserRecord } from "db/dbUser";
+import parseCommandArgs from "lib/parseCommandArgs";
+import { timeout } from "lib/timeout";
+import User from "user";
 
 const ITEMNAME = 'silverbullet';
 

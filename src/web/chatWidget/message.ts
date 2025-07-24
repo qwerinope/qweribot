@@ -1,5 +1,5 @@
 import { EventSubChannelChatMessageEvent, EventSubChannelChatMessageDeleteEvent, EventSubChannelBanEvent } from "@twurple/eventsub-base";
-import { sendTwitchChatEvent } from "./widgetServerFunctions";
+import { sendTwitchChatEvent } from "web/chatWidget/widgetServerFunctions";
 
 export async function addMessageToChatWidget(msg: EventSubChannelChatMessageEvent) {
   await sendTwitchChatEvent({

@@ -1,8 +1,8 @@
-import { Command, sendMessage } from ".";
-import { getUserRecord } from "../db/dbUser";
-import { changeBalance } from "../lib/changeBalance";
-import parseCommandArgs from "../lib/parseCommandArgs";
-import { User } from "../user";
+import { Command, sendMessage } from "commands";
+import { getUserRecord } from "db/dbUser";
+import { changeBalance } from "lib/changeBalance";
+import parseCommandArgs from "lib/parseCommandArgs";
+import User from "user";
 
 export default new Command('admindonate', ['admindonate'], 'admin', async msg => {
   const args = parseCommandArgs(msg.messageText);

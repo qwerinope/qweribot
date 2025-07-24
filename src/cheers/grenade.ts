@@ -1,10 +1,10 @@
 import { redis } from "bun";
-import { sendMessage } from "../commands";
-import { timeout } from "../lib/timeout";
-import { User } from "../user";
-import { getUserRecord } from "../db/dbUser";
-import { createTimeoutRecord } from "../db/dbTimeouts";
-import { Cheer, handleNoTarget } from ".";
+import { sendMessage } from "commands";
+import { timeout } from "lib/timeout";
+import User from "user";
+import { getUserRecord } from "db/dbUser";
+import { createTimeoutRecord } from "db/dbTimeouts";
+import { Cheer, handleNoTarget } from "cheers";
 
 const ITEMNAME = 'grenade';
 

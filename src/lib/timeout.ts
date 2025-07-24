@@ -1,7 +1,7 @@
-import { streamerApi, streamerId } from "..";
-import logger from "./logger";
-import { User } from "../user";
-import { isInvuln } from "./invuln";
+import { streamerApi, streamerId } from "main";
+import logger from "lib/logger";
+import User from "user";
+import { isInvuln } from "lib/invuln";
 
 type SuccessfulTimeout = { status: true; };
 type UnSuccessfulTimeout = { status: false; reason: 'banned' | 'unknown' | 'illegal'; };

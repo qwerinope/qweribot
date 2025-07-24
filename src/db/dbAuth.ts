@@ -1,5 +1,5 @@
 import type { AccessToken } from "@twurple/auth";
-import pocketbase, { type authRecord } from "./connection";
+import pocketbase, { type authRecord } from "db/connection";
 const pb = pocketbase.collection('auth');
 
 export async function createAuthRecord(token: AccessToken, userId: string) {
