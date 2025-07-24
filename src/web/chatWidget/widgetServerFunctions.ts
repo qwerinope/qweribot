@@ -1,4 +1,5 @@
 import { streamerId, chatterApi } from "../..";
+import { redis } from "bun";
 
 type badgeObject = {
   [key: string]: {
@@ -11,6 +12,9 @@ type emoteObject = {
 };
 
 export async function getBadges() {
+  const redisdata = await redis.get('chatwidget:badges');
+  if (redisdata) return new Response(redisdata);
+
   const globalBadges = chatterApi.chat.getGlobalBadges();
   const channelBadges = chatterApi.chat.getChannelBadges(streamerId);
   const rawBadges = await Promise.all([globalBadges, channelBadges]);
@@ -19,10 +23,16 @@ export async function getBadges() {
   parseRawBadges(newObj, rawBadges[0]);
   parseRawBadges(newObj, rawBadges[1]);
 
+  await redis.set('chatwidget:badges', JSON.stringify(newObj));
+  await redis.expire('chatwidget:badges', 60 * 15);
+
   return Response.json(newObj);
 };
 
 export async function getExternalEmotes() {
+  const redisdata = await redis.get('chatwidget:emotes');
+  if (redisdata) return new Response(redisdata);
+
   const [bttvglobal, bttvuser, ffzglobal, ffzuser, seventvglobal, seventvuser] = await Promise.all([
     fetch("https://api.betterttv.net/3/cached/emotes/global").then(a => a.json() as any),
     fetch("https://api.betterttv.net/3/cached/users/twitch/" + streamerId).then(a => a.json() as any),
@@ -52,6 +62,10 @@ export async function getExternalEmotes() {
   for (const a of seventvuser.emote_set.emotes) {
     emotes[a.name] = `https://cdn.7tv.app/emote/${a.id}/4x.avif`;
   };
+
+  await redis.set('chatwidget:emotes', JSON.stringify(emotes));
+  await redis.expire('chatwidget:emotes', 60 * 15);
+
   return Response.json(emotes);
 }
 

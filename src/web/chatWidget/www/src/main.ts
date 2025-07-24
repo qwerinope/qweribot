@@ -20,7 +20,10 @@ socket.onmessage = event => {
       const newMessageElement = parseMessage(data);
       newMessageElement.id = data.messageId;
       newMessageElement.classList.add(data.chatterId);
-      document.querySelector("#message-container")?.appendChild(newMessageElement);
+      const messagecontainer = document.querySelector("#message-container");
+      messagecontainer.appendChild(newMessageElement);
+      if (messagecontainer.children.length > 250) messagecontainer.children[0].remove();
+      document.scrollingElement.scrollTop = 999999;
       break;
     case 'deleteMessage':
       document.querySelectorAll(`#${CSS.escape(data.messageId)}`).forEach(msg => msg.remove());
