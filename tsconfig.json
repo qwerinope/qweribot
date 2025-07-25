@@ -15,6 +15,6 @@
   },
   "references": [
     { "path": "./tsconfig.bot.json" },
-    { "path": "./tsconfig.chatwidget.json" }
+    { "path": "./tsconfig.web.json" }
   ]
 }

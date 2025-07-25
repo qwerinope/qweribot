@@ -3,14 +3,16 @@ import '@fontsource/jersey-15';
 
 import { type twitchEventData } from "web/chatWidget/websockettypes";
 import { parseMessage } from './createMessage';
+import { serverInstruction } from 'web/serverTypes';
 
 const socket = new WebSocket(`ws://${location.host}`);
 
 socket.onopen = () => {
-  socket.send(JSON.stringify({
+  const instruction: serverInstruction = {
     type: 'subscribe',
-    target: 'twitchchat'
-  }));
+    target: 'twitch.chat'
+  };
+  socket.send(JSON.stringify(instruction));
 };
 
 socket.onmessage = event => {

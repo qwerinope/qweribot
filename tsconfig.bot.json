@@ -19,5 +19,5 @@
     "noPropertyAccessFromIndexSignature": false
   },
   "include": ["src/**/*"],
-  "exclude": ["src/web/chatWidget/www/**/*"]
+  "exclude": ["src/web/chatWidget/www/**/*", "src/web/alerts/www/**/*"]
 }

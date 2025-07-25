@@ -84,5 +84,5 @@ import server from "web";
 import type { twitchEventData } from "web/chatWidget/websockettypes";
 
 export async function sendTwitchChatEvent(event: twitchEventData) {
-  server.publish('twitchchat', JSON.stringify(event));
+  server.publish('twitch.chat', JSON.stringify(event));
 };

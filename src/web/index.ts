@@ -1,7 +1,8 @@
 import logger from "lib/logger";
-import { getBadges, getExternalEmotes } from "web/chatWidget/widgetServerFunctions";
 import chatWidget from "web/chatWidget/www/index.html";
-import { sendTwitchChatEvent } from "web/chatWidget/widgetServerFunctions";
+import { getBadges, getExternalEmotes } from "web/chatWidget/widgetServerFunctions";
+import alerts from "web/alerts/www/index.html";
+import type { serverInstruction, serverNotificationEvent } from "web/serverTypes";
 
 const port = Number(process.env.WEB_PORT);
 if (isNaN(port)) { logger.enverr("WEB_PORT"); process.exit(1); };
@@ -15,26 +16,23 @@ export default Bun.serve({
   routes: {
     "/chat": chatWidget,
     "/chat/getBadges": getBadges,
-    "/chat/getEmotes": getExternalEmotes
+    "/chat/getEmotes": getExternalEmotes,
+
+    "/alerts": alerts
   },
   websocket: {
-    open(_ws) {
-      sendTwitchChatEvent({
-        function: 'serverNotification',
-        message: 'Sucessfully opened websocket connection'
-      });
-    },
     message(ws, omessage) {
-      const message = JSON.parse(omessage.toString());
+      const message = JSON.parse(omessage.toString()) as serverInstruction;
       if (!message.type) return;
       switch (message.type) {
         case 'subscribe':
           if (!message.target) return;
+          const target = message.target.toLowerCase();
           ws.subscribe(message.target);
-          sendTwitchChatEvent({
+          ws.send(JSON.stringify({
             function: 'serverNotification',
-            message: `Successfully subscribed to all ${message.target} events`
-          });
+            message: `Successfully subscribed to ${target} events`
+          } as serverNotificationEvent)); // Both alerts and chatwidget eventsub subscriptions have the notification field
           break;
       };
     },

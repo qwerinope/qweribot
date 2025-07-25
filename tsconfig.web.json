@@ -3,8 +3,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["DOM", "ES2020"],
-    "types": []
+    "lib": ["DOM", "ES2020"]
   },
-  "include": ["src/web/chatWidget/www/**/*"]
+  "include": ["src/web/chatWidget/www/**/*", "src/web/alerts/www/**/*"]
 }
