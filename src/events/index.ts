@@ -33,35 +33,29 @@ for (const file of files) {
 
 eventSub.start();
 
-import { getAuthRecord } from "db/dbAuth";
-import { StaticAuthProvider } from "@twurple/auth";
-import { ApiClient, HelixEventSubSubscription } from "@twurple/api";
+import { HelixEventSubSubscription } from "@twurple/api";
 
 const deleteDuplicateSubscriptions = setTimeout(async () => {
   logger.info('Deleting all double subscriptions');
-  const tokendata = await streamerApi.getTokenInfo();
-  const authdata = await getAuthRecord(streamerId, []);
-  const tempauth = new StaticAuthProvider(tokendata.clientId, authdata?.accesstoken.accessToken!);
-  const tempapi: ApiClient = new ApiClient({ authProvider: tempauth });
-  logger.info('Created the temporary API client');
-  const subs = await tempapi.eventSub.getSubscriptionsForStatus('enabled');
-  const seen = new Map();
-  const duplicates: HelixEventSubSubscription[] = [];
+  await streamerApi.asUser(streamerId, async tempapi => {
+    const subs = await tempapi.eventSub.getSubscriptionsForStatus("enabled");
 
-  for (const sub of subs.data) {
-    if (seen.has(sub.type)) {
-      if (!duplicates.some(o => o.type === sub.type)) {
-        duplicates.push(seen.get(sub.type));
+    const seen = new Map();
+    const duplicates: HelixEventSubSubscription[] = [];
+
+    for (const sub of subs.data) {
+      if (seen.has(sub.type)) {
+        duplicates.push(sub);
+      } else {
+        seen.set(sub.type, sub);
       };
-    } else {
-      seen.set(sub.type, sub);
     };
-  };
 
-  for (const sub of duplicates) {
-    await tempapi.eventSub.deleteSubscription(sub.id);
-    logger.ok(`Deleted sub: id: ${sub.id}, type: ${sub.type}`);
-  };
-  if (duplicates.length === 0) logger.ok('No duplicate subscriptions found');
-  else logger.ok('Deleted all duplicate EventSub subscriptions');
+    for (const sub of duplicates) {
+      await tempapi.eventSub.deleteSubscription(sub.id);
+      logger.ok(`Deleted sub: id: ${sub.id}, type: ${sub.type}`);
+    };
+    if (duplicates.length === 0) logger.ok('No duplicate subscriptions found');
+    else logger.ok('Deleted all duplicate EventSub subscriptions');
+  });
 }, 5000);
