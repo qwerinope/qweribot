@@ -1,18 +1,20 @@
 import { userBlastAlert } from "web/alerts/types";
-import { delay } from "./index";
+import { AlertRunner } from "./index";
 
-export default async function execute(alert: userBlastAlert) {
+const duration = 10000;
+
+export default async function execute(alert: userBlastAlert): Promise<AlertRunner> {
   const parentDiv = document.createElement('div');
-  const textElement = document.createElement('span');
-  textElement.textContent = `${alert.user} just blasted ${alert.target} for 60 seconds! Rip bozo!`;
-  parentDiv.appendChild(textElement);
-  Object.assign(textElement.style, {
-    position: 'fixed',
-    top: '20px',
-    left: '20px',
-    zIndex: 1000
-  });
-  document.querySelector("#app").appendChild(parentDiv);
-  await delay(10000);
-  parentDiv.remove();
+  parentDiv.className = 'userBlastAlert';
+  parentDiv.innerHTML = `
+    <span>${alert.user} just blasted ${alert.target} for 60 seconds! Rip bozo!</span>
+    <style>
+      .userBlastAlert {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+      }
+    </style>
+`;
+  return { blocking: false, duration, alertDiv: parentDiv };
 };
