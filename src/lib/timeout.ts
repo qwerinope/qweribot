@@ -2,6 +2,7 @@ import { streamerApi, streamerId } from "main";
 import logger from "lib/logger";
 import User from "user";
 import { isInvuln } from "lib/invuln";
+import { redis } from "bun";
 
 type SuccessfulTimeout = { status: true; };
 type UnSuccessfulTimeout = { status: false; reason: 'banned' | 'unknown' | 'illegal'; };
@@ -14,9 +15,13 @@ type TimeoutResult = SuccessfulTimeout | UnSuccessfulTimeout;
 export const timeout = async (user: User, reason: string, duration?: number): Promise<TimeoutResult> => {
   if (await isInvuln(user.id)) return { status: false, reason: 'illegal' }; // Don't timeout invulnerable chatters
 
-  // Check if user already has a timeout
-  const banStatus = await streamerApi.moderation.getBannedUsers(streamerId, { userId: user.id }).then(a => a.data);
-  if (banStatus[0]) return { status: false, reason: 'banned' };
+  // Check if user already has a timeout and handle stacking
+  const banStatus = await timeoutDuration(user);
+  if (banStatus) {
+    if (await redis.exists('timeoutStacking')) {
+      if (duration) duration += Math.floor((banStatus * 1000 - Date.now()) / 1000); // the target is timed out and stacking is on
+    } else return { status: false, reason: 'banned' }; // the target is timed out, but stacking is off
+  } else if (banStatus === null) return { status: false, reason: 'banned' }; // target is perma banned
 
   if (await streamerApi.moderation.checkUserMod(streamerId, user.id!)) {
     if (!duration) duration = 60; // make sure that mods don't get perma-banned
@@ -28,8 +33,11 @@ export const timeout = async (user: User, reason: string, duration?: number): Pr
     await streamerApi.moderation.banUser(streamerId, { user: user.id, reason, duration });
   } catch (err) {
     logger.err(err as string);
-    return { status: false, reason: 'unknown' }
+    return { status: false, reason: 'unknown' };
   };
+
+  await redis.set(`user:${user.id}:timeout`, '1');
+  if (duration) await redis.expire(`user:${user.id}:timeout`, duration);
 
   return { status: true };
 };
@@ -37,9 +45,9 @@ export const timeout = async (user: User, reason: string, duration?: number): Pr
 /** Give the target mod status back after timeout */
 function remodMod(target: User, duration: number) {
   setTimeout(async () => {
-    const bandata = await streamerApi.moderation.getBannedUsers(streamerId, { userId: target.id }).then(a => a.data);
-    if (bandata[0]) { // If the target is still timed out, try again when new timeout expires
-      const timeoutleft = Date.parse(bandata[0].expiryDate?.toString()!) - Date.now(); // date when timeout expires - current date
+    const bandata = await timeoutDuration(target);
+    if (bandata) { // If the target is still timed out, try again when new timeout expires
+      const timeoutleft = bandata * 1000 - Date.now(); // date when timeout expires - current date
       remodMod(target, timeoutleft); // Call the current function with new time (recursion)
     } else {
       try {
@@ -47,4 +55,12 @@ function remodMod(target: User, duration: number) {
       } catch (err) { }; // This triggers when the timeout got shortened. try/catch so no runtime error
     };
   }, duration + 3000); // callback gets called after duration of timeout + 3 seconds
+};
+
+/** This returns number if there is a duration of time for the timeout, false if not banned and null if perma banned  */
+export async function timeoutDuration(user: User): Promise<number | null | false> {
+  const data = await redis.expiretime(`user:${user.id}:timeout`);
+  if (data === -1) return null; // Perma banned
+  else if (data === -2) return false; // Not banned
+  return data;
 };

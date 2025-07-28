@@ -67,6 +67,8 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `backshot`|'Backshot' a random previous chatter|anyone|`backshot`|:white_check_mark:
 `roulette`|Play russian roulette for a 5 minute timeout|anyone|`roulette`|:white_check_mark:
 `timeout {target}`|Times targeted user out for 60 seconds (costs 100 qweribucks)|anyone|`timeout`|:white_check_mark:
+`stats [target]`|Get timeout and some item stats for yourself or specified user this month|anyone|`stats` `monthlystats`|:white_check_mark:
+`alltime [target]`|Get timeout and some item stats for yourself or specified user of all time|anyone|`alltime` `alltimestats`|:white_check_mark:
 
 ### Qweribucks commands
 
@@ -93,6 +95,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `getcommands [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcommands` `getc`|:x:
 `getcheers [enabled/disabled]`|Get a list of all, enabled or disabled cheers|anyone|`getcheers` `getcheer`|:x:
 `gettimeout {target}`|Get the remaining timeout duration of targeted user|anyone|`gettimeout` `gett`|:white_check_mark:
+`stacking [on/off]`|Check/set if timeouts are stacking. Only admins can set the stacking state|anyone/admins|`stacking`|:x:
 `vulnchatters`|Get amount of chatters vulnerable to explosives|anyone|`vulnchatters` `vulnc`|:white_check_mark:
 `disablecommand {command/item}`|Disable a specific command/item|admins|`disablecommand`|:x:
 `enablecommand {command/item}`|Re-enable a specific command/item|admins|`enablecommand`|:x:

@@ -4,6 +4,7 @@ import { EventSubWsListener } from "@twurple/eventsub-ws";
 import { addAdmin } from "lib/admins";
 import logger from "lib/logger";
 import { addInvuln } from "lib/invuln";
+import { redis } from "bun";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERINTENTS = ["user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read", "channel:moderate"];
@@ -30,6 +31,13 @@ export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
 
 export const streamerUsers = [chatterId, streamerId];
 streamerUsers.forEach(async id => await Promise.all([addAdmin(id), addInvuln(id)]));
+
+const banned = await streamerApi.moderation.getBannedUsers(streamerId).then(a => a.data);
+banned.forEach(async ban => {
+  await redis.set(`user:${ban.userId}:timeout`, '1');
+  if (ban.expiryDate) redis.expire(`user:${ban.userId}:timeout`, Math.floor((ban.expiryDate.getTime() - Date.now()) / 1000));
+  logger.info(`Set the timeout/ban of ${ban.userDisplayName} in the Redis/Valkey database.`);
+});
 
 await import("./events");
 
