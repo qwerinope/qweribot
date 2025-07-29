@@ -35,8 +35,14 @@ streamerUsers.forEach(async id => await Promise.all([addAdmin(id), addInvuln(id)
 const banned = await streamerApi.moderation.getBannedUsers(streamerId).then(a => a.data);
 banned.forEach(async ban => {
   await redis.set(`user:${ban.userId}:timeout`, '1');
-  if (ban.expiryDate) redis.expire(`user:${ban.userId}:timeout`, Math.floor((ban.expiryDate.getTime() - Date.now()) / 1000));
+  if (ban.expiryDate) redis.expire(`user:${ban.userId}:timeout`, Math.floor((ban.expiryDate.getTime() - Date.now()) / 1000) + 1);
   logger.info(`Set the timeout/ban of ${ban.userDisplayName} in the Redis/Valkey database.`);
+});
+
+const mods = await streamerApi.moderation.getModerators(streamerId).then(a => a.data);
+mods.forEach(async mod => {
+  await redis.set(`user:${mod.userId}:mod`, '1');
+  logger.info(`Set the mod status of ${mod.userDisplayName} in the Redis/Valkey database.`);
 });
 
 await import("./events");

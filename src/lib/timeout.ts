@@ -23,7 +23,7 @@ export const timeout = async (user: User, reason: string, duration?: number): Pr
     } else return { status: false, reason: 'banned' }; // the target is timed out, but stacking is off
   } else if (banStatus === null) return { status: false, reason: 'banned' }; // target is perma banned
 
-  if (await streamerApi.moderation.checkUserMod(streamerId, user.id!)) {
+  if (await redis.exists(`user:${user.id}:mod`)) {
     if (!duration) duration = 60; // make sure that mods don't get perma-banned
     remodMod(user, duration);
     await streamerApi.moderation.removeModerator(streamerId, user.id!);

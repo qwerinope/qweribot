@@ -7,3 +7,7 @@ eventSub.onChannelBan(streamerId, async msg => {
   await redis.set(`user:${msg.userId}:timeout`, '1');
   if (msg.endDate) await redis.expire(`user:${msg.userId}:timeout`, Math.floor((msg.endDate.getTime() - Date.now()) / 1000));
 });
+
+eventSub.onChannelUnban(streamerId, async msg => {
+  await redis.del(`user:${msg.userId}:timeout`);
+});
