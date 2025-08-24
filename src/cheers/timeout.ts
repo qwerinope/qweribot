@@ -4,6 +4,7 @@ import { getUserRecord } from "db/dbUser";
 import User from "user";
 import { timeout } from "lib/timeout";
 import { createTimeoutRecord } from "db/dbTimeouts";
+import { createCheerEventRecord } from "db/dbCheerEvents";
 import { parseCheerArgs } from "lib/parseCommandArgs";
 
 const ITEMNAME = 'blaster';
@@ -18,7 +19,8 @@ export default new Cheer('timeout', 100, async (msg, user) => {
   const result = await timeout(target, `You got blasted by ${user.displayName}!`, 60);
   if (result.status) await Promise.all([
     sendMessage(`GOTTEM ${target.displayName} got BLASTED by ${user.displayName} GOTTEM`),
-    createTimeoutRecord(user, target, ITEMNAME)
+    createTimeoutRecord(user, target, ITEMNAME),
+    createCheerEventRecord(user, ITEMNAME)
   ]);
   else {
     await handleNoTarget(msg, user, ITEMNAME);

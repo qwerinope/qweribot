@@ -5,6 +5,7 @@ import User from "user";
 import { timeout } from "lib/timeout";
 import { createTimeoutRecord } from "db/dbTimeouts";
 import { parseCheerArgs } from "lib/parseCommandArgs";
+import { createCheerEventRecord } from "db/dbCheerEvents";
 
 const ITEMNAME = 'silverbullet';
 
@@ -19,6 +20,7 @@ export default new Cheer('execute', 6666, async (msg, user) => {
   if (result.status) await Promise.all([
     sendMessage(`${target.displayName} RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO`),
     createTimeoutRecord(user, target, ITEMNAME),
+    createCheerEventRecord(user, ITEMNAME)
   ]);
   else {
     await handleNoTarget(msg, user, ITEMNAME);

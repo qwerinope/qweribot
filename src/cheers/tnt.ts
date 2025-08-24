@@ -4,6 +4,7 @@ import { getUserRecord } from "db/dbUser";
 import User from "user";
 import { timeout } from "lib/timeout";
 import { createTimeoutRecord } from "db/dbTimeouts";
+import { createCheerEventRecord } from "db/dbCheerEvents";
 import { getTNTTargets } from "items/tnt";
 import { redis } from "bun";
 
@@ -22,6 +23,7 @@ export default new Cheer('tnt', 1000, async (msg, user) => {
       redis.del(`user:${targetid}:vulnerable`),
       sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s TNT wybuh`),
       createTimeoutRecord(user, target!, ITEMNAME),
+      createCheerEventRecord(user, ITEMNAME)
     ]);
   }));
 

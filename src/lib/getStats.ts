@@ -1,3 +1,4 @@
+import { getCheerEvents } from "db/dbCheerEvents";
 import { getTimeoutsAsTarget, getTimeoutsAsUser } from "db/dbTimeouts";
 import { getItemsUsed } from "db/dbUsedItems";
 import type { inventory } from "items";
@@ -33,12 +34,22 @@ export async function getTimeoutStats(target: User, thismonth: boolean) {
 export async function getItemStats(target: User, thismonth: boolean) {
   const monthdata = thismonth ? new Date().toISOString().slice(0, 7) : undefined;
 
-  const data = await getItemsUsed(target, monthdata);
-  if (!data) return;
+  const [items, cheers] = await Promise.all([
+    getItemsUsed(target, monthdata),
+    getCheerEvents(target, monthdata)
+  ]);
+  if (!items || !cheers) return;
 
-  const returnObj: inventory = {
-    grenade: data.filter(use => use.item === 'grenade').length,
-    tnt: data.filter(use => use.item === 'tnt').length
+  const returnObj: inventory = {};
+
+  for (const item of items) {
+    if (!returnObj[item.item]) returnObj[item.item] = 0;
+    returnObj[item.item]! += 1;
+  };
+
+  for (const cheer of cheers) {
+    if (!returnObj[cheer.cheer]) returnObj[cheer.cheer] = 0;
+    returnObj[cheer.cheer]! += 1
   };
 
   return returnObj;

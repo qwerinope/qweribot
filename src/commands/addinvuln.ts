@@ -3,7 +3,7 @@ import { addInvuln } from "lib/invuln";
 import parseCommandArgs from "lib/parseCommandArgs";
 import User from "user";
 
-export default new Command('addinvuln', ['addinvuln'], 'streamer', async msg => {
+export default new Command('addinvuln', ['addinvuln'], 'admin', async msg => {
   const args = parseCommandArgs(msg.messageText);
   if (!args[0]) { await sendMessage('Please specify a target', msg.messageId); return; };
   const target = await User.initUsername(args[0].toLowerCase());

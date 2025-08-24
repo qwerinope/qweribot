@@ -8,6 +8,8 @@ import cheers from "cheers";
 import logger from "lib/logger";
 import { addMessageToChatWidget } from "web/chatWidget/message";
 import { isInvuln, setTemporaryInvuln } from "lib/invuln";
+import { getUserRecord } from "db/dbUser";
+import { createCheerRecord } from "db/dbCheers";
 
 logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
@@ -65,6 +67,11 @@ async function handleChatMessage(msg: EventSubChannelChatMessageEvent, user: Use
 };
 
 export async function handleCheer(msg: EventSubChannelChatMessageEvent, bits: number, user: User) {
+  if (msg.isCheer) {
+    await getUserRecord(user); // ensure they exist in the database
+    await createCheerRecord(user, bits);
+  }; // If this is not triggered it's because of the testcheer command. these fake bits should not be added to the database
+
   const selection = cheers.get(bits);
   if (!selection) return;
 

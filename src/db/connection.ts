@@ -34,11 +34,26 @@ export type timeoutRecord = {
   created: string;
 };
 
+export type cheerEventRecord = {
+  id?: string;
+  user: string;
+  cheer: string;
+  created: string;
+};
+
+export type cheerRecord = {
+  id?: string;
+  user?: string;
+  amount: number;
+};
+
 interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'auth'): RecordService<authRecord>;
   collection(idOrName: 'users'): RecordService<userRecord>;
   collection(idOrName: 'usedItems'): RecordService<usedItemRecord>;
   collection(idOrName: 'timeouts'): RecordService<timeoutRecord>;
+  collection(idOrName: 'cheerEvents'): RecordService<cheerEventRecord>;
+  collection(idOrName: 'cheers'): RecordService<cheerRecord>;
 };
 
 export default new PocketBase(pocketbaseurl).autoCancellation(false) as TypedPocketBase;

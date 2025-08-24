@@ -14,7 +14,7 @@ export async function addInvuln(userid: string) {
 export async function removeInvuln(userid: string) {
   return await redis.del(`user:${userid}:invulnerable`);
 };
-export async function setTemporaryInvuln(userid: string) {
+export async function setTemporaryInvuln(userid: string, duration = 600) {
   await redis.set(`user:${userid}:invulnerable`, '1');
-  await redis.expire(`user:${userid}:invulnerable`, 600);
+  await redis.expire(`user:${userid}:invulnerable`, duration);
 };

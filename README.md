@@ -17,7 +17,7 @@ They can however use items.
 The intended use for invulns is for when you need to talk to a chatter, or for using other bots.
 Invulns don't need moderator or vip status in the channel.
 The chatterbot and streamer always are invuln and cannot be stripped of this status.
-Only the streamer and chatterbot have the power to add and remove invulns.
+Admins can add and remove invulns.
 
 ### Commands
 
@@ -105,8 +105,8 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `getadmins`|Get a list of every admin in the channel|anyone|`getadmins`|:x:
 `itemlock {target}`|Toggle the itemlock on the specified target|admins|`itemlock`|:x:
 `testcheer {amount} [args]`|Create a fake cheering event|streamer/chatterbot|`testcheer`|:x:
-`addinvuln {target}`|Adds an invuln user|streamer/chatterbot|`addinvuln`|:x:
-`removeinvuln {target}`|Removes an invuln user| streamer/chatterbot|`removeinvuln`|:x:
+`addinvuln {target}`|Adds an invuln user|admins|`addinvuln`|:x:
+`removeinvuln {target}`|Removes an invuln user|admins|`removeinvuln`|:x:
 `addadmin {target}`|Adds an admin|streamer/chatterbot|`addadmin`|:x:
 `removeadmin {target}`|Removes an admin|streamer/chatterbot|`removeadmin`|:x:
 
