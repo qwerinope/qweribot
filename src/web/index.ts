@@ -18,7 +18,13 @@ export default Bun.serve({
     "/chat/getBadges": getBadges,
     "/chat/getEmotes": getExternalEmotes,
 
-    "/alerts": alerts
+    "/alerts": alerts,
+    "/alerts/public/:filename": async req => {
+      const target = req.params.filename;
+      const file = Bun.file(`${import.meta.dir}/alerts/www/public/${target}`);
+      if (!await file.exists()) return new Response(`${target} not found`, { status: 404 });
+      return new Response(file);
+    }
   },
   websocket: {
     message(ws, omessage) {

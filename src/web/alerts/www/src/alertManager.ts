@@ -1,5 +1,5 @@
 import { alert } from "web/alerts/types";
-import alerts from "./index";
+import alerts from "./alerts/index";
 
 function generateRandomCSSIdentifier() {
   const firstChar = String.fromCharCode(97 + Math.floor(Math.random() * 26));

@@ -6,6 +6,7 @@ import { getUserRecord } from "db/dbUser";
 import parseCommandArgs from "lib/parseCommandArgs";
 import { timeout } from "lib/timeout";
 import User from "user";
+import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'blaster';
 
@@ -28,7 +29,12 @@ export default new Item(ITEMNAME, 'Blaster', 's',
       sendMessage(`GOTTEM ${target.displayName} got BLASTED by ${user.displayName} GOTTEM`),
       changeItemCount(user, userObj, ITEMNAME),
       createTimeoutRecord(user, target, ITEMNAME),
-      createUsedItemRecord(user, ITEMNAME)
+      createUsedItemRecord(user, ITEMNAME),
+      playAlert({
+        name: 'userBlast',
+        user: user.displayName,
+        target: target.displayName
+      })
     ]);
     else {
       switch (result.reason) {

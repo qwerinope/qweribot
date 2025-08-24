@@ -1,6 +1,7 @@
 import { serverInstruction } from "web/serverTypes";
 import { alertEventData } from "web/alerts/types";
-import alertManager from "./alerts/alertManager";
+import alertManager from "./alertManager";
+import "@fontsource/jersey-15";
 
 const socket = new WebSocket(`ws://${location.host}`);
 

@@ -6,6 +6,7 @@ import User from "user";
 import { getUserRecord } from "db/dbUser";
 import { createTimeoutRecord } from "db/dbTimeouts";
 import { createUsedItemRecord } from "db/dbUsedItems";
+import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'tnt';
 
@@ -35,6 +36,11 @@ export default new Item(ITEMNAME, 'TNT', 's',
 
     await Promise.all([
       createUsedItemRecord(user, ITEMNAME),
+      playAlert({
+        name: 'tntExplosion',
+        user: user.displayName,
+        targets
+      }),
       changeItemCount(user, userObj, ITEMNAME)
     ]);
     await user.clearLock();

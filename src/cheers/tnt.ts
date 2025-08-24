@@ -7,6 +7,7 @@ import { createTimeoutRecord } from "db/dbTimeouts";
 import { createCheerEventRecord } from "db/dbCheerEvents";
 import { getTNTTargets } from "items/tnt";
 import { redis } from "bun";
+import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'tnt';
 
@@ -26,6 +27,12 @@ export default new Cheer('tnt', 1000, async (msg, user) => {
       createCheerEventRecord(user, ITEMNAME)
     ]);
   }));
+
+  playAlert({
+    name: 'tntExplosion',
+    user: user.displayName,
+    targets
+  });
 
   await sendMessage(`RIPBOZO ${user.displayName} exploded ${targets.length} chatter${targets.length === 1 ? '' : 's'} with their TNT RIPBOZO`);
 });
