@@ -6,6 +6,7 @@ import { timeout } from "lib/timeout";
 import { createTimeoutRecord } from "db/dbTimeouts";
 import { parseCheerArgs } from "lib/parseCommandArgs";
 import { createCheerEventRecord } from "db/dbCheerEvents";
+import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'silverbullet';
 
@@ -20,7 +21,12 @@ export default new Cheer('execute', 6666, async (msg, user) => {
   if (result.status) await Promise.all([
     sendMessage(`${target.displayName} RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO`),
     createTimeoutRecord(user, target, ITEMNAME),
-    createCheerEventRecord(user, ITEMNAME)
+    createCheerEventRecord(user, ITEMNAME),
+    playAlert({
+      name: 'userExecution',
+      user: user.displayName,
+      target: target.displayName
+    })
   ]);
   else {
     await handleNoTarget(msg, user, ITEMNAME);

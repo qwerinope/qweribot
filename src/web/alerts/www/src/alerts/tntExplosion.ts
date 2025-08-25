@@ -1,9 +1,9 @@
-import { userBlastAlert } from "web/alerts/types";
+import { tntExplosionAlert } from "web/alerts/types";
 import { AlertRunner } from "./index";
 
 const duration = 1500;
 
-export default async function execute(alert: userBlastAlert): Promise<AlertRunner> {
+export default async function execute(alert: tntExplosionAlert): Promise<AlertRunner> {
   const parentDiv = document.createElement('div');
   parentDiv.className = 'tntExplosionAlert';
   parentDiv.innerHTML = `

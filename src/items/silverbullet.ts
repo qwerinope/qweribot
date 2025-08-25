@@ -5,6 +5,7 @@ import { createUsedItemRecord } from "db/dbUsedItems";
 import { getUserRecord } from "db/dbUser";
 import parseCommandArgs from "lib/parseCommandArgs";
 import { timeout } from "lib/timeout";
+import { playAlert } from "web/alerts/serverFunctions";
 import User from "user";
 
 const ITEMNAME = 'silverbullet';
@@ -28,7 +29,12 @@ export default new Item(ITEMNAME, 'Silver bullet', 's',
       sendMessage(`${target.displayName} RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO`),
       changeItemCount(user, userObj, ITEMNAME),
       createTimeoutRecord(user, target, ITEMNAME),
-      createUsedItemRecord(user, ITEMNAME)
+      createUsedItemRecord(user, ITEMNAME),
+      playAlert({
+        name: 'userExecution',
+        user: user.displayName,
+        target: target.displayName
+      })
     ]);
     else {
       switch (result.reason) {

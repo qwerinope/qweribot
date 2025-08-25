@@ -6,6 +6,7 @@ import { getUserRecord } from "db/dbUser";
 import { createTimeoutRecord } from "db/dbTimeouts";
 import { createCheerEventRecord } from "db/dbCheerEvents";
 import { Cheer, handleNoTarget } from "cheers";
+import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'grenade';
 
@@ -22,6 +23,11 @@ export default new Cheer('grenade', 99, async (msg, user) => {
     redis.del(selection),
     sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s grenade wybuh`),
     createTimeoutRecord(user, target!, ITEMNAME),
-    createCheerEventRecord(user, ITEMNAME)
+    createCheerEventRecord(user, ITEMNAME),
+    playAlert({
+      name: 'grenadeExplosion',
+      user: user.displayName,
+      target: target?.displayName!
+    })
   ]);
 });

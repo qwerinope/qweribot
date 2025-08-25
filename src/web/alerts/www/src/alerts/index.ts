@@ -1,5 +1,7 @@
 import { alert } from "web/alerts/types";
 import userBlast from "./userBlast";
+import userExecution from "./userExecution";
+import grenadeExplosion from "./grenadeExplosion";
 import tntExplosion from "./tntExplosion";
 
 export type AlertRunner = {
@@ -14,7 +16,7 @@ type AlertMap = {
 
 export default {
   'userBlast': userBlast,
-  'userExecute': userBlast,
-  'grenadeExplosion': userBlast,
+  'userExecution': userExecution,
+  'grenadeExplosion': grenadeExplosion,
   'tntExplosion': tntExplosion,
 } as AlertMap;

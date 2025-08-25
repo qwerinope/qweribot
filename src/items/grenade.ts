@@ -6,6 +6,7 @@ import User from "user";
 import { getUserRecord } from "db/dbUser";
 import { createTimeoutRecord } from "db/dbTimeouts";
 import { createUsedItemRecord } from "db/dbUsedItems";
+import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'grenade';
 
@@ -30,7 +31,12 @@ export default new Item(ITEMNAME, 'Grenade', 's',
       sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s grenade wybuh`),
       changeItemCount(user, userObj, ITEMNAME),
       createTimeoutRecord(user, target!, ITEMNAME),
-      createUsedItemRecord(user, ITEMNAME)
+      createUsedItemRecord(user, ITEMNAME),
+      playAlert({
+        name: 'grenadeExplosion',
+        user: user.displayName,
+        target: target?.displayName!
+      })
     ]);
     await user.clearLock();
   }

@@ -31,6 +31,11 @@ export default new Item(ITEMNAME, 'TNT', 's',
         redis.del(`user:${targetid}:vulnerable`),
         sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s TNT wybuh`),
         createTimeoutRecord(user, target!, ITEMNAME),
+        playAlert({
+          name: 'tntExplosion',
+          user: user.displayName,
+          targets
+        })
       ]);
     }));
 

@@ -24,15 +24,14 @@ export default new Cheer('tnt', 1000, async (msg, user) => {
       redis.del(`user:${targetid}:vulnerable`),
       sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s TNT wybuh`),
       createTimeoutRecord(user, target!, ITEMNAME),
-      createCheerEventRecord(user, ITEMNAME)
+      createCheerEventRecord(user, ITEMNAME),
+      playAlert({
+        name: 'tntExplosion',
+        user: user.displayName,
+        targets
+      })
     ]);
   }));
-
-  playAlert({
-    name: 'tntExplosion',
-    user: user.displayName,
-    targets
-  });
 
   await sendMessage(`RIPBOZO ${user.displayName} exploded ${targets.length} chatter${targets.length === 1 ? '' : 's'} with their TNT RIPBOZO`);
 });
