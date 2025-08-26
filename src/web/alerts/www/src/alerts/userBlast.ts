@@ -1,7 +1,7 @@
 import { userBlastAlert } from "web/alerts/types";
 import { AlertRunner } from "./index";
 
-const duration = 500;
+const duration = 1000;
 
 export default async function execute(alert: userBlastAlert): Promise<AlertRunner> {
   const audio = new Audio("/alerts/public/explosion1.ogg");
@@ -23,6 +23,8 @@ export default async function execute(alert: userBlastAlert): Promise<AlertRunne
         justify-content: center;
         align-content: center;
         text-align: center;
+        color: white;
+        font-size: 20px;
 
         img {
           width: 100%;
@@ -30,16 +32,21 @@ export default async function execute(alert: userBlastAlert): Promise<AlertRunne
         }
 
         .shooter {
-          top: 50%;
-          left: 55%;
+          top: 55%;
+          left: 69%;
           position: absolute;
-          color: white;
+          font-size: 20px;
+          mix-blend-mode: exclusion;
+          transform: translateX(-50%);
         }
         
         .target {
           top: 30%;
-          left: 18%;
+          left: 25%;
           position: absolute;
+          font-size: 20px;
+          mix-blend-mode: exclusion;
+          transform: translateX(-50%);
         }
       }
     </style>

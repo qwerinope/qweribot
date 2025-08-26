@@ -7,7 +7,7 @@ export default async function execute(alert: userExecutionAlert): Promise<AlertR
   const parentDiv = document.createElement('div');
   parentDiv.className = 'userExecutionAlert';
   parentDiv.innerHTML = `
-    <img src="/alerts/public/getrekt.jpg" height="800" width="800">
+    <img src="/alerts/public/getrekt.jpg">
     <span class="shooter">
       ${alert.user}
     </span>
@@ -21,6 +21,10 @@ export default async function execute(alert: userExecutionAlert): Promise<AlertR
         justify-content: center;
         align-content: center;
         text-align: center;
+        height: 800px;
+        width: 800px;
+        font-size: 50px;
+        color: white;
 
         img {
           width: 100%;
@@ -28,16 +32,19 @@ export default async function execute(alert: userExecutionAlert): Promise<AlertR
         }
 
         .shooter {
-          top: 50%;
-          left: 55%;
+          top: 55%;
+          left: 69%;
           position: absolute;
-          color: white;
+          mix-blend-mode: exclusion;
+          transform: translateX(-50%);
         }
         
         .target {
           top: 30%;
-          left: 18%;
+          left: 25%;
           position: absolute;
+          mix-blend-mode: exclusion;
+          transform: translateX(-50%);
         }
       }
     </style>

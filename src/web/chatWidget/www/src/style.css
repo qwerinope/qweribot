@@ -32,8 +32,7 @@ body {
   }
 
   .replyMessage {
-    color: grey;
-    font-size: 2px;
+    display: none;
   }
 
   padding: 2px;
