@@ -93,7 +93,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `getbalance [target]`|Get balance of target or self|anyone|`getbalance` `balance` `qbucks` `qweribucks` `wallet` `getwallet`|:white_check_mark:
 `donate {target} {amount}`|Give the targeted user some or all of your qweribucks|anyone|`donate`|:white_check_mark:
 `iteminfo {item}`|Get item function and aliases|anyone|`iteminfo` `itemhelp` `info`|:white_check_mark:
-`inventory [target]`|Get inventory contents of target or self|anyone|`inventory` `inv`|:white_check_mark:
+`inventory [target]`|Get inventory contents of target or self|anyone|`inventory` `inv` `pocket`|:white_check_mark:
 `give {target} {item} {amount}`|Give targeted user amount of items|anyone|`give`|:white_check_mark:
 `use {item} ...`|Use item. More info at [The items section](#items)|anyone|`use`|:x:
 `admindonate {target} {amount}`|Gives the targeted user amount of qweribucks|admins|`admindonate`|:white_check_mark:
