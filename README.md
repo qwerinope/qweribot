@@ -43,9 +43,24 @@ When using/giving an item or qbucks the itemlock will be set at the start of the
 Admins can toggle the itemlock on chatters with the [`itemlock`](#administrative-commands) command. This will stop a chatter from giving, receiving and using items and qweribucks.
 It will NOT stop them from using items by cheering, but if that cheer item usage fails, they will not be given an equivalent item as compensation.
 
-Items can be used with the alias as a command (example: `blast qwerinope`) or with the [`use` command](#item-commands).
+Items can be used with the alias as a command (example: `blast qwerinope`) or with the [`use` command](#qweribucksitem-commands).
 
 When an Item is used it is removed from the inventory of the chatter.
+
+### Lootbox
+
+There is no lootbox item, you just get loot when using the [`getloot` command](#qweribucksitem-commands). The cooldown is 10 minutes. You can't get loot if your itemlock is set.
+Each loot drop has between 50 and 150 qbucks. Here is the drop table for items with chances.
+
+ITEM|RATE
+-|-
+`grenade`|`1/5`
+`blaster`|`1/5`
+`tnt`|`1/20`
+`silver bullet`|`1/250`
+
+Each of these rates get pulled 5 times, then the result is added to your inventory.
+It's theoretically possible to get 5 of each item.
 
 ### Chatterbot/streamerbot
 
@@ -70,22 +85,18 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `stats [target]`|Get timeout and some item stats for yourself or specified user this month|anyone|`stats` `monthlystats`|:white_check_mark:
 `alltime [target]`|Get timeout and some item stats for yourself or specified user of all time|anyone|`alltime` `alltimestats`|:white_check_mark:
 
-### Qweribucks commands
+### Qweribucks/Item commands
 
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
+`getloot`|Get a random assortment of items and qbucks every 10 minutes. [(drop rates)](#lootbox)|anyone|`getloot` `loot` `dig`|:white_check_mark:
 `getbalance [target]`|Get balance of target or self|anyone|`getbalance` `balance` `qbucks` `qweribucks` `wallet` `getwallet`|:white_check_mark:
 `donate {target} {amount}`|Give the targeted user some or all of your qweribucks|anyone|`donate`|:white_check_mark:
-`admindonate {target} {amount}`|Gives the targeted user amount of qweribucks|admins|`admindonate`|:white_check_mark:
-
-### Item commands
-
-COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
--|-|-|-|-
 `iteminfo {item}`|Get item function and aliases|anyone|`iteminfo` `itemhelp` `info`|:white_check_mark:
 `inventory [target]`|Get inventory contents of target or self|anyone|`inventory` `inv`|:white_check_mark:
 `give {target} {item} {amount}`|Give targeted user amount of items|anyone|`give`|:white_check_mark:
 `use {item} ...`|Use item. More info at [The items section](#items)|anyone|`use`|:x:
+`admindonate {target} {amount}`|Gives the targeted user amount of qweribucks|admins|`admindonate`|:white_check_mark:
 `admingive {target} {item} {amount}`|Give targeted user amount of new items|admins|`admingive`|:white_check_mark:
 
 ### Administrative commands

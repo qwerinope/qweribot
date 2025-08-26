@@ -45,6 +45,9 @@ mods.forEach(async mod => {
   logger.info(`Set the mod status of ${mod.userDisplayName} in the Redis/Valkey database.`);
 });
 
+const streamdata = await streamerApi.streams.getStreamByUserId(streamerId);
+if (streamdata) await redis.set('streamIsLive', '1');
+
 await import("./events");
 
 await import("./web");
