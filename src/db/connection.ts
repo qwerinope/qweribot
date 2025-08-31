@@ -43,7 +43,7 @@ export type cheerEventRecord = {
 
 export type cheerRecord = {
   id?: string;
-  user?: string;
+  user: string;
   amount: number;
 };
 

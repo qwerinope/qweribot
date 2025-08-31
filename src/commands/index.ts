@@ -42,9 +42,9 @@ for (const [name, item] of Array.from(items)) {
 export default commands;
 export { basecommands };
 
-import { singleUserMode, chatterApi, chatterId, streamerId } from "main";
+import { chatterApi, chatterId, streamerId } from "main";
 
 /** Helper function to send a message to the stream */
 export const sendMessage = async (message: string, replyParentMessageId?: string) => {
-  singleUserMode ? await chatterApi.chat.sendChatMessage(streamerId, message, { replyParentMessageId }) : chatterApi.asUser(chatterId, async newapi => newapi.chat.sendChatMessage(streamerId, message, { replyParentMessageId }));
+  await chatterApi.chat.sendChatMessageAsApp(chatterId, streamerId, message, { replyParentMessageId })
 };

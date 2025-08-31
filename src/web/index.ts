@@ -28,18 +28,23 @@ export default Bun.serve({
   },
   websocket: {
     message(ws, omessage) {
-      const message = JSON.parse(omessage.toString()) as serverInstruction;
-      if (!message.type) return;
-      switch (message.type) {
-        case 'subscribe':
-          if (!message.target) return;
-          const target = message.target.toLowerCase();
-          ws.subscribe(message.target);
-          ws.send(JSON.stringify({
-            function: 'serverNotification',
-            message: `Successfully subscribed to ${target} events`
-          } as serverNotificationEvent)); // Both alerts and chatwidget eventsub subscriptions have the notification field
-          break;
+      try {
+        const message = JSON.parse(omessage.toString()) as serverInstruction;
+        if (!message.type) return;
+        switch (message.type) {
+          case 'subscribe':
+            if (!message.target) return;
+            const target = message.target.toLowerCase();
+            ws.subscribe(message.target);
+            ws.send(JSON.stringify({
+              function: 'serverNotification',
+              message: `Successfully subscribed to ${target} events`
+            } as serverNotificationEvent)); // Both alerts and chatwidget eventsub subscriptions have the notification field
+            break;
+        };
+      } catch (e) {
+        ws.send('Incorrect instruction. Closing websocket connection');
+        ws.close();
       };
     },
     close(ws) {
