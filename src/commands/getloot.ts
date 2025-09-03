@@ -37,6 +37,7 @@ export default new Command('getloot', ['getloot', 'dig', 'loot'], 'chatter', asy
 
   for (const [item, amount] of Object.entries(itemDiff)) {
     if (userData.inventory[item]) userData.inventory[item] += amount;
+    else userData.inventory[item] = amount;
   };
 
   const itemstrings: string[] = [`${gainedqbucks} qbucks`];
