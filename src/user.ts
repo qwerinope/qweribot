@@ -20,10 +20,11 @@ export default class User {
   public id!: string;
   public displayName!: string;
 
-  static async initUsername(username: string): Promise<User | null> {
+  static async initUsername(dirtyUsername: string): Promise<User | null> {
     try {
       const userObj = new User();
-      userObj.username = username.replaceAll(/[@]/g, '');
+      const username = dirtyUsername.replaceAll(/@/gi, '');
+      userObj.username = username;
       const userid = await redis.get(`userlookup:${username}`);
       if (!userid) {
         const userdata = await chatterApi.users.getUserByName(username);
@@ -39,7 +40,7 @@ export default class User {
       };
       return userObj;
     } catch {
-      logger.err(`Failed to initialize user with name: ${username}`);
+      logger.err(`Failed to initialize user with name: ${dirtyUsername}`);
       return null;
     };
   };

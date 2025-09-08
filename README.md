@@ -2,6 +2,8 @@
 
 ## Concepts
 
+#### Note: Cheering functionality is working but as I don't have affiliate you can't cheer. You can safely ignore all mentions of cheering.
+
 ### Admins
 
 Admins are defined by the streamer and can use special administrative commands on the bot.
