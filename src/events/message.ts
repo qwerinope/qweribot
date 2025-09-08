@@ -10,6 +10,7 @@ import { addMessageToChatWidget } from "web/chatWidget/message";
 import { isInvuln, setTemporaryInvuln } from "lib/invuln";
 import { getUserRecord } from "db/dbUser";
 import { createCheerRecord } from "db/dbCheers";
+import handleAnivMessage from "lib/handleAnivMessage";
 
 logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
 
@@ -41,6 +42,9 @@ async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
 };
 
 async function handleChatMessage(msg: EventSubChannelChatMessageEvent, user: User) {
+  // Aniv message filter
+  handleAnivMessage(msg, user);
+
   // Parse commands:
   if (msg.messageText.startsWith(commandPrefix)) {
     const commandSelection = msg.messageText.slice(commandPrefix.length).split(' ')[0]!;

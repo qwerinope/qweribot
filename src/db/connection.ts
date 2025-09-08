@@ -47,6 +47,13 @@ export type cheerRecord = {
   amount: number;
 };
 
+export type anivTimeoutRecord = {
+  id?: string;
+  message: string;
+  user: string;
+  duration: number;
+};
+
 interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'auth'): RecordService<authRecord>;
   collection(idOrName: 'users'): RecordService<userRecord>;
@@ -54,6 +61,7 @@ interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'timeouts'): RecordService<timeoutRecord>;
   collection(idOrName: 'cheerEvents'): RecordService<cheerEventRecord>;
   collection(idOrName: 'cheers'): RecordService<cheerRecord>;
+  collection(idOrName: 'anivTimeouts'): RecordService<anivTimeoutRecord>;
 };
 
 export default new PocketBase(pocketbaseurl).autoCancellation(false) as TypedPocketBase;
