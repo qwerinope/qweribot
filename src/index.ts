@@ -5,6 +5,9 @@ import { addAdmin } from "lib/admins";
 import logger from "lib/logger";
 import { addInvuln } from "lib/invuln";
 import { redis } from "bun";
+import { remodMod, timeoutDuration } from "lib/timeout";
+import User from "user";
+import { buildTimeString } from "lib/dateManager";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
 const STREAMERINTENTS = ["channel:bot", "user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read", "channel:moderate"];
@@ -33,20 +36,30 @@ export const streamerUsers = [chatterId, streamerId];
 streamerUsers.forEach(async id => await Promise.all([addAdmin(id), addInvuln(id)]));
 
 const banned = await streamerApi.moderation.getBannedUsers(streamerId).then(a => a.data);
-banned.forEach(async ban => {
+for (const ban of banned) {
   await redis.set(`user:${ban.userId}:timeout`, '1');
   const banlength = ban.expiryDate;
   if (banlength) {
     redis.expire(`user:${ban.userId}:timeout`, Math.floor((ban.expiryDate.getTime() - Date.now()) / 1000) + 1);
     logger.info(`Set the timeout of ${ban.userDisplayName} in the Redis/Valkey database.`);
   };
-});
+};
 
 const mods = await streamerApi.moderation.getModerators(streamerId).then(a => a.data);
-mods.forEach(async mod => {
+for (const mod of mods) {
   await redis.set(`user:${mod.userId}:mod`, '1');
   logger.info(`Set the mod status of ${mod.userDisplayName} in the Redis/Valkey database.`);
-});
+};
+
+const bannedmods = await redis.keys('user:*:remod').then(a => Array.from(a).map(b => b.slice(5, -6)));
+for (const remod of bannedmods) {
+  const target = await User.initUserId(remod);
+  const durationdata = await timeoutDuration(target!);
+  let duration = 0;
+  if (durationdata) duration = Math.floor((durationdata * 1000 - Date.now()) / 1000);
+  remodMod(target!, duration);
+  logger.info(`Set the remod timer for ${target?.displayName} to ${duration} seconds.`);
+};
 
 const streamdata = await streamerApi.streams.getStreamByUserId(streamerId);
 if (streamdata) await redis.set('streamIsLive', '1');

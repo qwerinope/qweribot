@@ -25,6 +25,7 @@ export const timeout = async (user: User, reason: string, duration?: number): Pr
 
   if (await redis.exists(`user:${user.id}:mod`)) {
     if (!duration) duration = 60; // make sure that mods don't get perma-banned
+    await redis.set(`user:${user.id}:remod`, '1');
     remodMod(user, duration);
     await streamerApi.moderation.removeModerator(streamerId, user.id!);
   };
@@ -43,7 +44,7 @@ export const timeout = async (user: User, reason: string, duration?: number): Pr
 };
 
 /** Give the target mod status back after timeout */
-function remodMod(target: User, duration: number) {
+export function remodMod(target: User, duration: number) {
   setTimeout(async () => {
     const bandata = await timeoutDuration(target);
     if (bandata) { // If the target is still timed out, try again when new timeout expires
@@ -52,6 +53,7 @@ function remodMod(target: User, duration: number) {
     } else {
       try {
         await streamerApi.moderation.addModerator(streamerId, target.id);
+        await redis.del(`user:${target.id}:remod`);
       } catch (err) { }; // This triggers when the timeout got shortened. try/catch so no runtime error
     };
   }, duration + 3000); // callback gets called after duration of timeout + 3 seconds
