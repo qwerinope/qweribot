@@ -12,8 +12,6 @@ import { getUserRecord } from "db/dbUser";
 import { createCheerRecord } from "db/dbCheers";
 import handleAnivMessage from "lib/handleAnivMessage";
 
-logger.info(`Loaded the following commands: ${commands.keys().toArray().join(', ')}`);
-
 eventSub.onChannelChatMessage(streamerId, streamerId, parseChatMessage);
 
 async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
