@@ -10,7 +10,7 @@ import User from "user";
 import { buildTimeString } from "lib/dateManager";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
-const STREAMERINTENTS = ["channel:bot", "user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read", "channel:moderate"];
+const STREAMERINTENTS = ["channel:bot", "user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read", "channel:moderate", "moderator:manage:shoutouts"];
 
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
 export const chatterId = process.env.CHATTER_ID ?? "";

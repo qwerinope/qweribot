@@ -1,10 +1,13 @@
 import { redis } from "bun";
+import { sendMessage } from "commands";
 import { eventSub, streamerId } from "main";
 
-eventSub.onStreamOnline(streamerId, async _msg => {
+eventSub.onStreamOnline(streamerId, async msg => {
   await redis.set('streamIsLive', '1');
+  await sendMessage(`${msg.broadcasterDisplayName} IS LIVE! START DIGGING!`);
 });
 
-eventSub.onStreamOffline(streamerId, async _msg => {
+eventSub.onStreamOffline(streamerId, async msg => {
   await redis.del('streamIsLive');
+  await sendMessage(`${msg.broadcasterDisplayName} IS OFFLINE! NO MORE FREE LOOT!`);
 });

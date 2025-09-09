@@ -31,7 +31,7 @@ async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
 
   if (!await isInvuln(user?.id!)) user?.setVulnerable(); // Make the user vulnerable to explosions if not marked as invuln
 
-  if (!await redis.exists(`user:${user?.id}:haschatted`)) {
+  if (!await redis.exists(`user:${user?.id}:haschatted`) && !msg.sourceMessageId) {
     await sendMessage(`Welcome ${user?.displayName}. Please note: This chat has PvP, if you get timed out that's part of the qwerinope experience. You have 10 minutes of invincibility. A full list of commands and items can be found here: https://github.com/qwerinope/qweribot/#qweribot`);
     await redis.set(`user:${user?.id}:haschatted`, "1");
     if (!streamerUsers.includes(msg.chatterId)) await setTemporaryInvuln(user?.id!); // This would set the invuln expiration lmao
