@@ -108,4 +108,16 @@ export default class User {
   public async clearVulnerable(): Promise<void> {
     await redis.del(`user:${this.id}:vulnerable`);
   };
+
+  public async setGreed(): Promise<void> {
+    await redis.set(`user:${this.id}:greedy`, '1');
+  };
+
+  public async clearGreed(): Promise<void> {
+    await redis.del(`user:${this.id}:greedy`);
+  };
+
+  public async greedy(): Promise<boolean> {
+    return await redis.exists(`user:${this.id}:greedy`);
+  };
 };

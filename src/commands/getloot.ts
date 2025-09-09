@@ -3,6 +3,7 @@ import { Command, sendMessage } from "commands";
 import { getUserRecord, updateUserRecord } from "db/dbUser";
 import items from "items";
 import { buildTimeString } from "lib/dateManager";
+import { timeout } from "lib/timeout";
 
 const COOLDOWN = 10 * 60 * 1000; // 10 mins (ms)
 
@@ -12,8 +13,23 @@ export default new Command('getloot', ['getloot', 'dig', 'loot'], 'chatter', asy
   const userData = await getUserRecord(user);
   const lastlootbox = Date.parse(userData.lastlootbox);
   const now = Date.now();
-  if ((lastlootbox + COOLDOWN) > now) { await sendMessage(`Wait ${buildTimeString(now - COOLDOWN, lastlootbox)} for another lootbox.`, msg.messageId); return; };
+  if ((lastlootbox + COOLDOWN) > now) {
+    if (await user.greedy()) {
+      await Promise.all([
+        sendMessage(`${user.displayName} STOP BEING GREEDY!!! UltraMad UltraMad UltraMad`),
+        timeout(user, 'STOP BEING GREEDY!!!', 60)
+      ]);
+      return;
+    } else {
+      await Promise.all([
+        user.setGreed(),
+        sendMessage(`Wait ${buildTimeString(now - COOLDOWN, lastlootbox)} for another lootbox.`, msg.messageId)
+      ]);
+      return;
+    };
+  };
 
+  await user.clearGreed();
   await user.setLock();
 
   userData.lastlootbox = new Date(now).toISOString();

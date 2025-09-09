@@ -10,4 +10,5 @@ eventSub.onChannelBan(streamerId, async msg => {
 
 eventSub.onChannelUnban(streamerId, async msg => {
   await redis.del(`user:${msg.userId}:timeout`);
+  await redis.del(`user:${msg.userId}:remod`);
 });
