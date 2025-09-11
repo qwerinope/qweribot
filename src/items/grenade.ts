@@ -10,10 +10,13 @@ import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'grenade';
 
-export default new Item(ITEMNAME, 'Grenade', 's',
-  'Give a random chatter a 60s timeout',
-  ['grenade'],
-  async (msg, user) => {
+export default new Item({
+  name: ITEMNAME,
+  prettyName: 'Grenade',
+  plural: 's',
+  description: 'Give a random chatter a 60s timeout',
+  aliases: ['grenade'],
+  execution: async (msg, user) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any grenades!`, msg.messageId); return; };
     const targets = await redis.keys(`user:*:vulnerable`);
@@ -40,4 +43,4 @@ export default new Item(ITEMNAME, 'Grenade', 's',
     ]);
     await user.clearLock();
   }
-);
+});

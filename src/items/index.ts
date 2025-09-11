@@ -1,6 +1,16 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
 import User from "user";
-import { type userType } from "commands";
+import { type userType, type specialExecuteArgs } from "commands";
+
+type itemOptions = {
+  name: string;
+  aliases: string[];
+  prettyName: string;
+  plural: string;
+  description: string;
+  execution: (message: EventSubChannelChatMessageEvent, sender: User, args?: specialExecuteArgs) => Promise<void>;
+  specialaliases?: string[];
+};
 
 export class Item {
   public readonly name: string;
@@ -8,25 +18,22 @@ export class Item {
   public readonly plural: string;
   public readonly description: string;
   public readonly aliases: string[];
+  public readonly specialaliases: string[];
   public readonly usertype: userType;
-  public readonly execute: (message: EventSubChannelChatMessageEvent, sender: User) => Promise<void>;
+  public readonly execute: (message: EventSubChannelChatMessageEvent, sender: User, args?: specialExecuteArgs) => Promise<void>;
   public readonly disableable: boolean;
-  /** Creates an item object
-   * @param name - internal name of item
-   * @param prettyName - name of item for presenting to chat
-   * @param plural - plural appendage; example: lootbox(es)
-   * @param description - description of what item does
-   * @param aliases - alternative ways to activate item
-   * @param execution - code that gets executed when item gets used */
-  constructor(name: string, prettyName: string, plural: string, description: string, aliases: string[], execution: (message: EventSubChannelChatMessageEvent, sender: User) => Promise<void>) {
-    this.name = name;
-    this.prettyName = prettyName;
-    this.plural = plural;
-    this.description = description;
-    this.aliases = aliases;
+
+  /** Creates an item object */
+  constructor(options: itemOptions) {
+    this.name = options.name.toLowerCase();
+    this.prettyName = options.prettyName;
+    this.plural = options.plural;
+    this.description = options.description;
+    this.aliases = options.aliases;
     this.usertype = 'chatter'; // Items are usable by everyone
-    this.execute = execution;
+    this.execute = options.execution;
     this.disableable = true;
+    this.specialaliases = options.specialaliases ?? [];
   };
 };
 
@@ -34,6 +41,7 @@ import { readdir } from 'node:fs/promises';
 import type { userRecord } from "db/connection";
 import { updateUserRecord } from "db/dbUser";
 const items = new Map<string, Item>;
+const specialAliasItems = new Map<string, Item>;
 const emptyInventory: inventory = {};
 const itemarray: string[] = [];
 
@@ -47,10 +55,13 @@ for (const file of files) {
   for (const alias of item.aliases) {
     items.set(alias, item); // Since it's not a primitive type the map is filled with references to the item, not the actual object
   };
+  for (const alias of item.specialaliases) {
+    specialAliasItems.set(alias, item);
+  };
 };
 
 export default items;
-export { emptyInventory, itemarray };
+export { emptyInventory, itemarray, specialAliasItems };
 export type inventory = {
   [key: string]: number;
 };

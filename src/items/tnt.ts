@@ -10,10 +10,13 @@ import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'tnt';
 
-export default new Item(ITEMNAME, 'TNT', 's',
-  'Give 5-10 random chatters 60 second timeouts',
-  ['tnt'],
-  async (msg, user) => {
+export default new Item({
+  name: ITEMNAME,
+  prettyName: 'TNT',
+  plural: 's',
+  description: 'Give 5-10 random chatters 60 second timeouts',
+  aliases: ['tnt'],
+  execution: async (msg, user) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any TNTs!`, msg.messageId); return; };
     const vulntargets = await redis.keys('user:*:vulnerable').then(a => a.map(b => b.slice(5, -11)));
@@ -46,7 +49,7 @@ export default new Item(ITEMNAME, 'TNT', 's',
     await user.clearLock();
     await sendMessage(`RIPBOZO ${user.displayName} exploded ${targets.length} chatter${targets.length === 1 ? '' : 's'} with their TNT RIPBOZO`);
   }
-);
+});
 
 export function getTNTTargets<T>(arr: T[]): T[] {
   if (arr.length <= 5) {

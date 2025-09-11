@@ -10,10 +10,14 @@ import User from "user";
 
 const ITEMNAME = 'silverbullet';
 
-export default new Item(ITEMNAME, 'Silver bullet', 's',
-  'Times a specific person out for 24 hours',
-  ['execute', 'silverbullet'],
-  async (msg, user) => {
+export default new Item({
+  name: ITEMNAME,
+  prettyName: 'Silver bullet',
+  plural: 's',
+  description: 'Times a specific person out for 24 hours',
+  aliases: ['execute', 'silverbullet'],
+  specialaliases: ['blastin'],
+  execution: async (msg, user, specialargs) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any silver bullets!`, msg.messageId); return; };
     const messagequery = parseCommandArgs(msg.messageText);
@@ -54,4 +58,4 @@ export default new Item(ITEMNAME, 'Silver bullet', 's',
     };
     await user.clearLock();
   }
-);
+});

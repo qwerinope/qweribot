@@ -1,7 +1,7 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base"
 import { streamerId, eventSub, commandPrefix, streamerUsers } from "main";
 import User from "user";
-import commands, { sendMessage } from "commands";
+import commands, { Command, sendMessage, specialAliasCommands } from "commands";
 import { redis } from "bun";
 import { isAdmin } from "lib/admins";
 import cheers from "cheers";
@@ -11,6 +11,7 @@ import { isInvuln, setTemporaryInvuln } from "lib/invuln";
 import { getUserRecord } from "db/dbUser";
 import { createCheerRecord } from "db/dbCheers";
 import handleAnivMessage from "lib/handleAnivMessage";
+import { spec } from "node:test/reporters";
 
 eventSub.onChannelChatMessage(streamerId, streamerId, parseChatMessage);
 
@@ -46,31 +47,48 @@ async function handleChatMessage(msg: EventSubChannelChatMessageEvent, user: Use
   handleAnivMessage(msg, user);
 
   // Parse commands:
-  if (msg.messageText.startsWith(commandPrefix)) {
-    const commandSelection = msg.messageText.slice(commandPrefix.length).split(' ')[0]!;
-    const selected = commands.get(commandSelection.toLowerCase());
-    if (!selected) return;
-    if (await redis.sismember('disabledcommands', selected.name)) return;
+  const selected = selectCommand(msg.messageText);
+  if (!selected) return;
+  const { cmd: selection, activation } = selected;
+  if (await redis.sismember('disabledcommands', selection.name)) return;
 
-    switch (selected.usertype) {
-      case "admin":
-        if (!await isAdmin(user.id)) return;
-        break;
-      case "streamer":
-        if (!streamerUsers.includes(msg.chatterId)) return;
-        break;
-      case "moderator":
-        if (!await redis.exists(`user:${user.id}:mod`)) return;
-        break;
-    };
-
-    try { await selected.execute(msg, user); }
-    catch (err) {
-      logger.err(err as string);
-      await sendMessage('ERROR: Something went wrong', msg.messageId);
-      await user.clearLock();
-    };
+  switch (selection.usertype) {
+    case "admin":
+      if (!await isAdmin(user.id)) return;
+      break;
+    case "streamer":
+      if (!streamerUsers.includes(msg.chatterId)) return;
+      break;
+    case "moderator":
+      if (!await redis.exists(`user:${user.id}:mod`)) return;
+      break;
   };
+
+  try {
+    await selection.execute(msg, user, {
+      activation
+    });
+  }
+  catch (err) {
+    logger.err(err as string);
+    await sendMessage('ERROR: Something went wrong', msg.messageId);
+    await user.clearLock();
+  };
+};
+
+type selectedCommand = {
+  cmd: Command;
+  activation: string;
+};
+
+function selectCommand(message: string): selectedCommand | false {
+  const specialcmdselector = message.trim().toLowerCase().split(' ')[0]!;
+  const specialcmd = specialAliasCommands.get(specialcmdselector);
+  if (specialcmd) return { cmd: specialcmd, activation: specialcmdselector };
+  const commandSelector = message.slice(commandPrefix.length).trim().toLowerCase().split(' ')[0]!;
+  const normalcmd = commands.get(commandSelector);
+  if (normalcmd) return { cmd: normalcmd, activation: commandPrefix + commandSelector };
+  return false;
 };
 
 export async function handleCheer(msg: EventSubChannelChatMessageEvent, bits: number, user: User) {

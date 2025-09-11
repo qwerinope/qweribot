@@ -1,9 +1,15 @@
 import { commandPrefix } from "main";
 
 /** Helper function to extract arguments from commands */
-export default function parseCommandArgs(input: string) {
-  const nice = input.toLowerCase().slice(commandPrefix.length).trim();
-  const sliceLength = nice.startsWith('use') ? 2 : 1;
+export default function parseCommandArgs(input: string, specialAlias?: string) {
+  let nice = '';
+  let sliceLength = 0;
+  if (specialAlias) {
+    nice = input.toLowerCase().slice(specialAlias.length).trim();
+  } else {
+    nice = input.toLowerCase().slice(commandPrefix.length).trim();
+    sliceLength = nice.startsWith('use') ? 2 : 1;
+  }
   return nice.split(' ').slice(sliceLength);
 };
 

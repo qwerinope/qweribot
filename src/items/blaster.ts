@@ -10,10 +10,13 @@ import { playAlert } from "web/alerts/serverFunctions";
 
 const ITEMNAME = 'blaster';
 
-export default new Item(ITEMNAME, 'Blaster', 's',
-  'Times a specific person out for 60 seconds',
-  ['blaster', 'blast'],
-  async (msg, user) => {
+export default new Item({
+  name: ITEMNAME,
+  prettyName: 'Blaster',
+  plural: 's',
+  description: 'Times a specific person out for 60 seconds',
+  aliases: ['blaster', 'blast'],
+  execution: async (msg, user) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any blasters!`, msg.messageId); return; };
     const messagequery = parseCommandArgs(msg.messageText);
@@ -54,4 +57,4 @@ export default new Item(ITEMNAME, 'Blaster', 's',
     };
     await user.clearLock();
   }
-);
+});
