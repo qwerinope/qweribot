@@ -1,4 +1,4 @@
-export function buildTimeString(time1: number, time2: number) {
+export function buildTimeString(time1: number, time2: number): string {
   const diff = Math.abs(time1 - time2);
   const timeobj = {
     day: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -13,5 +13,5 @@ export function buildTimeString(time1: number, time2: number) {
     stringarray.push(`${value} ${unit}${value === 1 ? '' : 's'}`);
   };
   const last = stringarray.pop();
-  return stringarray.length === 0 ? last : stringarray.join(', ') + " and " + last;
+  return stringarray.length === 0 ? last! : stringarray.join(', ') + " and " + last;
 };

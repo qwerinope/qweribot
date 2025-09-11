@@ -1,7 +1,7 @@
 import { EventSubChannelChatMessageEvent } from "@twurple/eventsub-base";
 import User from "user";
 
-export type userType = 'chatter' | 'admin' | 'streamer';
+export type userType = 'chatter' | 'admin' | 'streamer' | 'moderator';
 
 /** The Command class represents a command */
 export class Command {
@@ -46,5 +46,5 @@ import { chatterApi, chatterId, streamerId } from "main";
 
 /** Helper function to send a message to the stream */
 export const sendMessage = async (message: string, replyParentMessageId?: string) => {
-  await chatterApi.chat.sendChatMessageAsApp(chatterId, streamerId, message, { replyParentMessageId })
+  return await chatterApi.chat.sendChatMessageAsApp(chatterId, streamerId, message, { replyParentMessageId })
 };

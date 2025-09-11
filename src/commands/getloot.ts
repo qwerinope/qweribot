@@ -17,7 +17,7 @@ export default new Command('getloot', ['getloot', 'dig', 'loot'], 'chatter', asy
     if (await user.greedy()) {
       await Promise.all([
         sendMessage(`${user.displayName} STOP BEING GREEDY!!! UltraMad UltraMad UltraMad`),
-        timeout(user, 'STOP BEING GREEDY!!!', 60)
+        timeout(user, `Wait ${buildTimeString(now - COOLDOWN, lastlootbox)}`, 60)
       ]);
       return;
     } else {

@@ -13,7 +13,7 @@ type TimeoutResult = SuccessfulTimeout | UnSuccessfulTimeout;
  * @param reason - reason for timeout/ban
  * @param duration - duration of timeout. don't specifiy for ban */
 export const timeout = async (user: User, reason: string, duration?: number): Promise<TimeoutResult> => {
-  if (await isInvuln(user.id)) return { status: false, reason: 'illegal' }; // Don't timeout invulnerable chatters
+  if (await isInvuln(user.id) && duration) return { status: false, reason: 'illegal' }; // Don't timeout invulnerable chatters
 
   // Check if user already has a timeout and handle stacking
   const banStatus = await timeoutDuration(user);

@@ -10,7 +10,7 @@ import User from "user";
 import { buildTimeString } from "lib/dateManager";
 
 const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
-const STREAMERINTENTS = ["channel:bot", "user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:banned_users", "bits:read", "channel:moderate", "moderator:manage:shoutouts"];
+const STREAMERINTENTS = ["channel:bot", "user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:chat_messages", "moderator:manage:banned_users", "bits:read", "channel:moderate", "moderator:manage:shoutouts"];
 
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
 export const chatterId = process.env.CHATTER_ID ?? "";
@@ -33,7 +33,7 @@ export const eventSub = new EventSubWsListener({ apiClient: streamerApi });
 export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
 
 export const streamerUsers = [chatterId, streamerId];
-streamerUsers.forEach(async id => await Promise.all([addAdmin(id), addInvuln(id)]));
+streamerUsers.forEach(async id => await Promise.all([addAdmin(id), addInvuln(id), redis.set(`user:${id}:mod`, '1')]));
 
 const banned = await streamerApi.moderation.getBannedUsers(streamerId).then(a => a.data);
 for (const ban of banned) {
