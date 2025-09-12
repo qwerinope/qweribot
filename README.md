@@ -35,6 +35,12 @@ Not all Commands can be disabled, the `DISABLEABLE` field below shows if they ca
 
 A full list of Commands can be found [here](#commands-1)
 
+### Timeouts and whispering messages
+
+If you've been timed out, you can whisper a message to the chatterbot and it will relay your message to the chat.
+You can only send one message every 10 minutes. 
+Try to bargain for your release with the chatter that shot you, or just call them names.
+
 ### Items and Itemlock
 
 Items are commands that can only be used when the chatter has them in their inventory.
@@ -73,6 +79,8 @@ The chatterbot is the user that types in chat. They have very minimal required s
 
 The streamerbot (not that streamerbot) is the broadcaster. This bot needs them to authenticate as well. This account will be used to perform moderation and watch the chat.
 
+Using one account as both chatterbot and streamerbot hasn't been tested in a long time. There may be broken features.
+
 ## Commands
 
 ### Fun commands
@@ -105,7 +113,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
-`getcommands [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`getcommands` `getc`|:x:
+`getcommands [enabled/disabled]`|Get a list of all, enabled or disabled commands|anyone|`commands` `getcommands` `getc`|:x:
 `getcheers [enabled/disabled]`|Get a list of all, enabled or disabled cheers|anyone|`getcheers` `getcheer`|:x:
 `gettimeout {target}`|Get the remaining timeout duration of targeted user|anyone|`gettimeout` `gett`|:white_check_mark:
 `stacking [on/off]`|Check/set if timeouts are stacking. Only admins can set the stacking state|anyone/admins|`stacking`|:x:

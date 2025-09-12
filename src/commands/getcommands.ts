@@ -4,7 +4,7 @@ import parseCommandArgs from "lib/parseCommandArgs";
 
 export default new Command({
   name: 'getcommands',
-  aliases: ['getcommands', 'getc'],
+  aliases: ['getcommands', 'getc', 'commands'],
   usertype: 'chatter',
   disableable: false,
   execution: async msg => {

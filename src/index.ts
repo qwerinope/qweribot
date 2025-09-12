@@ -7,9 +7,11 @@ import { addInvuln } from "lib/invuln";
 import { redis } from "bun";
 import { remodMod, timeoutDuration } from "lib/timeout";
 import User from "user";
-import { buildTimeString } from "lib/dateManager";
+import { connectionCheck } from "connectionCheck";
 
-const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot"];
+await connectionCheck()
+
+const CHATTERINTENTS = ["user:read:chat", "user:write:chat", "user:bot", "user:manage:whispers"];
 const STREAMERINTENTS = ["channel:bot", "user:read:chat", "moderation:read", "channel:manage:moderators", "moderator:manage:chat_messages", "moderator:manage:banned_users", "bits:read", "channel:moderate", "moderator:manage:shoutouts"];
 
 export const singleUserMode = process.env.CHATTER_IS_STREAMER === 'true';
@@ -29,6 +31,8 @@ export const streamerApi = streamerAuthProvider ? new ApiClient({ authProvider: 
 
 /** As the streamerApi has either the streamer or the chatter if the chatter IS the streamer this has streamer permissions */
 export const eventSub = new EventSubWsListener({ apiClient: streamerApi });
+
+export const chatterEventSub = singleUserMode ? eventSub : new EventSubWsListener({ apiClient: chatterApi });
 
 export const commandPrefix = process.env.COMMAND_PREFIX ?? "!";
 
