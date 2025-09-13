@@ -14,8 +14,8 @@ popover.textContent = 'Loading...'
 document.body.appendChild(popover);
 
 const [badges, emotes] = await Promise.all([
-  fetch(`http://${location.host}/chat/getBadges`).then(data => data.json()),
-  fetch(`http://${location.host}/chat/getEmotes`).then(data => data.json())
+  fetch(`${location.href}/getBadges`).then(data => data.json()),
+  fetch(`${location.href}/getEmotes`).then(data => data.json())
 ]);
 
 await prefetchImages(Object.values(emotes));

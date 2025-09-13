@@ -51,7 +51,7 @@ export default Bun.serve({
       ws.close();
     }
   },
-  development: true,
+  development: process.env.NODE_ENV === "development",
   error(error) {
     logger.err(`Error at chatwidget server: ${error}`);
     return new Response("Internal Server Error", { status: 500 })
