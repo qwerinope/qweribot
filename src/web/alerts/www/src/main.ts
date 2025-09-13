@@ -3,7 +3,9 @@ import { alertEventData } from "web/alerts/types";
 import alertManager from "./alertManager";
 import "@fontsource/jersey-15";
 
-const socket = new WebSocket(`ws://${location.host}`);
+const wsAddress = `ws${location.protocol === "https:" ? 's' : ''}://${location.host}`;
+
+const socket = new WebSocket(wsAddress);
 
 socket.onopen = () => {
   const instruction: serverInstruction = {

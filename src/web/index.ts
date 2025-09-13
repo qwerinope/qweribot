@@ -3,16 +3,14 @@ import chatWidget from "web/chatWidget/www/index.html";
 import { getBadges, getExternalEmotes } from "web/chatWidget/widgetServerFunctions";
 import alerts from "web/alerts/www/index.html";
 import type { serverInstruction, serverNotificationEvent } from "web/serverTypes";
+import User from "user";
+import { streamerId } from "main";
 
 const port = Number(process.env.WEB_PORT);
 if (isNaN(port)) { logger.enverr("WEB_PORT"); process.exit(1); };
 
 export default Bun.serve({
   port,
-  fetch(request, server) {
-    if (server.upgrade(request)) return;
-    return new Response('oops', { status: 500 });
-  },
   routes: {
     "/chat": chatWidget,
     "/chat/getBadges": getBadges,
@@ -24,6 +22,11 @@ export default Bun.serve({
       const file = Bun.file(`${import.meta.dir}/alerts/www/public/${target}`);
       if (!await file.exists()) return new Response(`${target} not found`, { status: 404 });
       return new Response(file);
+    },
+    "/": async (req, srv) => {
+      if (req.headers.get('Upgrade') === "websocket") { srv.upgrade(req); return; };
+      const streamer = await User.initUserId(streamerId);
+      return Response.redirect(`https://twitch.tv/${streamer?.username}`);
     }
   },
   websocket: {
