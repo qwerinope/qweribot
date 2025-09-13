@@ -35,11 +35,21 @@ Not all Commands can be disabled, the `DISABLEABLE` field below shows if they ca
 
 A full list of Commands can be found [here](#commands-1)
 
-### Timeouts and whispering messages
+### Timeouts and ghost whispers
 
 If you've been timed out, you can ghost whisper a message to the chatterbot and it will relay your message to the chat.
 You can only send one message every 10 minutes. 
 Try to bargain for your release with the chatter that shot you, or just call them names.
+
+### Leaderboards
+
+There are 3 types of leaderboards: monthlyKD, alltimeKD and qbucks.
+The monthlyKD leaderboard (command: `monthlykdleaderboard`) gives you the leaderboard of the top 5 user Kill/Death ratios for the current month.
+The alltimeKD leaderboard (command: `alltimekdleaderboard`) gives you the leaderboard of the top 5 user Kill/Death ratios of all time in the channel.
+the qbucks leaderboard (command: `qbucksleaderboard`) gives you the current leaderboard of the top 10 qbucks havers.
+
+To appear on the KD leaderboards you need to have been timed out 5 times, in the specified timeframe.
+Blasters, Grenade explosions and TNT explosions all count for the KD, Silver bullets do not.
 
 ### Items and Itemlock
 
@@ -106,6 +116,9 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `inventory [target]`|Get inventory contents of target or self|anyone|`inventory` `inv` `pocket`|:white_check_mark:
 `give {target} {item} {amount}`|Give targeted user amount of items|anyone|`give`|:white_check_mark:
 `use {item} ...`|Use item. More info at [The items section](#items)|anyone|`use`|:x:
+`monthlyleaderboard`|Get the K/D leaderboard for this month [(info)](#leaderboards)|anyone|`monthlyleaderboard` `kdleaderboard` `leaderboard`|:white_check_mark:
+`alltimeleaderboard`|Get the K/D leaderboard of all time [(info)](#leaderboards)|anyone|`alltimeleaderboard` `alltimekdleaderboard`|:white_check_mark:
+`qbucksleaderboard`|Get the current qbucks leaderboard [(info)](#leaderboards)|anyone|`qbucksleaderboard` `moneyleaderboard` `baltop`|:white_check_mark:
 `admindonate {target} {amount}`|Gives the targeted user amount of qweribucks|admins|`admindonate`|:white_check_mark:
 `admingive {target} {item} {amount}`|Give targeted user amount of new items|admins|`admingive`|:white_check_mark:
 

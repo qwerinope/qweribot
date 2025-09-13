@@ -23,6 +23,10 @@ export async function getUserRecord(user: User): Promise<userRecord> {
   };
 };
 
+export async function getAllUserRecords(): Promise<userRecord[]> {
+  return await pb.getFullList();
+};
+
 async function createUserRecord(user: User): Promise<userRecord> {
   const data = await pb.create({
     id: user.id,
@@ -42,5 +46,13 @@ export async function updateUserRecord(user: User, newData: userRecord): Promise
   } catch (err) {
     logger.err(err as string);
     return false;
+  };
+};
+
+export async function getBalanceLeaderboard() {
+  try {
+    return await pb.getList(1, 10, { sort: '-balance,id' }).then(a => a.items);
+  } catch (err) {
+    logger.err(err as string);
   };
 };
