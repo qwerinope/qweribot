@@ -44,9 +44,9 @@ Try to bargain for your release with the chatter that shot you, or just call the
 ### Leaderboards
 
 There are 3 types of leaderboards: monthlyKD, alltimeKD and qbucks.
-The monthlyKD leaderboard (command: `monthlykdleaderboard`) gives you the leaderboard of the top 5 user Kill/Death ratios for the current month.
-The alltimeKD leaderboard (command: `alltimekdleaderboard`) gives you the leaderboard of the top 5 user Kill/Death ratios of all time in the channel.
-the qbucks leaderboard (command: `qbucksleaderboard`) gives you the current leaderboard of the top 10 qbucks havers.
+- The monthlyKD leaderboard (command: `monthlyleaderboard`) gives you the leaderboard of the top 5 user Kill/Death ratios for the current month.
+- The alltimeKD leaderboard (command: `alltimeleaderboard`) gives you the leaderboard of the top 5 user Kill/Death ratios of all time in the channel.
+- The qbucks leaderboard (command: `qbucksleaderboard`) gives you the current leaderboard of the top 10 qbucks havers.
 
 To appear on the KD leaderboards you need to have been timed out 5 times, in the specified timeframe.
 Blasters, Grenade explosions and TNT explosions all count for the KD, Silver bullets do not.
