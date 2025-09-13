@@ -111,8 +111,8 @@ export function parseMessage(data: createMessageEvent): HTMLDivElement {
         break;
       case 'mention':
         messageElement = document.createElement('span');
-        messageElement.innerText = `Replying to ${messagePart.text}`;
-        messageElement.className = "replyMessage";
+        messageElement.innerText = `${messagePart.text}`;
+        messageElement.className = "mentionMessage";
         break;
     };
     textElement.appendChild(messageElement);

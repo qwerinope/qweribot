@@ -11,9 +11,9 @@ chatterEventSub.onUserWhisperMessage(chatterId, async msg => {
   if (cooldown < 0) {
     await redis.set(`user:${msg.senderUserId}:whispercooldown`, '1');
     await redis.expire(`user:${msg.senderUserId}:whispercooldown`, WHISPERCOOLDOWN);
-    await sendMessage(`${msg.senderUserDisplayName} whispered: ${msg.messageText}`);
-    await chatterApi.whispers.sendWhisper(chatterId, msg.senderUserId, "Message sent. Please wait 10 minutes until you can send another message.");
+    await sendMessage(`The ghost of ${msg.senderUserDisplayName} whispered: ${msg.messageText}`);
+    await chatterApi.whispers.sendWhisper(chatterId, msg.senderUserId, "Message sent. You can send another ghost whisper in 10 minutes.");
   } else {
-    await chatterApi.whispers.sendWhisper(chatterId, msg.senderUserId, `Wait another ${buildTimeString(cooldown * 1000, Date.now())} before sending another message.`);
+    await chatterApi.whispers.sendWhisper(chatterId, msg.senderUserId, `Wait another ${buildTimeString(cooldown * 1000, Date.now())} before sending another ghost whisper.`);
   };
 });

@@ -24,6 +24,10 @@ body {
   max-width: 1280px;
 }
 
+.badgeContainer {
+  display: flex;
+}
+
 .message {
   display: flex;
 
@@ -31,8 +35,8 @@ body {
     display: flex;
   }
 
-  .replyMessage {
-    display: none;
+  .mentionMessage {
+    font-weight: bold;
   }
 
   padding: 2px;

@@ -37,7 +37,7 @@ A full list of Commands can be found [here](#commands-1)
 
 ### Timeouts and whispering messages
 
-If you've been timed out, you can whisper a message to the chatterbot and it will relay your message to the chat.
+If you've been timed out, you can ghost whisper a message to the chatterbot and it will relay your message to the chat.
 You can only send one message every 10 minutes. 
 Try to bargain for your release with the chatter that shot you, or just call them names.
 
