@@ -37,6 +37,7 @@ export const timeout = async (user: User, reason: string, duration?: number): Pr
     return { status: false, reason: 'unknown' };
   };
 
+  await user.clearVulnerable();
   await redis.set(`user:${user.id}:timeout`, '1');
   if (duration) await redis.expire(`user:${user.id}:timeout`, duration);
 
