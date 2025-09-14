@@ -3,7 +3,7 @@ import { sendMessage } from "commands";
 import { buildTimeString } from "lib/dateManager";
 import { chatterEventSub, chatterApi, chatterId } from "main";
 
-const WHISPERCOOLDOWN = 60 * 10; // 10 minutes
+const WHISPERCOOLDOWN = 60 * 5; // 5 minutes
 
 chatterEventSub.onUserWhisperMessage(chatterId, async msg => {
   if (await redis.ttl(`user:${msg.senderUserId}:timeout`) < 0) return;
