@@ -59,7 +59,7 @@ async function handleChatMessage(msg: EventSubChannelChatMessageEvent, user: Use
       if (!streamerUsers.includes(msg.chatterId)) return;
       break;
     case "moderator":
-      if (!await redis.exists(`user:${user.id}:mod`)) return;
+      if (!(await redis.exists(`user:${user.id}:mod`) || await isAdmin(user.id))) return;
       break;
   };
 

@@ -7,7 +7,7 @@ import User from "user";
 export default new Command({
   name: 'removeinvuln',
   aliases: ['removeinvuln'],
-  usertype: 'admin',
+  usertype: 'moderator',
   disableable: false,
   execution: async msg => {
     const args = parseCommandArgs(msg.messageText);

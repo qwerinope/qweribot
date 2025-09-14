@@ -5,7 +5,7 @@ import parseCommandArgs from "lib/parseCommandArgs";
 export default new Command({
   name: 'enablecommand',
   aliases: ['enablecommand'],
-  usertype: 'admin',
+  usertype: 'moderator',
   disableable: false,
   execution: async msg => {
     const args = parseCommandArgs(msg.messageText);

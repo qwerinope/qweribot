@@ -6,7 +6,7 @@ import { namedcheers } from "cheers";
 export default new Command({
   name: 'disablecheer',
   aliases: ['disablecheer'],
-  usertype: 'admin',
+  usertype: 'moderator',
   disableable: false,
   execution: async msg => {
     const args = parseCommandArgs(msg.messageText);

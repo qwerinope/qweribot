@@ -87,7 +87,7 @@ It's theoretically possible to get 5 of each item.
 This depends on if the `CHATTER_IS_STREAMER` environment variable is set.
 If it's `true`, the chatterbot and streamerbot are the same account.
 
-The chatterbot is the user that types in chat. They have very minimal required scopes as interacting with the stream is always done by the streamerbot. Only sending chat messages is done by the chatterbot.
+The chatterbot is the user that types in chat. They have very minimal required scopes as interacting with the stream is always done by the streamerbot. Only things the chatterbot does is relay whispers and send chat messages.
 
 The streamerbot (not that streamerbot) is the broadcaster. This bot needs them to authenticate as well. This account will be used to perform moderation and watch the chat.
 
@@ -133,16 +133,16 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `gettimeout {target}`|Get the remaining timeout duration of targeted user|anyone|`gettimeout` `gett`|:white_check_mark:
 `stacking [on/off]`|Check/set if timeouts are stacking. Only admins can set the stacking state|anyone/admins|`stacking`|:x:
 `vulnchatters`|Get amount of chatters vulnerable to explosives|anyone|`vulnchatters` `vulnc`|:white_check_mark:
-`disablecommand {command/item}`|Disable a specific command/item|admins|`disablecommand`|:x:
-`enablecommand {command/item}`|Re-enable a specific command/item|admins|`enablecommand`|:x:
-`disablecheer {cheer}`|Disable a specific cheer event|admins|`disablecheer`|:x:
-`enablecheer {cheer}`|Re-enable a specific cheer event|admins|`enablecheer`|:x:
+`disablecommand {command/item}`|Disable a specific command/item|moderator|`disablecommand`|:x:
+`enablecommand {command/item}`|Re-enable a specific command/item|moderator|`enablecommand`|:x:
+`disablecheer {cheer}`|Disable a specific cheer event|moderator|`disablecheer`|:x:
+`enablecheer {cheer}`|Re-enable a specific cheer event|moderator|`enablecheer`|:x:
 `getinvulns`|Get a list of every invulnerable chatter in the channel|anyone|`getinvulns`|:x:
 `getadmins`|Get a list of every admin in the channel|anyone|`getadmins`|:x:
-`itemlock {target}`|Toggle the itemlock on the specified target|admins|`itemlock`|:x:
+`itemlock {target}`|Toggle the itemlock on the specified target|moderator|`itemlock`|:x:
 `testcheer {amount} [args]`|Create a fake cheering event|streamer/chatterbot|`testcheer`|:x:
-`addinvuln {target}`|Adds an invuln user|admins|`addinvuln`|:x:
-`removeinvuln {target}`|Removes an invuln user|admins|`removeinvuln`|:x:
+`addinvuln {target}`|Adds an invuln user|moderator|`addinvuln`|:x:
+`removeinvuln {target}`|Removes an invuln user|moderator|`removeinvuln`|:x:
 `addadmin {target}`|Adds an admin|streamer/chatterbot|`addadmin`|:x:
 `removeadmin {target}`|Removes an admin|streamer/chatterbot|`removeadmin`|:x:
 

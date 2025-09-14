@@ -5,7 +5,7 @@ import User from "user";
 export default new Command({
   name: 'itemlock',
   aliases: ['itemlock'],
-  usertype: 'admin',
+  usertype: 'moderator',
   disableable: false,
   execution: async msg => {
     const args = parseCommandArgs(msg.messageText);
