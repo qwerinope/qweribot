@@ -1,4 +1,4 @@
-const popover = document.createElement('div')
+const popover = document.createElement('div');
 Object.assign(popover.style, {
   position: 'fixed',
   top: '20px',
@@ -10,7 +10,7 @@ Object.assign(popover.style, {
   fontSize: '9vmin',
   zIndex: 9999
 });
-popover.textContent = 'Loading...'
+popover.textContent = 'Loading...';
 document.body.appendChild(popover);
 
 const [badges, emotes] = await Promise.all([
