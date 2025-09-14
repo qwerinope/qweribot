@@ -11,7 +11,6 @@ import { isInvuln, setTemporaryInvuln } from "lib/invuln";
 import { getUserRecord } from "db/dbUser";
 import { createCheerRecord } from "db/dbCheers";
 import handleAnivMessage from "lib/handleAnivMessage";
-import { spec } from "node:test/reporters";
 
 eventSub.onChannelChatMessage(streamerId, streamerId, parseChatMessage);
 

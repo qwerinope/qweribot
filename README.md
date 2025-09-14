@@ -33,6 +33,8 @@ Arguments like `{this}` are required.
 Commands and items can be disabled and enabled by admins with the [`enable` and `disable` commands](#administrative-commands).
 Not all Commands can be disabled, the `DISABLEABLE` field below shows if they can or can't. Items can always be disabled.
 
+Commands can have special aliases, these don't require the prefix. Special aliases have curly brackets around them in this document. For example: `{blastin}` on silver bullets.
+
 A full list of Commands can be found [here](#commands-1)
 
 ### Timeouts and ghost whispers
@@ -149,7 +151,7 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 NAME|COMMAND|FUNCTION|ALIASES
 -|-|-|-
 Blaster|`blaster {target}`|Times targeted user out for 60 seconds|`blaster` `blast`
-Silver Bullet|`silverbullet {target}`|Times targeted user out for 24 hours|`silverbullet` `execute`
+Silver Bullet|`silverbullet {target}`|Times targeted user out for 24 hours|`silverbullet` `execute` `{blastin}`
 Grenade|`grenade`|Times a random vulnerable chatter out for 60 seconds|`grenade`
 TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`
 
