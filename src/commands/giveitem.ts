@@ -21,9 +21,8 @@ export default new Command({
     const item = items.get(args[1].toLowerCase());
     if (!item) { await sendMessage(`Item ${args[1]} doesn't exist`, msg.messageId); return; };
     if (!args[2]) { await sendMessage('Please specify the amount of the item you want to give', msg.messageId); return; };
-    const amount = Number(args[2]);
-    if (isNaN(amount) || amount < 0) { await sendMessage(`${args[2]} is not a valid amount`); return; };
-
+    const amount = parseInt(args[2]);
+    if (isNaN(amount) || amount < 1) { await sendMessage(`${args[2]} is not a valid amount`); return; };
     const userRecord = await getUserRecord(user);
     if (userRecord.inventory[item.name]! < amount) { await sendMessage(`You can't give items you don't have!`, msg.messageId); return; };
 
