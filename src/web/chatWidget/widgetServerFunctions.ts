@@ -67,7 +67,7 @@ export async function getExternalEmotes() {
   await redis.expire('chatwidget:emotes', 60 * 15);
 
   return Response.json(emotes);
-}
+};
 
 import { HelixChatBadgeSet } from "@twurple/api";
 
