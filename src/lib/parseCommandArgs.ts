@@ -10,7 +10,7 @@ export default function parseCommandArgs(input: string, specialAlias?: string) {
     nice = input.toLowerCase().slice(commandPrefix.length).trim();
     sliceLength = nice.startsWith('use') ? 2 : 1;
   }
-  return nice.split(' ').slice(sliceLength);
+  return nice.split(' ').slice(sliceLength).map(a => a.replaceAll(/!/gi, ''));
 };
 
 export function parseCheerArgs(input: string) {
