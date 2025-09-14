@@ -9,6 +9,7 @@ export async function isInvuln(userid: string) {
 };
 export async function addInvuln(userid: string) {
   await redis.del(`user:${userid}:vulnerable`);
+  if (await redis.ttl(`user:${userid}:invulnerable`) > 0) await redis.del(`user:${userid}:invulnerable`);
   return await redis.set(`user:${userid}:invulnerable`, '1');
 };
 export async function removeInvuln(userid: string) {
