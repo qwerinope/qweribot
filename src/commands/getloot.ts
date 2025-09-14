@@ -4,6 +4,8 @@ import { getUserRecord, updateUserRecord } from "db/dbUser";
 import items from "items";
 import { buildTimeString } from "lib/dateManager";
 import { timeout } from "lib/timeout";
+import { isInvuln, removeInvuln } from "lib/invuln";
+import { streamerUsers } from "main";
 
 const COOLDOWN = 10 * 60 * 1000; // 10 mins (ms)
 
@@ -13,6 +15,7 @@ export default new Command({
   usertype: 'chatter',
   execution: async (msg, user) => {
     if (!await redis.exists('streamIsLive')) { await sendMessage(`No loot while stream is offline`, msg.messageId); return; };
+    if (await isInvuln(msg.chatterId) && !streamerUsers.includes(msg.chatterId)) { await sendMessage(`You're no longer an invuln because used a lootbox.`, msg.messageId); await removeInvuln(msg.chatterId); };
     if (await user.itemLock()) { await sendMessage(`Cannot get loot (itemlock)`, msg.messageId); return; };
     const userData = await getUserRecord(user);
     const lastlootbox = Date.parse(userData.lastlootbox);

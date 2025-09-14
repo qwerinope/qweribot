@@ -7,10 +7,11 @@ import { isAdmin } from "lib/admins";
 import cheers from "cheers";
 import logger from "lib/logger";
 import { addMessageToChatWidget } from "web/chatWidget/message";
-import { isInvuln, setTemporaryInvuln } from "lib/invuln";
+import { isInvuln, removeInvuln, setTemporaryInvuln } from "lib/invuln";
 import { getUserRecord } from "db/dbUser";
 import { createCheerRecord } from "db/dbCheers";
 import handleAnivMessage from "lib/handleAnivMessage";
+import { Item } from "items";
 
 eventSub.onChannelChatMessage(streamerId, streamerId, parseChatMessage);
 
@@ -50,8 +51,9 @@ async function handleChatMessage(msg: EventSubChannelChatMessageEvent, user: Use
   // Parse commands:
   const selected = selectCommand(msg.messageText);
   if (!selected) return;
-  const { cmd: selection, activation } = selected;
+  const { cmd: selection, activation, isitem } = selected;
   if (await redis.sismember('disabledcommands', selection.name)) return;
+  if (isitem && await isInvuln(msg.chatterId) && !streamerUsers.includes(msg.chatterId)) { await sendMessage(`You're no longer an invuln because you used an item.`, msg.messageId); await removeInvuln(msg.chatterId); };
 
   switch (selection.usertype) {
     case "admin":
@@ -80,15 +82,16 @@ async function handleChatMessage(msg: EventSubChannelChatMessageEvent, user: Use
 type selectedCommand = {
   cmd: Command;
   activation: string;
+  isitem: boolean;
 };
 
 function selectCommand(message: string): selectedCommand | false {
   const specialcmdselector = message.trim().toLowerCase().split(' ')[0]!;
   const specialcmd = specialAliasCommands.get(specialcmdselector);
-  if (specialcmd) return { cmd: specialcmd, activation: specialcmdselector };
+  if (specialcmd) return { cmd: specialcmd, activation: specialcmdselector, isitem: specialcmd instanceof Item };
   const commandSelector = message.slice(commandPrefix.length).trim().toLowerCase().split(' ')[0]!;
   const normalcmd = commands.get(commandSelector);
-  if (normalcmd) return { cmd: normalcmd, activation: commandPrefix + commandSelector };
+  if (normalcmd) return { cmd: normalcmd, activation: commandPrefix + commandSelector, isitem: normalcmd instanceof Item };
   return false;
 };
 

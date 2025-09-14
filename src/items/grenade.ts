@@ -30,7 +30,6 @@ export default new Item({
     await user.setLock();
     await Promise.all([
       timeout(target!, `You got hit by ${user.displayName}'s grenade!`, 60),
-      redis.del(selection),
       sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s grenade wybuh`),
       changeItemCount(user, userObj, ITEMNAME),
       createTimeoutRecord(user, target!, ITEMNAME),

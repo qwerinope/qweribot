@@ -1,4 +1,5 @@
 import { redis } from "bun";
+import { streamerUsers } from "main";
 
 export async function getInvulns() {
   const data = await redis.keys('user:*:invulnerable');
@@ -13,6 +14,7 @@ export async function addInvuln(userid: string) {
   return await redis.set(`user:${userid}:invulnerable`, '1');
 };
 export async function removeInvuln(userid: string) {
+  if (streamerUsers.includes(userid)) return;
   return await redis.del(`user:${userid}:invulnerable`);
 };
 export async function setTemporaryInvuln(userid: string, duration = 600) {

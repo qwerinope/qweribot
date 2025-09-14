@@ -15,11 +15,12 @@ Admins have the power to destroy the item economy. Be very careful with admin po
 ### Invulns
 
 Invulns, or invulnerable chatters cannot be shot with items and cannot get hit by explosives.
-They can however use items.
+When an invuln uses an item or a lootbox they lose their invuln status.
 The intended use for invulns is for when you need to talk to a chatter, or for using other bots.
 Invulns don't need moderator or vip status in the channel.
 The chatterbot and streamer always are invuln and cannot be stripped of this status.
-Admins can add and remove invulns.
+Moderators can add and remove invulns.
+On your first message in chat you will recieve 10 minutes of invuln status.
 
 ### Commands
 
@@ -40,7 +41,7 @@ A full list of Commands can be found [here](#commands-1)
 ### Timeouts and ghost whispers
 
 If you've been timed out, you can ghost whisper a message to the chatterbot and it will relay your message to the chat.
-You can only send one message every 10 minutes. 
+You can only send one message every 5 minutes. 
 Try to bargain for your release with the chatter that shot you, or just call them names.
 
 ### Leaderboards
