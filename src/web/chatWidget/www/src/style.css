@@ -30,13 +30,17 @@ body {
 
 .message {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 
   .chatMessage {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
   }
 
-  .mentionMessage {
-    font-weight: bold;
+  span {
+    padding: 2px;
   }
 
   padding: 2px;
