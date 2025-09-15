@@ -6,6 +6,7 @@ import { buildTimeString } from "lib/dateManager";
 import { timeout } from "lib/timeout";
 import { isInvuln, removeInvuln } from "lib/invuln";
 import { streamerUsers } from "main";
+import { createGetLootRecord } from "db/dbGetLoot";
 
 const COOLDOWN = 10 * 60 * 1000; // 10 mins (ms)
 
@@ -79,6 +80,7 @@ export default new Command({
     await Promise.all([
       updateUserRecord(user, userData),
       sendMessage(message, msg.messageId),
+      createGetLootRecord(user, gainedqbucks, itemDiff),
       user.clearLock()
     ]);
   }

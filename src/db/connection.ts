@@ -54,6 +54,13 @@ export type anivTimeoutRecord = {
   duration: number;
 };
 
+export type getLootRecord = {
+  id?: string;
+  user: string;
+  qbucks: number;
+  items: inventory;
+};
+
 interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'auth'): RecordService<authRecord>;
   collection(idOrName: 'users'): RecordService<userRecord>;
@@ -62,6 +69,7 @@ interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'cheerEvents'): RecordService<cheerEventRecord>;
   collection(idOrName: 'cheers'): RecordService<cheerRecord>;
   collection(idOrName: 'anivTimeouts'): RecordService<anivTimeoutRecord>;
+  collection(idOrName: 'getLoots'): RecordService<getLootRecord>;
 };
 
 export default new PocketBase(pocketbaseurl).autoCancellation(false) as TypedPocketBase;
