@@ -9,25 +9,12 @@ services:
       - ./db/redis:/data
     environment:
       - VALKEY_EXTRA_FLAGS=--save 60 1
-  # pocketbase:
-  #   container_name: qweribot-pocketbase
-  #   build:
-  #     context: ./pocketbase
-  #   ports:
-  #     - 8090:8090
-  #   restart: no
-  #   volumes:
-  #     - ./db/pocketbase:/pb/pb_data
   postgres:
     container_name: postgres
     image: postgres:latest
     restart: unless-stopped
     env_file: 
       - .env.development
-    # environment:
-    #   POSTGRES_USER: $$POSTGRES_USER
-    #   POSTGRES_PASSWORD: $$POSTGRES_PASSWORD
-    #   POSTGRES_DB: $$POSTGRES_DB
     ports:
       - "5432:5432"
     volumes:

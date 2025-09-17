@@ -40,7 +40,12 @@ export async function getItemStats(target: User, thismonth: boolean) {
   ]);
   if (!items || !cheers) return;
 
-  const returnObj: inventory = {};
+  const returnObj: inventory = {
+    blaster: 0,
+    silverbullet: 0,
+    grenade: 0,
+    tnt: 0,
+  };
 
   for (const item of items) {
     if (!returnObj[item.item]) returnObj[item.item] = 0;
@@ -48,8 +53,8 @@ export async function getItemStats(target: User, thismonth: boolean) {
   };
 
   for (const cheer of cheers) {
-    if (!returnObj[cheer.cheer]) returnObj[cheer.cheer] = 0;
-    returnObj[cheer.cheer]! += 1
+    if (!returnObj[cheer.event]) returnObj[cheer.event] = 0;
+    returnObj[cheer.event]! += 1
   };
 
   return returnObj;

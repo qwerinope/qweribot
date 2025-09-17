@@ -1,7 +1,7 @@
 import { redis } from "bun";
 import { Command, sendMessage } from "commands";
 import { getUserRecord, updateUserRecord } from "db/dbUser";
-import items, { type inventory, type items } from "items";
+import itemMap, { type inventory, type items } from "items";
 import { buildTimeString } from "lib/dateManager";
 import { timeout } from "lib/timeout";
 import { isInvuln, removeInvuln } from "lib/invuln";
@@ -59,7 +59,7 @@ export default new Command({
       if (Math.floor(Math.random() * 250) === 0) itemDiff.silverbullet! += 1;
     };
 
-    for (const [item, amount] of Object.entries(itemDiff) as [items, number]) {
+    for (const [item, amount] of Object.entries(itemDiff) as [items, number][]) {
       if (userData.inventory[item]) userData.inventory[item] += amount;
       else userData.inventory[item] = amount;
     };
@@ -68,7 +68,7 @@ export default new Command({
 
     for (const [item, amount] of Object.entries(itemDiff)) {
       if (amount === 0) continue;
-      const selection = items.get(item);
+      const selection = itemMap.get(item);
       if (!selection) continue;
       itemstrings.push(`${amount} ${selection.prettyName + (amount === 1 ? '' : selection.plural)}`);
     };
