@@ -5,7 +5,7 @@ import { timeout } from "lib/timeout";
 import { sendMessage } from "commands";
 import { createAnivTimeoutRecord } from "db/dbAnivTimeouts";
 
-const ANIVNAMES = ['a_n_e_e_v', 'a_n_i_v'];
+const ANIVNAMES: anivBots[] = ['a_n_e_e_v', 'a_n_i_v'];
 
 type anivMessageStore = {
   [key: string]: string;
@@ -14,12 +14,14 @@ type anivMessageStore = {
 type IsAnivMessage = {
   isAnivMessage: true;
   message: string;
-  anivbot: string;
+  anivbot: anivBots;
 };
 
 type isNotAnivMessage = {
   isAnivMessage: false;
 };
+
+export type anivBots = 'a_n_i_v' | 'a_n_e_e_v';
 
 type anivMessageResult = IsAnivMessage | isNotAnivMessage;
 
@@ -34,7 +36,7 @@ async function isAnivMessage(message: string): Promise<anivMessageResult> {
 };
 
 export default async function handleMessage(msg: EventSubChannelChatMessageEvent, user: User) {
-  if (ANIVNAMES.includes(user.displayName)) {
+  if (ANIVNAMES.map(a => a.toLowerCase()).includes(user.username)) {
     const data: anivMessageStore = await redis.get('anivmessages').then(a => a === null ? {} : JSON.parse(a));
     data[user.displayName] = msg.messageText;
     await redis.set('anivmessages', JSON.stringify(data));
@@ -43,7 +45,7 @@ export default async function handleMessage(msg: EventSubChannelChatMessageEvent
     if (data.isAnivMessage) await Promise.all([
       timeout(user, 'copied an aniv message', 30),
       sendMessage(`${user.displayName} got timed out for copying an ${data.anivbot} message`),
-      createAnivTimeoutRecord(msg.messageText, user, 30)
+      createAnivTimeoutRecord(msg.messageText, data.anivbot, user, 30)
     ]);
   };
 };

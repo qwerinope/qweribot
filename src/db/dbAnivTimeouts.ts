@@ -1,14 +1,13 @@
-import pocketbase from "db/connection";
+import db from "db/connection";
 import User from "user";
-import logger from "lib/logger";
+import { anivTimeouts } from "db/schema";
+import { type anivBots } from "lib/handleAnivMessage";
 
-const pb = pocketbase.collection('anivTimeouts');
-
-export async function createAnivTimeoutRecord(message: string, user: User, duration: number) {
-  try {
-    await pb.create({ message, user: user.id, duration });
-  } catch (e) {
-    logger.err(`Failed to create anivTimeoutRecord: user: ${user.displayName} message: "${message}" duration: ${duration}`);
-    logger.err(e as string);
-  };
+export async function createAnivTimeoutRecord(message: string, anivbot: anivBots, user: User, duration: number) {
+  await db.insert(anivTimeouts).values({
+    message,
+    anivBot: anivbot,
+    user: parseInt(user.id),
+    duration
+  });
 };

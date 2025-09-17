@@ -1,11 +1,9 @@
-import pocketbase from "db/connection";
 import { RedisClient } from "bun";
 import logger from "lib/logger";
 
 export async function connectionCheck() {
   let pbstatus = false;
   try {
-    await pocketbase.health.check().then(a => a.code === 200);
     pbstatus = true;
   } catch { };
   const tempclient = new RedisClient(undefined, {

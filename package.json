@@ -2,7 +2,9 @@
   "name": "qweribot",
   "module": "src/index.ts",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.31.4",
+    "pg": "^8.16.3"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
@@ -13,7 +15,7 @@
     "@fontsource/jersey-15": "^5.2.6",
     "@twurple/auth": "^7.3.0",
     "@twurple/eventsub-ws": "^7.3.0",
-    "kleur": "^4.1.5",
-    "pocketbase": "^0.26.1"
+    "drizzle-orm": "^0.44.5",
+    "kleur": "^4.1.5"
   }
 }

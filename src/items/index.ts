@@ -3,7 +3,7 @@ import User from "user";
 import { type userType, type specialExecuteArgs } from "commands";
 
 type itemOptions = {
-  name: string;
+  name: items;
   aliases: string[];
   prettyName: string;
   plural: string;
@@ -13,7 +13,7 @@ type itemOptions = {
 };
 
 export class Item {
-  public readonly name: string;
+  public readonly name: items;
   public readonly prettyName: string;
   public readonly plural: string;
   public readonly description: string;
@@ -25,7 +25,7 @@ export class Item {
 
   /** Creates an item object */
   constructor(options: itemOptions) {
-    this.name = options.name.toLowerCase();
+    this.name = options.name;
     this.prettyName = options.prettyName;
     this.plural = options.plural;
     this.description = options.description;
@@ -38,12 +38,11 @@ export class Item {
 };
 
 import { readdir } from 'node:fs/promises';
-import type { userRecord } from "db/connection";
-import { updateUserRecord } from "db/dbUser";
-const items = new Map<string, Item>;
+import { updateUserRecord, type inventoryUpdate } from "db/dbUser";
+const itemMap = new Map<string, Item>;
 const specialAliasItems = new Map<string, Item>;
 const emptyInventory: inventory = {};
-const itemarray: string[] = [];
+const itemarray: items[] = [];
 
 const files = await readdir(import.meta.dir);
 for (const file of files) {
@@ -53,20 +52,22 @@ for (const file of files) {
   emptyInventory[item.name] = 0;
   itemarray.push(item.name);
   for (const alias of item.aliases) {
-    items.set(alias, item); // Since it's not a primitive type the map is filled with references to the item, not the actual object
+    itemMap.set(alias, item); // Since it's not a primitive type the map is filled with references to the item, not the actual object
   };
   for (const alias of item.specialaliases) {
     specialAliasItems.set(alias, item);
   };
 };
 
-export default items;
+export default itemMap;
 export { emptyInventory, itemarray, specialAliasItems };
+
+export type items = "blaster" | "silverbullet" | "grenade" | "tnt";
 export type inventory = {
-  [key: string]: number;
+  [key in items]?: number;
 };
 
-export async function changeItemCount(user: User, userRecord: userRecord, itemname: string, amount = -1): Promise<false | userRecord> {
+export async function changeItemCount(user: User, userRecord: inventoryUpdate, itemname: items, amount = -1): Promise<false | inventoryUpdate> {
   userRecord.inventory[itemname] = userRecord.inventory[itemname]! += amount;
   if (userRecord.inventory[itemname] < 0) return false;
   await updateUserRecord(user, userRecord);

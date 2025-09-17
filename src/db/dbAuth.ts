@@ -1,38 +1,28 @@
 import type { AccessToken } from "@twurple/auth";
-import pocketbase, { type authRecord } from "db/connection";
-const pb = pocketbase.collection('auth');
+import db from "db/connection";
+import { auth } from "db/schema";
+import { eq } from "drizzle-orm";
 
 export async function createAuthRecord(token: AccessToken, userId: string) {
-  try {
-    const data: authRecord = {
-      accesstoken: token,
-      id: userId
-    };
-    await pb.create(data);
-  } catch (err) { };
+  await db.insert(auth).values({
+    id: parseInt(userId),
+    accesstoken: token
+  });
 };
 
 export async function getAuthRecord(userId: string, requiredIntents: string[]) {
-  try {
-    const data = await pb.getOne(userId);
-    if (!requiredIntents.every(intent => data.accesstoken.scope.includes(intent))) return undefined;
-    return { accesstoken: data.accesstoken };
-  } catch (err) {
-    return undefined;
-  };
+  const data = await db.query.auth.findFirst({
+    where: eq(auth.id, parseInt(userId))
+  });
+  if (!data) return undefined;
+  if (!requiredIntents.every(intent => data.accesstoken.scope.includes(intent))) return undefined;
+  return { accesstoken: data.accesstoken };
 };
 
 export async function updateAuthRecord(userId: string, newtoken: AccessToken) {
-  try {
-    const newrecord = {
-      accesstoken: newtoken,
-    };
-    await pb.update(userId, newrecord);
-  } catch (err) { };
+  await db.update(auth).set({ accesstoken: newtoken }).where(eq(auth.id, parseInt(userId)));
 };
 
 export async function deleteAuthRecord(userId: string): Promise<void> {
-  try {
-    await pb.delete(userId);
-  } catch (err) { };
+  await db.delete(auth).where(eq(auth.id, parseInt(userId)));
 };

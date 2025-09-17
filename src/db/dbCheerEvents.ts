@@ -1,26 +1,20 @@
-import pocketbase from "db/connection";
+import db from "db/connection";
+import { cheerEvents } from "db/schema";
+import { and, between, eq, SQL } from "drizzle-orm";
+import type { items } from "items";
 import User from "user";
-import logger from "lib/logger";
-const pb = pocketbase.collection('cheerEvents');
 
-export async function createCheerEventRecord(user: User, cheer: string): Promise<void> {
-  try {
-    await pb.create({ user: user.id, cheer });
-  } catch (e) {
-    logger.err(`Failed to create cheerEvent record in database: user: ${user.id}, cheer: ${cheer}`);
-    logger.err(e as string);
-  };
+export async function createCheerEventRecord(user: User, cheer: items): Promise<void> {
+  await db.insert(cheerEvents).values({ user: parseInt(user.id), event: cheer });
 };
 
 export async function getCheerEvents(user: User, monthData?: string) {
-  try {
-    const monthquery = monthData ? ` && created~"${monthData}"` : '';
-    const data = await pb.getFullList({
-      filter: `user="${user.id}"${monthquery}`
-    });
-    return data;
-  } catch (e) {
-    logger.err(`Failed to get cheerEvents for user: ${user.id}, month: ${monthData}`);
-    logger.err(e as string);
+  let condition: SQL<unknown> | undefined = eq(cheerEvents.user, parseInt(user.id));
+  if (monthData) {
+    const begin = Date.parse(monthData);
+    const end = new Date(begin).setMonth(new Date(begin).getMonth() + 1);
+    condition = and(condition, between(cheerEvents.created, new Date(begin), new Date(end)));
   };
+  const data = await db.select().from(cheerEvents).where(condition);
+  return data;
 };

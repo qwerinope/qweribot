@@ -1,27 +1,20 @@
-import pocketbase from "db/connection";
+import db from "db/connection";
+import { usedItems } from "db/schema";
 import User from "user";
-import logger from "lib/logger";
-const pb = pocketbase.collection('usedItems');
+import type { items } from "items";
+import { and, between, eq, type SQL } from "drizzle-orm";
 
-export async function createUsedItemRecord(user: User, item: string): Promise<void> {
-  try {
-    await pb.create({ user: user.id, item });
-  } catch (err) {
-    logger.err(`Failed to create usedItem record in database: user: ${user.id}, item: ${item}`);
-    logger.err(err as string);
-  };
+export async function createUsedItemRecord(user: User, item: items): Promise<void> {
+  await db.insert(usedItems).values({ user: parseInt(user.id), item });
 };
 
 export async function getItemsUsed(user: User, monthData?: string) {
-  try {
-    const monthquery = monthData ? ` && created~"${monthData}"` : '';
-    const data = await pb.getFullList({
-      filter: `user="${user.id}"${monthquery}`
-    });
-    return data;
-  } catch (e) {
-    logger.err(`Failed to get items used for user: ${user.id}, month: ${monthData}`);
-    logger.err(e as string);
+  let condition: SQL<unknown> | undefined = eq(usedItems.user, parseInt(user.id));
+  if (monthData) {
+    const begin = Date.parse(monthData);
+    const end = new Date(begin).setMonth(new Date(begin).getMonth() + 1);
+    condition = and(condition, between(usedItems.created, new Date(begin), new Date(end)));
   };
+  const data = await db.select().from(usedItems).where(condition);
+  return data;
 };
-

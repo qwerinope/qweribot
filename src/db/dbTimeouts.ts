@@ -1,39 +1,35 @@
-import pocketbase from "db/connection";
+import db from "db/connection";
+import { timeouts } from "db/schema";
 import User from "user";
-import logger from "lib/logger";
-const pb = pocketbase.collection('timeouts');
+import type { items } from "items";
+import { and, between, eq, type SQL } from "drizzle-orm";
 
-export async function createTimeoutRecord(user: User, target: User, item: string): Promise<void> {
-  try {
-    await pb.create({ user: user.id, target: target.id, item });
-  } catch (err) {
-    logger.err(`Failed to create timeout record in database: user: ${user.id}, target: ${target.id}, item: ${item}`);
-    logger.err(err as string);
-  };
+export async function createTimeoutRecord(user: User, target: User, item: items): Promise<void> {
+  await db.insert(timeouts).values({
+    user: parseInt(user.id),
+    target: parseInt(target.id),
+    item
+  });
 };
 
 export async function getTimeoutsAsUser(user: User, monthData?: string) {
-  try {
-    const monthquery = monthData ? ` && created~"${monthData}"` : '';
-    const data = await pb.getFullList({
-      filter: `user="${user.id}"${monthquery}`
-    });
-    return data;
-  } catch (e) {
-    logger.err(`Failed to get timeouts as user: ${user.id}, month: ${monthData}`);
-    logger.err(e as string);
+  let condition: SQL<unknown> | undefined = eq(timeouts.user, parseInt(user.id));
+  if (monthData) {
+    const begin = Date.parse(monthData);
+    const end = new Date(begin).setMonth(new Date(begin).getMonth() + 1);
+    condition = and(condition, between(timeouts.created, new Date(begin), new Date(end)));
   };
+  const data = await db.select().from(timeouts).where(condition);
+  return data;
 };
 
 export async function getTimeoutsAsTarget(user: User, monthData?: string) {
-  try {
-    const monthquery = monthData ? ` && created~"${monthData}"` : '';
-    const data = await pb.getFullList({
-      filter: `target="${user.id}"${monthquery}`
-    });
-    return data;
-  } catch (e) {
-    logger.err(`Failed to get timeouts as target: ${user.id}, month: ${monthData}`);
-    logger.err(e as string);
+  let condition: SQL<unknown> | undefined = eq(timeouts.target, parseInt(user.id));
+  if (monthData) {
+    const begin = Date.parse(monthData);
+    const end = new Date(begin).setMonth(new Date(begin).getMonth() + 1);
+    condition = and(condition, between(timeouts.created, new Date(begin), new Date(end)));
   };
+  const data = await db.select().from(timeouts).where(condition);
+  return data;
 };

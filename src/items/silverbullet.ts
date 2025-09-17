@@ -20,7 +20,7 @@ export default new Item({
   execution: async (msg, user, specialargs) => {
     const userObj = await getUserRecord(user);
     if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any silver bullets!`, msg.messageId); return; };
-    const messagequery = parseCommandArgs(msg.messageText);
+    const messagequery = parseCommandArgs(msg.messageText, specialargs?.activation);
     if (!messagequery[0]) { await sendMessage('Please specify a target'); return; };
     const target = await User.initUsername(messagequery[0].toLowerCase());
     if (!target) { await sendMessage(`${messagequery[0]} doesn't exist`); return; };

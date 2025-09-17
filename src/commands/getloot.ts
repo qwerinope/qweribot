@@ -1,7 +1,7 @@
 import { redis } from "bun";
 import { Command, sendMessage } from "commands";
 import { getUserRecord, updateUserRecord } from "db/dbUser";
-import items from "items";
+import items, { type inventory, type items } from "items";
 import { buildTimeString } from "lib/dateManager";
 import { timeout } from "lib/timeout";
 import { isInvuln, removeInvuln } from "lib/invuln";
@@ -19,7 +19,7 @@ export default new Command({
     if (await isInvuln(msg.chatterId) && !streamerUsers.includes(msg.chatterId)) { await sendMessage(`You're no longer an invuln because used a lootbox.`, msg.messageId); await removeInvuln(msg.chatterId); };
     if (await user.itemLock()) { await sendMessage(`Cannot get loot (itemlock)`, msg.messageId); return; };
     const userData = await getUserRecord(user);
-    const lastlootbox = Date.parse(userData.lastlootbox);
+    const lastlootbox = userData.lastlootbox.getTime();
     const now = Date.now();
     if ((lastlootbox + COOLDOWN) > now) {
       if (await user.greedy()) {
@@ -40,12 +40,12 @@ export default new Command({
     await user.clearGreed();
     await user.setLock();
 
-    userData.lastlootbox = new Date(now).toISOString();
+    userData.lastlootbox = new Date(now);
 
     const gainedqbucks = Math.floor(Math.random() * 100) + 50; // range from 50 to 150
     userData.balance += gainedqbucks;
 
-    const itemDiff = {
+    const itemDiff: inventory = {
       grenade: 0,
       blaster: 0,
       tnt: 0,
@@ -53,13 +53,13 @@ export default new Command({
     };
 
     for (let i = 0; i < 5; i++) {
-      if (Math.floor(Math.random() * 5) === 0) itemDiff.grenade += 1;
-      if (Math.floor(Math.random() * 5) === 0) itemDiff.blaster += 1;
-      if (Math.floor(Math.random() * 25) === 0) itemDiff.tnt += 1;
-      if (Math.floor(Math.random() * 250) === 0) itemDiff.silverbullet += 1;
+      if (Math.floor(Math.random() * 5) === 0) itemDiff.grenade! += 1;
+      if (Math.floor(Math.random() * 5) === 0) itemDiff.blaster! += 1;
+      if (Math.floor(Math.random() * 25) === 0) itemDiff.tnt! += 1;
+      if (Math.floor(Math.random() * 250) === 0) itemDiff.silverbullet! += 1;
     };
 
-    for (const [item, amount] of Object.entries(itemDiff)) {
+    for (const [item, amount] of Object.entries(itemDiff) as [items, number]) {
       if (userData.inventory[item]) userData.inventory[item] += amount;
       else userData.inventory[item] = amount;
     };
