@@ -1,9 +1,8 @@
 import db from "db/connection";
-import { users } from "db/schema";
+import { timeouts, users } from "db/schema";
 import { itemarray, type inventory } from "items";
 import type User from "user";
-import logger from "lib/logger";
-import { desc, eq } from "drizzle-orm";
+import { count, desc, eq, inArray, sql, ne, between, and, SQL } from "drizzle-orm";
 
 /** Use this function to both ensure existance and to retreive data */
 export async function getUserRecord(user: User) {
@@ -44,4 +43,50 @@ export async function updateUserRecord(user: User, newData: updateUser) {
 
 export async function getBalanceLeaderboard() {
   return await db.select().from(users).orderBy(desc(users.balance)).limit(10);
+};
+
+export async function getKDLeaderboard(monthData?: string) {
+  let condition: SQL<unknown> | undefined = ne(timeouts.item, 'silverbullet');
+  if (monthData) {
+    const begin = Date.parse(monthData);
+    const end = new Date(begin).setMonth(new Date(begin).getMonth() + 1);
+    condition = and(condition, between(timeouts.created, new Date(begin), new Date(end)));
+  };
+
+  const usersGotShot = await db.select({
+    userId: users.id,
+    amount: count(timeouts.target),
+  })
+    .from(users)
+    .innerJoin(timeouts, eq(users.id, timeouts.target))
+    .groupBy(users.id)
+    .having(sql`count(${timeouts.id}) > 5`)
+    .where(condition);
+
+  const usersThatShot = await db.select({
+    userId: users.id,
+    amount: count(timeouts.user)
+  })
+    .from(users)
+    .innerJoin(timeouts, eq(users.id, timeouts.user))
+    .groupBy(users.id)
+    .where(
+      and(
+        condition,
+        inArray(users.id, usersGotShot.map(a => a.userId))
+      )
+    );
+
+  const lookup = new Map(usersThatShot.map(a => [a.userId, a.amount]));
+  const result = usersGotShot.map(user => ({
+    userId: user.userId,
+    KD: lookup.get(user.userId)! / user.amount
+  }));
+
+  result.map(user => {
+    if (isNaN(user.KD)) user.KD = 0;
+    return user
+  });
+
+  return result;
 };
