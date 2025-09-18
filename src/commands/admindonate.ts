@@ -16,7 +16,7 @@ export default new Command({
     const userRecord = await getUserRecord(target);
     if (!args[1]) { await sendMessage('Please specify the amount qweribucks you want to give', msg.messageId); return; };
     const amount = parseInt(args[1]);
-    if (isNaN(amount)) { await sendMessage(`${args[1]} is not a valid amount`); return; };
+    if (isNaN(amount)) { await sendMessage(`'${args[1]}' is not a valid amount`); return; };
     if (await target.itemLock()) { await sendMessage('Cannot give qweribucks: item lock is set', msg.messageId); return; };
     await target.setLock();
     const data = await changeBalance(target, userRecord, amount);

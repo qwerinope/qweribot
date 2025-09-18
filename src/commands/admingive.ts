@@ -19,7 +19,7 @@ export default new Command({
     if (!item) { await sendMessage(`Item ${args[1]} doesn't exist`, msg.messageId); return; };
     if (!args[2]) { await sendMessage('Please specify the amount of the item you want to give', msg.messageId); return; };
     const amount = parseInt(args[2]);
-    if (isNaN(amount)) { await sendMessage(`${args[2]} is not a valid amount`); return; };
+    if (isNaN(amount)) { await sendMessage(`'${args[2]}' is not a valid amount`); return; };
     if (await target.itemLock()) { await sendMessage('Cannot give item: item lock is set', msg.messageId); return; };
     await target.setLock();
     const data = await changeItemCount(target, userRecord, item.name, amount);

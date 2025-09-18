@@ -5,10 +5,12 @@ export class Cheer {
   public readonly name: string;
   public readonly amount: number;
   public readonly execute: (msg: EventSubChannelChatMessageEvent, sender: User) => Promise<void>;
-  constructor(name: string, amount: number, execution: (msg: EventSubChannelChatMessageEvent, sender: User) => Promise<void>) {
+  public readonly isItem: boolean;
+  constructor(name: string, amount: number, execution: (msg: EventSubChannelChatMessageEvent, sender: User) => Promise<void>, isItem = false) {
     this.name = name.toLowerCase();
     this.amount = amount;
     this.execute = execution;
+    this.isItem = isItem;
   };
 };
 
@@ -31,9 +33,9 @@ export { namedcheers };
 import { sendMessage } from 'commands';
 import logger from 'lib/logger';
 import { getUserRecord } from 'db/dbUser';
-import { changeItemCount } from 'items';
+import { changeItemCount, type items } from 'items';
 
-export async function handleNoTarget(msg: EventSubChannelChatMessageEvent, user: User, itemname: string, silent = true) {
+export async function handleNoTarget(msg: EventSubChannelChatMessageEvent, user: User, itemname: items, silent = true) {
   if (await user.itemLock()) {
     await sendMessage(`Cannot give ${user.displayName} a ${itemname}`, msg.messageId);
     logger.err(`Failed to give ${user.displayName} a ${itemname} for their cheer`);

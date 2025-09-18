@@ -30,4 +30,4 @@ export default new Cheer('grenade', 99, async (msg, user) => {
       target: target?.displayName!
     })
   ]);
-});
+}, true);

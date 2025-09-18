@@ -45,5 +45,5 @@ export default new Cheer('execute', 6666, async (msg, user) => {
         break;
     };
   };
-});
+}, true);
 

@@ -28,7 +28,7 @@ async function parseChatMessage(msg: EventSubChannelChatMessageEvent) {
   // and both are usable to target the same user (id is the same)
   // The only problem would be if a user changed their name and someone else took their name right after
 
-  if (msg.chatterId === chatterId) return;
+  if (msg.chatterId === chatterId && chatterId !== streamerId) return;
 
   if (!await redis.exists(`user:${user?.id}:haschatted`) && !msg.sourceMessageId) {
     const message = await sendMessage(`Welcome ${user?.displayName}. Please note: This chat has PvP, if you get timed out that's part of the qwerinope experience. You have 10 minutes of invincibility. A full list of commands and items can be found here: https://github.com/qwerinope/qweribot/#qweribot`);
@@ -68,9 +68,7 @@ async function handleChatMessage(msg: EventSubChannelChatMessageEvent, user: Use
   };
 
   try {
-    await selection.execute(msg, user, {
-      activation
-    });
+    await selection.execute(msg, user, { activation });
   }
   catch (err) {
     logger.err(err as string);
@@ -105,9 +103,11 @@ export async function handleCheer(msg: EventSubChannelChatMessageEvent, bits: nu
   if (!selection) return;
 
   if (await redis.sismember('disabledcheers', selection.name)) { await sendMessage(`The ${selection.name} cheer is disabled! Sorry!`, msg.messageId); return; };
+  if (selection.isItem && await isInvuln(user.id) && !streamerUsers.includes(user.id)) { await sendMessage(`${user.displayName} Is no longer an invuln`); await removeInvuln(user.id); };
   try {
-    selection.execute(msg, user);
+    await selection.execute(msg, user);
   } catch (err) {
+    await sendMessage(`[ERROR]: Something went wrong with cheer execution`);
     logger.err(err as string);
   };
 };

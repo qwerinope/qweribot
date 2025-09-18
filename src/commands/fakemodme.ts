@@ -8,7 +8,7 @@ export default new Command({
   execution: async (_msg, user) => {
     await Promise.all([
       timeout(user, "NO MODME", 60),
-      sendMessage(`NO MODME COMMAND!!! UltraMad`)
+      sendMessage(`NO MODME COMMAND!!! UltraMad UltraMad UltraMad`)
     ]);
   }
 });

@@ -1,7 +1,7 @@
 services:
   valkey:
     image: valkey/valkey:alpine
-    container_name: valkey
+    container_name: qweribot-valkey
     ports:
       - 6379:6379
     restart: no
@@ -10,11 +10,11 @@ services:
     environment:
       - VALKEY_EXTRA_FLAGS=--save 60 1
   postgres:
-    container_name: postgres
+    container_name: qweribot-postgres
     image: postgres:latest
     restart: unless-stopped
     env_file: 
-      - .env.development
+      - .env
     ports:
       - "5432:5432"
     volumes:

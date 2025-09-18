@@ -14,7 +14,7 @@ export default new Command({
     const txt: string[] = [];
     for (const userRecord of data) {
       if (userRecord.balance === 0) continue;
-      const user = await User.initUserId(userRecord.id);
+      const user = await User.initUserId(userRecord.id.toString());
       if (!user) continue;
       txt.push(`${index}. ${user.displayName}: ${userRecord.balance}`);
       index++;

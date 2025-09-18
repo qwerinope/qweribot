@@ -46,4 +46,4 @@ export default new Cheer('timeout', 100, async (msg, user) => {
         break;
     };
   };
-});
+}, true);

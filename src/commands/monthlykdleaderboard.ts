@@ -15,7 +15,7 @@ export default new Command({
 
     const userKDs: KD[] = [];
     await Promise.all(users.map(async userRecord => {
-      const user = await User.initUserId(userRecord.id);
+      const user = await User.initUserId(userRecord.id.toString());
       if (!user) return;
       const data = await getTimeoutStats(user, true);
       if (!data) return;

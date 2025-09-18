@@ -45,6 +45,7 @@ export default new Item({
       }),
       changeItemCount(user, userObj, ITEMNAME)
     ]);
+
     await user.clearLock();
     await sendMessage(`RIPBOZO ${user.displayName} exploded ${targets.length} chatter${targets.length === 1 ? '' : 's'} with their TNT RIPBOZO`);
   }

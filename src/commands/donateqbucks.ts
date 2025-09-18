@@ -19,7 +19,7 @@ export default new Command({
     const targetRecord = await getUserRecord(target);
     if (!args[1]) { await sendMessage('Please specify the amount of the item you want to give', msg.messageId); return; };
     const amount = parseInt(args[1]);
-    if (isNaN(amount) || amount < 1) { await sendMessage(`${args[1]} is not a valid amount`); return; };
+    if (isNaN(amount) || amount < 1) { await sendMessage(`'${args[1]}' is not a valid amount`); return; };
 
     const userRecord = await getUserRecord(user);
     if (userRecord.balance < amount) { await sendMessage(`You can't give qweribucks you don't have!`, msg.messageId); return; };
