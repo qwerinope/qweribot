@@ -1,5 +1,4 @@
 import { Command, sendMessage } from "commands";
-import type { userRecord } from "db/connection";
 import { getUserRecord } from "db/dbUser";
 import parseCommandArgs from "lib/parseCommandArgs";
 import { changeBalance } from "lib/changeBalance";
@@ -24,7 +23,7 @@ export default new Command({
     const userRecord = await getUserRecord(user);
     if (userRecord.balance < amount) { await sendMessage(`You can't give qweribucks you don't have!`, msg.messageId); return; };
 
-    if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give qweribucks', msg.messageId); return; };
+    if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give qweribucks (itemlock)', msg.messageId); return; };
 
     await Promise.all([
       user.setLock(),
@@ -37,7 +36,7 @@ export default new Command({
     ]);
 
     if (!data.includes(false)) {
-      const { balance: newamount } = data[0] as userRecord;
+      const { balance: newamount } = data[0];
       await sendMessage(`${user.displayName} gave ${amount} qweribuck${amount === 1 ? '' : 's'} to ${target.displayName}. They now have ${newamount} qweribuck${newamount === 1 ? '' : 's'}`, msg.messageId);
     } else {
       // TODO: Rewrite this section

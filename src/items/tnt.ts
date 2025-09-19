@@ -16,15 +16,17 @@ export default new Item({
   plural: 's',
   description: 'Give 5-10 random chatters 60 second timeouts',
   aliases: ['tnt'],
+  price: 1000,
   execution: async (msg, user) => {
-    const userObj = await getUserRecord(user);
-    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any TNTs!`, msg.messageId); return; };
     const vulntargets = await redis.keys('user:*:vulnerable').then(a => a.map(b => b.slice(5, -11)));
     if (vulntargets.length === 0) { await sendMessage('No vulnerable chatters to blow up', msg.messageId); return; };
     const targets = getTNTTargets(vulntargets);
 
-    if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
+    if (await user.itemLock()) { await sendMessage('Cannot use an item (itemlock)', msg.messageId); return; };
     await user.setLock();
+
+    const userObj = await getUserRecord(user);
+    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any TNTs!`, msg.messageId); await user.clearLock(); return; };
 
     await Promise.all(targets.map(async targetid => {
       const target = await User.initUserId(targetid);

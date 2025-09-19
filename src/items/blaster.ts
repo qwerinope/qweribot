@@ -16,17 +16,20 @@ export default new Item({
   plural: 's',
   description: 'Times a specific person out for 60 seconds',
   aliases: ['blaster', 'blast'],
+  price: 100,
   execution: async (msg, user) => {
-    const userObj = await getUserRecord(user);
-    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any blasters!`, msg.messageId); return; };
     const messagequery = parseCommandArgs(msg.messageText);
     if (!messagequery[0]) { await sendMessage('Please specify a target'); return; };
     const target = await User.initUsername(messagequery[0].toLowerCase());
     if (!target) { await sendMessage(`${messagequery[0]} doesn't exist`); return; };
     await getUserRecord(target); // make sure the user record exist in the database
 
-    if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
+    if (await user.itemLock()) { await sendMessage('Cannot use an item (itemlock)', msg.messageId); return; };
     await user.setLock();
+
+    const userObj = await getUserRecord(user);
+    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any blasters!`, msg.messageId); await user.clearLock(); return; };
+
     const result = await timeout(target, `You got blasted by ${user.displayName}!`, 60);
     if (result.status) await Promise.all([
       sendMessage(`GOTTEM ${target.displayName} got BLASTED by ${user.displayName} GOTTEM`),

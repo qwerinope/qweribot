@@ -49,14 +49,13 @@ export default new Command({
       grenade: 0,
       blaster: 0,
       tnt: 0,
-      silverbullet: 0
     };
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       if (Math.floor(Math.random() * 5) === 0) itemDiff.grenade! += 1;
       if (Math.floor(Math.random() * 5) === 0) itemDiff.blaster! += 1;
       if (Math.floor(Math.random() * 25) === 0) itemDiff.tnt! += 1;
-      if (Math.floor(Math.random() * 250) === 0) itemDiff.silverbullet! += 1;
+      if (Math.floor(Math.random() * 1000) === 0) itemDiff.silverbullet! += 1;
     };
 
     for (const [item, amount] of Object.entries(itemDiff) as [items, number][]) {

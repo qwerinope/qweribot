@@ -31,14 +31,12 @@ export default cheers;
 export { namedcheers };
 
 import { sendMessage } from 'commands';
-import logger from 'lib/logger';
 import { getUserRecord } from 'db/dbUser';
 import { changeItemCount, type items } from 'items';
 
 export async function handleNoTarget(msg: EventSubChannelChatMessageEvent, user: User, itemname: items, silent = true) {
   if (await user.itemLock()) {
-    await sendMessage(`Cannot give ${user.displayName} a ${itemname}`, msg.messageId);
-    logger.err(`Failed to give ${user.displayName} a ${itemname} for their cheer`);
+    await sendMessage(`Cannot give ${user.displayName} a ${itemname} (itemlock)`, msg.messageId);
     return;
   };
   await user.setLock();

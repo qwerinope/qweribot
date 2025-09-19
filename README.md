@@ -64,6 +64,8 @@ When using/giving an item or qbucks the itemlock will be set at the start of the
 Admins can toggle the itemlock on chatters with the [`itemlock`](#administrative-commands) command. This will stop a chatter from giving, receiving and using items and qweribucks.
 It will NOT stop them from using items by cheering, but if that cheer item usage fails, they will not be given an equivalent item as compensation.
 
+The only ways to get items is through the `getloot` command or by buying them with qbucks.
+
 Items can be used with the alias as a command (example: `blast qwerinope`) or with the [`use` command](#qweribucksitem-commands).
 
 When an Item is used it is removed from the inventory of the chatter.
@@ -78,10 +80,10 @@ ITEM|RATE
 `grenade`|`1/5`
 `blaster`|`1/5`
 `tnt`|`1/20`
-`silver bullet`|`1/250`
+`silver bullet`|`1/1000`
 
-Each of these rates get pulled 5 times, then the result is added to your inventory.
-It's theoretically possible to get 5 of each item.
+Each of these rates get pulled 3 times, then the result is added to your inventory.
+It's theoretically possible to get 3 of each item.
 
 ### Chatterbot/streamerbot
 
@@ -104,24 +106,25 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 `seiso`|Get a seiso rating|anyone|`seiso`|:white_check_mark:
 `backshot`|'Backshot' a random previous chatter|anyone|`backshot`|:white_check_mark:
 `roulette`|Play russian roulette for a 5 minute timeout|anyone|`roulette`|:white_check_mark:
-`timeout {target}`|Times targeted user out for 60 seconds (costs 100 qweribucks)|anyone|`timeout`|:white_check_mark:
 `stats [target]`|Get timeout and some item stats for yourself or specified user this month|anyone|`stats` `monthlystats`|:white_check_mark:
 `alltime [target]`|Get timeout and some item stats for yourself or specified user of all time|anyone|`alltime` `alltimestats`|:white_check_mark:
+`monthlyleaderboard`|Get the K/D leaderboard for this month [(info)](#leaderboards)|anyone|`monthlyleaderboard` `kdleaderboard` `leaderboard`|:white_check_mark:
+`alltimeleaderboard`|Get the K/D leaderboard of all time [(info)](#leaderboards)|anyone|`alltimeleaderboard` `alltimekdleaderboard`|:white_check_mark:
+`qbucksleaderboard`|Get the current qbucks leaderboard [(info)](#leaderboards)|anyone|`qbucksleaderboard` `moneyleaderboard` `baltop`|:white_check_mark:
 
 ### Qweribucks/Item commands
 
 COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 -|-|-|-|-
 `getloot`|Get a random assortment of items and qbucks every 10 minutes. [(drop rates)](#lootbox)|anyone|`getloot` `loot` `dig`|:white_check_mark:
-`getbalance [target]`|Get balance of target or self|anyone|`getbalance` `balance` `qbucks` `qweribucks` `wallet` `getwallet`|:white_check_mark:
-`donate {target} {amount}`|Give the targeted user some or all of your qweribucks|anyone|`donate`|:white_check_mark:
 `iteminfo {item}`|Get item function and aliases|anyone|`iteminfo` `itemhelp` `info`|:white_check_mark:
 `inventory [target]`|Get inventory contents of target or self|anyone|`inventory` `inv` `pocket`|:white_check_mark:
+`getprices`|Get the current price of items in the shop|anyone|`getprices` `prices` `shop`|:white_check_mark:
+`buyitem {item} [amount]`|Buy one or more items for some qbucks. Prices are [here](#items)|anyone|`buyitem` `buy` `purchase`|:white_check_mark:
+`getbalance [target]`|Get balance of target or self|anyone|`getbalance` `balance` `qbucks` `qweribucks` `wallet` `getwallet`|:white_check_mark:
 `give {target} {item} {amount}`|Give targeted user amount of items|anyone|`give`|:white_check_mark:
+`donate {target} {amount}`|Give the targeted user some or all of your qweribucks|anyone|`donate`|:white_check_mark:
 `use {item} ...`|Use item. More info at [The items section](#items)|anyone|`use`|:x:
-`monthlyleaderboard`|Get the K/D leaderboard for this month [(info)](#leaderboards)|anyone|`monthlyleaderboard` `kdleaderboard` `leaderboard`|:white_check_mark:
-`alltimeleaderboard`|Get the K/D leaderboard of all time [(info)](#leaderboards)|anyone|`alltimeleaderboard` `alltimekdleaderboard`|:white_check_mark:
-`qbucksleaderboard`|Get the current qbucks leaderboard [(info)](#leaderboards)|anyone|`qbucksleaderboard` `moneyleaderboard` `baltop`|:white_check_mark:
 `admindonate {target} {amount}`|Gives the targeted user amount of qweribucks|admins|`admindonate`|:white_check_mark:
 `admingive {target} {item} {amount}`|Give targeted user amount of new items|admins|`admingive`|:white_check_mark:
 
@@ -149,12 +152,12 @@ COMMAND|FUNCTION|USER|ALIASES|DISABLEABLE
 
 ## Items
 
-NAME|COMMAND|FUNCTION|ALIASES
--|-|-|-
-Blaster|`blaster {target}`|Times targeted user out for 60 seconds|`blaster` `blast`
-Silver Bullet|`silverbullet {target}`|Times targeted user out for 24 hours|`silverbullet` `execute` `{blastin}`
-Grenade|`grenade`|Times a random vulnerable chatter out for 60 seconds|`grenade`
-TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`
+NAME|COMMAND|FUNCTION|ALIASES|COST
+-|-|-|-|-
+Blaster|`blaster {target}`|Times targeted user out for 60 seconds|`blaster` `blast`|100
+Silver Bullet|`silverbullet {target}`|Times targeted user out for 24 hours|`silverbullet` `execute` `{blastin}`|6666
+Grenade|`grenade`|Times a random vulnerable chatter out for 60 seconds|`grenade`|99
+TNT|`tnt`|Give 5-10 random chatters 60 second timeouts|`tnt`|1000
 
 ## Cheers
 

@@ -17,17 +17,20 @@ export default new Item({
   description: 'Times a specific person out for 24 hours',
   aliases: ['execute', 'silverbullet'],
   specialaliases: ['blastin'],
+  price: 6666,
   execution: async (msg, user, specialargs) => {
-    const userObj = await getUserRecord(user);
-    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any silver bullets!`, msg.messageId); return; };
     const messagequery = parseCommandArgs(msg.messageText, specialargs?.activation);
     if (!messagequery[0]) { await sendMessage('Please specify a target'); return; };
     const target = await User.initUsername(messagequery[0].toLowerCase());
     if (!target) { await sendMessage(`${messagequery[0]} doesn't exist`); return; };
     await getUserRecord(target); // make sure the user record exist in the database
 
-    if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
+    if (await user.itemLock()) { await sendMessage('Cannot use an item (itemlock)', msg.messageId); return; };
     await user.setLock();
+
+    const userObj = await getUserRecord(user);
+    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any silver bullets!`, msg.messageId); await user.clearLock(); return; };
+
     const result = await timeout(target, `You got blasted by ${user.displayName}!`, 60 * 60 * 24);
     if (result.status) await Promise.all([
       sendMessage(`${target.displayName} RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO RIPBOZO`),

@@ -16,9 +16,8 @@ export default new Item({
   plural: 's',
   description: 'Give a random chatter a 60s timeout',
   aliases: ['grenade'],
+  price: 99,
   execution: async (msg, user) => {
-    const userObj = await getUserRecord(user);
-    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any grenades!`, msg.messageId); return; };
     const targets = await redis.keys(`user:*:vulnerable`);
     if (targets.length === 0) { await sendMessage('No vulnerable chatters to blow up', msg.messageId); return; };
     const selection = targets[Math.floor(Math.random() * targets.length)]!;
@@ -26,8 +25,12 @@ export default new Item({
 
     await getUserRecord(target!); // make sure the user record exist in the database
 
-    if (await user.itemLock()) { await sendMessage('Cannot use an item right now', msg.messageId); return; };
+    if (await user.itemLock()) { await sendMessage('Cannot use an item (itemlock)', msg.messageId); return; };
     await user.setLock();
+
+    const userObj = await getUserRecord(user);
+    if (userObj.inventory[ITEMNAME]! < 1) { await sendMessage(`You don't have any grenades!`, msg.messageId); await user.clearLock(); return; };
+
     await Promise.all([
       timeout(target!, `You got hit by ${user.displayName}'s grenade!`, 60),
       sendMessage(`wybuh ${target?.displayName} got hit by ${user.displayName}'s grenade wybuh`),

@@ -10,6 +10,7 @@ type itemOptions = {
   description: string;
   execution: (message: EventSubChannelChatMessageEvent, sender: User, args?: specialExecuteArgs) => Promise<void>;
   specialaliases?: string[];
+  price: number;
 };
 
 export class Item {
@@ -20,6 +21,7 @@ export class Item {
   public readonly aliases: string[];
   public readonly specialaliases: string[];
   public readonly usertype: userType;
+  public readonly price: number;
   public readonly execute: (message: EventSubChannelChatMessageEvent, sender: User, args?: specialExecuteArgs) => Promise<void>;
   public readonly disableable: boolean;
 
@@ -34,12 +36,14 @@ export class Item {
     this.execute = options.execution;
     this.disableable = true;
     this.specialaliases = options.specialaliases ?? [];
+    this.price = options.price;
   };
 };
 
 import { readdir } from 'node:fs/promises';
 import { updateUserRecord, type inventoryUpdate } from "db/dbUser";
-const itemMap = new Map<string, Item>;
+const itemAliasMap = new Map<string, Item>;
+const itemObjectArray: Item[] = []
 const specialAliasItems = new Map<string, Item>;
 const emptyInventory: inventory = {};
 const itemarray: items[] = [];
@@ -51,16 +55,17 @@ for (const file of files) {
   const item: Item = await import(import.meta.dir + '/' + file.slice(0, -3)).then(a => a.default);
   emptyInventory[item.name] = 0;
   itemarray.push(item.name);
+  itemObjectArray.push(item);
   for (const alias of item.aliases) {
-    itemMap.set(alias, item); // Since it's not a primitive type the map is filled with references to the item, not the actual object
+    itemAliasMap.set(alias, item); // Since it's not a primitive type the map is filled with references to the item, not the actual object
   };
   for (const alias of item.specialaliases) {
     specialAliasItems.set(alias, item);
   };
 };
 
-export default itemMap;
-export { emptyInventory, itemarray, specialAliasItems };
+export default itemAliasMap;
+export { emptyInventory, itemarray, specialAliasItems, itemObjectArray };
 
 export type items = "blaster" | "silverbullet" | "grenade" | "tnt";
 export type inventory = {

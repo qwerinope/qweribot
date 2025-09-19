@@ -1,5 +1,4 @@
 import { Command, sendMessage } from "commands";
-import type { userRecord } from "db/connection";
 import { getUserRecord } from "db/dbUser";
 import items, { changeItemCount } from "items";
 import parseCommandArgs from "lib/parseCommandArgs";
@@ -26,7 +25,7 @@ export default new Command({
     const userRecord = await getUserRecord(user);
     if (userRecord.inventory[item.name]! < amount) { await sendMessage(`You can't give items you don't have!`, msg.messageId); return; };
 
-    if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give item', msg.messageId); return; };
+    if (await user.itemLock() || await target.itemLock()) { await sendMessage('Cannot give item (itemlock)', msg.messageId); return; };
 
     await Promise.all([
       user.setLock(),
@@ -38,14 +37,14 @@ export default new Command({
       await changeItemCount(user, userRecord, item.name, -amount)
     ]);
 
-    if (!data.includes(false)) {
-      const tempdata = data[0] as userRecord;
+    if (data[0] !== false && data[1] !== false) {
+      const tempdata = data[0];
       const newamount = tempdata.inventory[item.name]!;
       await sendMessage(`${user.displayName} gave ${amount} ${item.prettyName + (amount === 1 ? '' : item.plural)} to ${target.displayName}. They now have ${newamount} ${item.prettyName + (newamount === 1 ? '' : item.plural)}`, msg.messageId);
     } else {
       // TODO: Rewrite this section
       await sendMessage(`Failed to give ${target.displayName} ${amount} ${item.prettyName + (amount === 1 ? '' : item.plural)}`, msg.messageId);
-      logger.warn(`WARNING: Item donation failed: target success: ${data[0] !== false}, donator success: ${data[1] !== false}`);
+      logger.warn(`WARNING: Item donation failed: target success: ${data[0] !== false ? "yes" : "no"}, donator success: ${data[1] !== false ? "yes" : "no"}`);
     };
     await user.clearLock();
     await target.clearLock();
